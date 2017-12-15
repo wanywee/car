@@ -28,10 +28,6 @@
   <artifactId>police_car</artifactId>
   <version>1.1.1.10</version>
 
- <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-  </properties>
   <build>
     <plugins>
       <plugin>
