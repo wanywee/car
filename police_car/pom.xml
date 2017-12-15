@@ -28,6 +28,10 @@
   <artifactId>police_car</artifactId>
   <version>1.1.1.10</version>
 
+ <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+  </properties>
   <build>
     <plugins>
       <plugin>
@@ -41,19 +45,26 @@
               <maxIdleTime>30000</maxIdleTime>
             </connector>
           </connectors>
-          <webAppSourceDirectory>${project.build.directory}/${pom.artifactId}-${pom.version}</webAppSourceDirectory>
+          <webAppSourceDirectory>${project.build.directory}/${project.artifactId}-${project.version}</webAppSourceDirectory>
           <contextPath>/</contextPath>
         </configuration>
       </plugin>
+      <plugin>  
+		    <groupId>org.apache.maven.plugins</groupId>  
+		    <artifactId>maven-war-plugin</artifactId>  
+		    <version>2.6</version>  
+	</plugin> 
     </plugins>
   </build>
 
  <dependencies>
-    <!--dependency>
-      <groupId>com.car</groupId>
-      <artifactId>[the artifact id of the block to be mounted]</artifactId>
-      <version>1.1.1.01</version>
-    </dependency-->
+  <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-resources-plugin -->
+<dependency>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-resources-plugin</artifactId>
+    <version>2.6</version>
+</dependency>
+
    <!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
 	<dependency>
 	    <groupId>org.springframework</groupId>
@@ -297,11 +308,11 @@
     <classifier>jdk15</classifier><!--指定jdk版本-->
 </dependency>
 <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjrt -->
-<dependency>
-    <groupId>org.aspectj</groupId>
-    <artifactId>aspectjrt</artifactId>
-    <version>1.8.11</version>
-</dependency>
+<dependency>  
+    <groupId>org.aspectj</groupId>  
+    <artifactId>aspectjrt</artifactId>  
+    <version>1.5.4</version>  
+</dependency>  
 <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
 <dependency>
     <groupId>org.aspectj</groupId>
@@ -326,12 +337,7 @@
     <artifactId>jpush-client</artifactId>
     <version>3.2.9</version>
 </dependency>
-<!-- https://mvnrepository.com/artifact/org.apache.xmlbeans/xmlbeans -->
-<dependency>
-    <groupId>org.apache.xmlbeans</groupId>
-    <artifactId>xmlbeans</artifactId>
-    <version>2.5.0</version>
-</dependency>
+
 <!-- https://mvnrepository.com/artifact/com.thoughtworks.xstream/xstream -->
 <dependency>
     <groupId>com.thoughtworks.xstream</groupId>
@@ -344,7 +350,7 @@
     <artifactId>poi</artifactId>
     <version>3.9</version>
 </dependency>
-	
+ 
   </dependencies>
 
 </project>
