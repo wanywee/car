@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.carTravelsky.mapper.system.SystemLogMapper">
+<!-- <cache type="com.daily.service.RedisCache"/> --> <!-- *映射语句 -->
+    <resultMap id="BaseResultMap" type="systemLogDO">
+        <id column="LOG_ID" property="logID" jdbcType="INTEGER" />
+        <result column="USER_ID" property="userID" jdbcType="INTEGER" />
+        <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+        <result column="CLASS_NAME" property="className" jdbcType="VARCHAR" />
+        <result column="METHOD_NAME" property="methodName" jdbcType="VARCHAR" />
+        <result column="REQUEST_DATA" property="requestData" jdbcType="VARCHAR" />
+        <result column="REQUEST_TIME" property="requestTime" jdbcType="TIMESTAMP" />
+        <result column="REQUEST_IP" property="requestIp" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <insert id="insert" parameterType="systemLogDO">
+        INSERT INTO T_SYSTEM_LOG
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userID != null">USER_ID, </if>
+            <if test="userName != null and userName != ''">USER_NAME, </if>
+            <if test="className != null and className != ''">CLASS_NAME, </if>
+            <if test="methodName != null and methodName != ''">METHOD_NAME, </if>
+            <if test="requestData != null and requestData != ''">REQUEST_DATA, </if>
+            <if test="requestTime != null">REQUEST_TIME, </if>
+            <if test="requestIp != null and requestIp != ''">REQUEST_IP, </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="userID != null">#{userID,jdbcType=INTEGER}, </if>
+            <if test="userName != null and userName != ''">#{userName,jdbcType=VARCHAR}, </if>
+            <if test="className != null and className != ''">#{className,jdbcType=VARCHAR}, </if>
+            <if test="methodName != null and methodName != ''">#{methodName,jdbcType=VARCHAR}, </if>
+            <if test="requestData != null and requestData != ''">#{requestData,jdbcType=VARCHAR}, </if>
+            <if test="requestTime != null">#{requestTime,jdbcType=TIMESTAMP}, </if>
+            <if test="requestIp != null and requestIp != ''">#{requestIp,jdbcType=VARCHAR}, </if>
+        </trim>
+        <selectKey resultType="java.lang.Integer" keyProperty="logID" order="AFTER">
+            SELECT @@IDENTITY AS logID
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="systemLogDO" >
+        UPDATE T_SYSTEM_LOG
+        <set>
+            <if test="userID != null">USER_ID = #{userID,jdbcType=INTEGER}, </if>
+            <if test="userName != null">USER_NAME = #{userName,jdbcType=VARCHAR}, </if>
+            <if test="className != null">CLASS_NAME = #{className,jdbcType=VARCHAR}, </if>
+            <if test="methodName != null">METHOD_NAME = #{methodName,jdbcType=VARCHAR}, </if>
+            <if test="requestData != null">REQUEST_DATA = #{requestData,jdbcType=VARCHAR}, </if>
+            <if test="requestTime != null">REQUEST_TIME = #{requestTime,jdbcType=TIMESTAMP}, </if>
+            <if test="requestIp != null">REQUEST_IP = #{requestIp,jdbcType=VARCHAR}, </if>
+        </set>
+        WHERE LOG_ID = #{logID,jdbcType=INTEGER}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        DELETE FROM T_SYSTEM_LOG WHERE LOG_ID = #{logID,jdbcType=INTEGER}
+    </delete>
+
+    <select id="getByID" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT * FROM T_SYSTEM_LOG WHERE LOG_ID = #{logID,jdbcType=INTEGER}
+    </select>
+
+    <select id="getList" parameterType="systemLogDO" resultMap="BaseResultMap" useCache="false">
+        SELECT * FROM T_SYSTEM_LOG
+        <where>
+            <if test="logID != null"> AND LOG_ID = #{logID,jdbcType=INTEGER} </if>
+            <if test="userID != null"> AND USER_ID = #{userID,jdbcType=INTEGER} </if>
+            <if test="userName != null and userName != ''"> AND USER_NAME = #{userName,jdbcType=VARCHAR} </if>
+            <if test="className != null and className != ''"> AND CLASS_NAME = #{className,jdbcType=VARCHAR} </if>
+            <if test="methodName != null and methodName != ''"> AND METHOD_NAME = #{methodName,jdbcType=VARCHAR} </if>
+            <if test="requestData != null and requestData != ''"> AND REQUEST_DATA = #{requestData,jdbcType=VARCHAR} </if>
+            <if test="requestTime != null"> AND REQUEST_TIME = #{requestTime,jdbcType=TIMESTAMP} </if>
+            <if test="requestIp != null and requestIp != ''"> AND REQUEST_IP = #{requestIp,jdbcType=VARCHAR} </if>
+        	<if test=" starSystemtLogDate != null and starSystemtLogDate != ''">
+				AND REQUEST_TIME <![CDATA[ >= ]]> '${starSystemtLogDate} 00:00:00' 
+			</if>
+			<if test="endSystemLogDate != null and endSystemLogDate != ''">
+				AND REQUEST_TIME <![CDATA[ <= ]]> '${endSystemLogDate} 23:59:59' 
+			</if>
+        </where>
+        ORDER BY LOG_ID DESC
+    </select>
+      <delete id="deleteSystemOldLogs">
+		DELETE FROM T_SYSTEM_LOG WHERE REQUEST_TIME <![CDATA[ <= ]]> DATE_SUB(DATE(NOW()), INTERVAL 3 MONTH)
+	</delete>
+
+</mapper>

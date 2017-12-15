@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.carTravelsky.mapper.app.AppCarStaffMapper">
+
+	<!-- 所有警员列表 -->
+	<select id="getAllStaffList" resultType="carAndStaffRS">
+		SELECT CBS.ID AS id ,
+			   CBS.STAFF_NAME AS name,
+			   CBS.STAFF_CODE AS code
+		FROM car_base_staff CBS
+	</select>
+
+	<!-- 所有车辆列表 -->
+	<select id="getListCar" resultType="carAndStaffRS">
+		SELECT
+			cbv.id AS id,
+			cbv.LICENSENO AS name,
+			cbv.ENGINENO AS code
+		FROM
+			car_base_vehicle cbv
+	</select>
+	
+
+	
+</mapper>

@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.carTravelsky.mapper.carDaily.CarDailyFeeManageRecordMapper">
+    <resultMap id="BaseResultMap" type="carDailyFeeManageRecordDO">
+        <id column="ID" property="id" jdbcType="INTEGER" />
+        <result column="CAR_ID" property="carID" jdbcType="INTEGER" />
+        <result column="MONEYNAME" property="moneyname" jdbcType="VARCHAR" />
+        <result column="PARMENT_MONEY" property="parmentMoney" jdbcType="FLOAT" />
+        <result column="PAYMENT_DATE" property="paymentDate" jdbcType="TIMESTAMP" />
+        <result column="END_DATE" property="endDate" jdbcType="TIMESTAMP" />
+        <result column="CHARGE_UNIT_ID" property="chargeUnitID" jdbcType="INTEGER" />
+        <result column="PAYMENT_TYPE" property="paymentType" jdbcType="VARCHAR" />
+        <result column="REGION" property="region" jdbcType="VARCHAR" />
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="CREATE_PEOPLE" property="createPeople" jdbcType="VARCHAR" />
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="UPDATE_PEOPLE" property="updatePeople" jdbcType="VARCHAR" />
+        <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+        <result column="HANDLER" property="handler" jdbcType="VARCHAR" />
+        <result column="COMPANY_NAME" property="chargeUnitName" jdbcType="VARCHAR" />
+        <result column="PERIOD" property="period" jdbcType="VARCHAR" />
+        <result column="LICENSENO" property="licenseNo" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <insert id="insert" parameterType="carDailyFeeManageRecordDO">
+        INSERT INTO CAR_DAILY_FEE_MANAGE_RECORD
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="carID != null">CAR_ID, </if>
+            <if test="moneyname != null and moneyname != ''">MONEYNAME, </if>
+            <if test="parmentMoney != null">PARMENT_MONEY, </if>
+            <if test="paymentDate != null">PAYMENT_DATE, </if>
+            <if test="endDate != null">END_DATE, </if>
+            <if test="chargeUnitID != null">CHARGE_UNIT_ID, </if>
+            <if test="paymentType != null and paymentType != ''">PAYMENT_TYPE, </if>
+            <if test="region != null and region != ''">REGION, </if>
+            <if test="createTime != null">CREATE_TIME, </if>
+            <if test="createPeople != null and createPeople != ''">CREATE_PEOPLE, </if>
+            <if test="updateTime != null">UPDATE_TIME, </if>
+            <if test="updatePeople != null and updatePeople != ''">UPDATE_PEOPLE, </if>
+            <if test="remark != null and remark != ''">REMARK, </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="carID != null">#{carID,jdbcType=INTEGER}, </if>
+            <if test="moneyname != null and moneyname != ''">#{moneyname,jdbcType=VARCHAR}, </if>
+            <if test="parmentMoney != null">#{parmentMoney,jdbcType=FLOAT}, </if>
+            <if test="paymentDate != null">#{paymentDate,jdbcType=TIMESTAMP}, </if>
+            <if test="endDate != null">#{endDate,jdbcType=TIMESTAMP}, </if>
+            <if test="chargeUnitID != null">#{chargeUnitID,jdbcType=INTEGER}, </if>
+            <if test="paymentType != null and paymentType != ''">#{paymentType,jdbcType=VARCHAR}, </if>
+            <if test="region != null and region != ''">#{region,jdbcType=VARCHAR}, </if>
+            <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP}, </if>
+            <if test="createPeople != null and createPeople != ''">#{createPeople,jdbcType=VARCHAR}, </if>
+            <if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP}, </if>
+            <if test="updatePeople != null and updatePeople != ''">#{updatePeople,jdbcType=VARCHAR}, </if>
+            <if test="remark != null and remark != ''">#{remark,jdbcType=VARCHAR}, </if>
+        </trim>
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT @@IDENTITY AS id
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="carDailyFeeManageRecordDO" >
+        UPDATE CAR_DAILY_FEE_MANAGE_RECORD
+        <set>
+            <if test="carID != null">CAR_ID = #{carID,jdbcType=INTEGER}, </if>
+            <if test="moneyname != null">MONEYNAME = #{moneyname,jdbcType=VARCHAR}, </if>
+            <if test="parmentMoney != null">PARMENT_MONEY = #{parmentMoney,jdbcType=FLOAT}, </if>
+            <if test="paymentDate != null">PAYMENT_DATE = #{paymentDate,jdbcType=TIMESTAMP}, </if>
+            <if test="endDate != null">END_DATE = #{endDate,jdbcType=TIMESTAMP}, </if>
+            <if test="chargeUnitID != null">CHARGE_UNIT_ID = #{chargeUnitID,jdbcType=INTEGER}, </if>
+            <if test="paymentType != null">PAYMENT_TYPE = #{paymentType,jdbcType=VARCHAR}, </if>
+            <if test="region != null">REGION = #{region,jdbcType=VARCHAR}, </if>
+            <if test="createTime != null">CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}, </if>
+            <if test="createPeople != null">CREATE_PEOPLE = #{createPeople,jdbcType=VARCHAR}, </if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}, </if>
+            <if test="updatePeople != null">UPDATE_PEOPLE = #{updatePeople,jdbcType=VARCHAR}, </if>
+            <if test="remark != null">REMARK = #{remark,jdbcType=VARCHAR}, </if>
+        </set>
+        WHERE ID = #{id,jdbcType=INTEGER}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        DELETE FROM CAR_DAILY_FEE_MANAGE_RECORD WHERE ID = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <select id="getByID" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT * FROM CAR_DAILY_FEE_MANAGE_RECORD WHERE ID = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="getList" parameterType="carDailyFeeManageRecordDO" resultMap="BaseResultMap">
+        SELECT * FROM CAR_DAILY_FEE_MANAGE_RECORD
+        <where>
+            <if test="id != null"> AND ID = #{id,jdbcType=INTEGER} </if>
+            <if test="carID != null"> AND CAR_ID = #{carID,jdbcType=INTEGER} </if>
+            <if test="moneyname != null and moneyname != ''"> AND MONEYNAME = #{moneyname,jdbcType=VARCHAR} </if>
+            <if test="parmentMoney != null"> AND PARMENT_MONEY = #{parmentMoney,jdbcType=FLOAT} </if>
+            <if test="paymentDate != null"> AND PAYMENT_DATE = #{paymentDate,jdbcType=TIMESTAMP} </if>
+            <if test="endDate != null"> AND END_DATE = #{endDate,jdbcType=TIMESTAMP} </if>
+            <if test="chargeUnitID != null"> AND CHARGE_UNIT_ID = #{chargeUnitID,jdbcType=INTEGER} </if>
+            <if test="paymentType != null and paymentType != ''"> AND PAYMENT_TYPE = #{paymentType,jdbcType=VARCHAR} </if>
+            <if test="region != null and region != ''"> AND REGION = #{region,jdbcType=VARCHAR} </if>
+            <if test="createTime != null"> AND CREATE_TIME = #{createTime,jdbcType=TIMESTAMP} </if>
+            <if test="createPeople != null and createPeople != ''"> AND CREATE_PEOPLE = #{createPeople,jdbcType=VARCHAR} </if>
+            <if test="updateTime != null"> AND UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP} </if>
+            <if test="updatePeople != null and updatePeople != ''"> AND UPDATE_PEOPLE = #{updatePeople,jdbcType=VARCHAR} </if>
+            <if test="remark != null and remark != ''"> AND REMARK = #{remark,jdbcType=VARCHAR} </if>
+        </where>
+    </select>
+     <resultMap id="ResultMap" type="carDailyFeeManageRecordDO">
+        <id column="ID" property="id" jdbcType="INTEGER" />
+        <result column="CAR_ID" property="carID" jdbcType="INTEGER" />
+        <result column="MONEYNAME" property="moneyname" jdbcType="VARCHAR" />
+        <result column="PARMENT_MONEY" property="parmentMoney" jdbcType="FLOAT" />
+        <result column="PAYMENT_DATE" property="paymentDate" jdbcType="TIMESTAMP" />
+        <result column="END_DATE" property="endDate" jdbcType="TIMESTAMP" />
+        <result column="CHARGE_UNIT_ID" property="chargeUnitID" jdbcType="INTEGER" />
+        <result column="PAYMENT_TYPE" property="paymentType" jdbcType="VARCHAR" />
+        <result column="REGION" property="region" jdbcType="VARCHAR" />
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="CREATE_PEOPLE" property="createPeople" jdbcType="VARCHAR" />
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="UPDATE_PEOPLE" property="updatePeople" jdbcType="VARCHAR" />
+        <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+        <result column="COMPANY_NAME" property="chargeUnitName" jdbcType="VARCHAR" />
+        <result column="LICENSENO" property="licenseNo" jdbcType="VARCHAR" />
+        <result column="HANDLER" property="handler" jdbcType="VARCHAR" />
+    </resultMap>
+     <select id="getCarDailyFeeManageAllList" parameterType="carDailyFeeManageRecordDO" resultMap="ResultMap">
+       SELECT c.COMPANY_NAME,v.LICENSENO,f.*,s.STAFF_NAME AS staffName,s.DEPT_ID AS COMPANY_ID FROM car_daily_fee_manage_record f  
+		JOIN car_base_vehicle v ON v.ID=f.CAR_ID 
+		JOIN car_base_contacts c ON c.ID=f.CHARGE_UNIT_ID 
+		JOIN car_base_staff s ON s.ID = f.`HANDLER`
+		WHERE f.DELETE_CODE = 1 AND c.DELETE_CODE=1 AND v.DELETE_CODE=1 
+		<!-- <if test="companyID!=null">AND v.COMPANY_ID=#{companyID,jdbcType=INTEGER}</if> -->
+    </select>
+    <!-- 全局搜索 -->
+    <select id="getSearchFeeManageAllList" parameterType="carDailyFeeManageRecordDO" resultMap="ResultMap">
+    	SELECT c.COMPANY_NAME,v.LICENSENO,f.*,s.STAFF_NAME AS staffName FROM car_daily_fee_manage_record f  
+		JOIN car_base_vehicle v ON v.ID=f.CAR_ID 
+		JOIN car_base_contacts c ON c.ID=f.CHARGE_UNIT_ID 
+		JOIN car_base_staff s ON s.ID = f.`HANDLER`
+		WHERE f.DELETE_CODE = 1 AND c.DELETE_CODE=1 AND v.DELETE_CODE=1 
+		AND CONCAT(ifnull(f.REMARK,''),c.COMPANY_NAME,v.LICENSENO,f.PARMENT_MONEY,f.MONEYNAME,f.PAYMENT_DATE,s.STAFF_NAME) LIKE
+		CONCAT('%',#{searchStr},'%')
+		<!-- <if test="carDailyFeeManageRecordDO.companyID!=null">AND v.COMPANY_ID=#{carDailyFeeManageRecordDO.companyID,jdbcType=INTEGER}</if> -->
+    </select>
+     <!-- 全局搜索 -到期提醒-->
+    <select id="getSearchFeeManageAllListExpire" parameterType="carDailyFeeManageRecordDO" resultMap="ResultMap">
+    	SELECT c.COMPANY_NAME,v.LICENSENO,f.*,s.STAFF_NAME AS staffName FROM car_daily_fee_manage_record f  
+		JOIN car_base_vehicle v ON v.ID=f.CAR_ID 
+		JOIN car_base_contacts c ON c.ID=f.CHARGE_UNIT_ID 
+		JOIN car_base_staff s ON s.ID = f.`HANDLER`
+		WHERE f.DELETE_CODE = 1 AND c.DELETE_CODE=1 AND v.DELETE_CODE=1 
+		AND CONCAT(ifnull(f.REMARK,''),c.COMPANY_NAME,v.LICENSENO,f.PARMENT_MONEY,f.MONEYNAME,f.PAYMENT_DATE,s.STAFF_NAME) LIKE
+		CONCAT('%',#{searchStr},'%')
+		<if test = "remindDate !=null">AND END_DATE BETWEEN END_DATE
+        AND DATE_ADD(NOW(),INTERVAL #{remindDate,jdbcType=INTEGER} DAY)</if>
+		<!-- <if test="carDailyFeeManageRecordDO.companyID!=null">AND v.COMPANY_ID=#{carDailyFeeManageRecordDO.companyID,jdbcType=INTEGER}</if> -->
+    </select>
+    <update id="deleteFeesManage" parameterType="carDailyFeeManageRecordDO" >
+     UPDATE CAR_DAILY_FEE_MANAGE_RECORD SET DELETE_CODE=2  WHERE ID = #{id,jdbcType=INTEGER}
+    </update>
+  	<!-- 增加规费管理 -->
+  	<insert id="addFeesManage" parameterType="carDailyFeeManageRecordDO">
+        INSERT INTO CAR_DAILY_FEE_MANAGE_RECORD
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="carID != null">CAR_ID, </if>
+            <if test="moneyname != null and moneyname != ''">MONEYNAME, </if>
+            <if test="parmentMoney != null">PARMENT_MONEY, </if>
+            <if test="paymentDate != null">PAYMENT_DATE, </if>
+            <if test="endDate != null">END_DATE, </if>
+            <if test="chargeUnitID != null">CHARGE_UNIT_ID, </if>
+            <if test="paymentType != null and paymentType != ''">PAYMENT_TYPE, </if>
+            <if test="region != null and region != ''">REGION, </if>
+            <if test="createTime != null">CREATE_TIME, </if>
+            <if test="createPeople != null and createPeople != ''">CREATE_PEOPLE, </if>
+            <if test="updateTime != null">UPDATE_TIME, </if>
+            <if test="updatePeople != null and updatePeople != ''">UPDATE_PEOPLE, </if>
+            <if test="remark != null and remark != ''">REMARK, </if>
+            <if test="handler != null and handler != ''">HANDLER, </if>
+            <if test="period != null and period != ''">PERIOD, </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="carID != null">#{carID,jdbcType=INTEGER}, </if>
+            <if test="moneyname != null and moneyname != ''">#{moneyname,jdbcType=VARCHAR}, </if>
+            <if test="parmentMoney != null">#{parmentMoney,jdbcType=FLOAT}, </if>
+            <if test="paymentDate != null">#{paymentDate,jdbcType=TIMESTAMP}, </if>
+            <if test="endDate != null">#{endDate,jdbcType=TIMESTAMP}, </if>
+            <if test="chargeUnitID != null">#{chargeUnitID,jdbcType=INTEGER}, </if>
+            <if test="paymentType != null and paymentType != ''">#{paymentType,jdbcType=VARCHAR}, </if>
+            <if test="region != null and region != ''">#{region,jdbcType=VARCHAR}, </if>
+            <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP}, </if>
+            <if test="createPeople != null and createPeople != ''">#{createPeople,jdbcType=VARCHAR}, </if>
+            <if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP}, </if>
+            <if test="updatePeople != null and updatePeople != ''">#{updatePeople,jdbcType=VARCHAR}, </if>
+            <if test="remark != null and remark != ''">#{remark,jdbcType=VARCHAR}, </if>
+             <if test="handler != null and handler != ''">#{handler,jdbcType=VARCHAR}, </if>
+             <if test="period != null and period != ''">#{period,jdbcType=VARCHAR}, </if>
+        </trim>
+    </insert>
+    <select id="getFeesManageInfoByID" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+         SELECT
+		c.COMPANY_NAME,
+		v.LICENSENO,
+		f.END_DATE,
+		f.*,s.STAFF_NAME AS staffName
+		FROM
+			car_daily_fee_manage_record f
+		JOIN car_base_vehicle v ON v.ID = f.CAR_ID
+		JOIN car_base_contacts c ON c.ID = f.CHARGE_UNIT_ID
+		JOIN car_base_staff s ON s.ID = f.`HANDLER`
+		WHERE
+			f.DELETE_CODE = 1
+		AND c.DELETE_CODE = 1
+		AND v.DELETE_CODE = 1
+		AND f.ID = #{id,jdbcType=INTEGER}
+    </select>
+    <!--规费到期数量统计-->
+    <select id="countExpire" resultType="java.lang.Integer">
+    	SELECT COUNT(F.ID) FROM car_daily_fee_manage_record f  
+    	JOIN car_base_vehicle v ON v.ID=f.CAR_ID 
+		JOIN car_base_contacts c ON c.ID=f.CHARGE_UNIT_ID 
+		JOIN car_base_staff s ON s.ID = f.`HANDLER`
+		WHERE f.DELETE_CODE = 1 AND END_DATE BETWEEN END_DATE
+        AND DATE_ADD(NOW(),INTERVAL #{remindDate,jdbcType=INTEGER} DAY)
+       <!--  <if test="#{companyID}!=null">AND v.COMPANY_ID=#{companyID}</if> -->
+    </select>
+     <!--规费到期数量统计by部门-->
+    <select id="countExpireById" resultType="java.lang.Integer">
+    	SELECT COUNT(F.ID) FROM car_daily_fee_manage_record f  
+    	JOIN car_base_vehicle v ON v.ID=f.CAR_ID 
+		JOIN car_base_contacts c ON c.ID=f.CHARGE_UNIT_ID 
+		JOIN car_base_staff s ON s.ID = f.`HANDLER`
+		WHERE f.DELETE_CODE = 1 AND END_DATE BETWEEN END_DATE
+        AND DATE_ADD(NOW(),INTERVAL #{remindDate,jdbcType=INTEGER} DAY)
+       <!--  <if test="#{companyID}!=null">AND v.COMPANY_ID=#{companyID}</if> -->
+    </select>
+    <!--规费到期记录查询-->
+    <select id="expireRecordList" resultMap="ResultMap">
+    	SELECT c.COMPANY_NAME,v.LICENSENO,f.*,s.STAFF_NAME AS staffName FROM car_daily_fee_manage_record f  
+    	JOIN car_base_vehicle v ON v.ID=f.CAR_ID 
+		JOIN car_base_contacts c ON c.ID=f.CHARGE_UNIT_ID 
+		JOIN car_base_staff s ON s.ID = f.`HANDLER`
+		WHERE f.DELETE_CODE = 1 AND END_DATE BETWEEN END_DATE
+        AND DATE_ADD(NOW(),INTERVAL #{remindDate,jdbcType=INTEGER} DAY)
+       <!--  <if test="companyID!=null">AND v.COMPANY_ID=#{companyID}</if> -->
+    </select>
+    
+    <!-- 修改 -->
+     <update id="updateFeesManageInfo" parameterType="carDailyFeeManageRecordDO" >
+        UPDATE CAR_DAILY_FEE_MANAGE_RECORD
+        <set>
+            <if test="carID != null">CAR_ID = #{carID,jdbcType=INTEGER}, </if>
+            <if test="moneyname != null">MONEYNAME = #{moneyname,jdbcType=VARCHAR}, </if>
+            <if test="parmentMoney != null">PARMENT_MONEY = #{parmentMoney,jdbcType=FLOAT}, </if>
+            <if test="paymentDate != null">PAYMENT_DATE = #{paymentDate,jdbcType=TIMESTAMP}, </if>
+            <if test="endDate != null">END_DATE = #{endDate,jdbcType=TIMESTAMP}, </if>
+            <if test="chargeUnitID != null">CHARGE_UNIT_ID = #{chargeUnitID,jdbcType=INTEGER}, </if>
+            <if test="paymentType != null">PAYMENT_TYPE = #{paymentType,jdbcType=VARCHAR}, </if>
+            <if test="region != null">REGION = #{region,jdbcType=VARCHAR}, </if>
+            <if test="createTime != null">CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}, </if>
+            <if test="createPeople != null">CREATE_PEOPLE = #{createPeople,jdbcType=VARCHAR}, </if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}, </if>
+            <if test="updatePeople != null">UPDATE_PEOPLE = #{updatePeople,jdbcType=VARCHAR}, </if>
+            <if test="remark != null">REMARK = #{remark,jdbcType=VARCHAR}, </if>
+            <if test="handler != null">HANDLER = #{handler,jdbcType=VARCHAR}, </if>
+            <if test="period != null">PERIOD = #{period,jdbcType=VARCHAR}, </if>
+        </set>
+        WHERE ID = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

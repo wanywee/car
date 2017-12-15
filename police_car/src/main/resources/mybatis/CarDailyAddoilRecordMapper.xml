@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.carTravelsky.mapper.carDaily.CarDailyAddoilRecordMapper">
+    <resultMap id="BaseResultMap" type="carDailyAddoilRecordDO">
+        <id column="ID" property="id" jdbcType="INTEGER" />
+        <result column="UNIT_ID" property="unitID" jdbcType="INTEGER" />
+        <result column="CAR_ID" property="carID" jdbcType="INTEGER" />
+        <result column="OILSEED_LABLE_ID" property="oilseedLableID" jdbcType="INTEGER" />
+        <result column="PRICE" property="price" jdbcType="FLOAT" />
+        <result column="ADDIOL_AMOUNT" property="addiolAmount" jdbcType="FLOAT" />
+        <result column="SUMMONEY" property="summoney" jdbcType="FLOAT" />
+        <result column="ADDOIL_TIME" property="addoilTime" jdbcType="TIMESTAMP" />
+        <result column="LAST_MILEAGE" property="lastMileage" jdbcType="FLOAT" />
+        <result column="LAST_TRIP" property="lastTrip" jdbcType="FLOAT" />
+        <result column="LAST_OIL" property="lastOil" jdbcType="FLOAT" />
+        <result column="LAST_OIL_CONSUNPTION" property="lastOilConsunption" jdbcType="FLOAT" />
+        <result column="MILEAGE" property="mileage" jdbcType="FLOAT" />
+        <result column="REGION" property="region" jdbcType="VARCHAR" />
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="CREATE_PEOPLE" property="createPeople" jdbcType="VARCHAR" />
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="UPDATE_PEOPLE" property="updatePeople" jdbcType="VARCHAR" />
+        <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+        <result column="HANDLEID" property="handleid" jdbcType="INTEGER" />
+        <result column="PHOTO_URL" property="photoUrl" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <insert id="insert" parameterType="carDailyAddoilRecordDO">
+        INSERT INTO CAR_DAILY_ADDOIL_RECORD
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="unitID != null">UNIT_ID, </if>
+            <if test="carID != null">CAR_ID, </if>
+            <if test="oilseedLableID != null">OILSEED_LABLE_ID, </if>
+            <if test="price != null">PRICE, </if>
+            <if test="addiolAmount != null">ADDIOL_AMOUNT, </if>
+            <if test="summoney != null">SUMMONEY, </if>
+            <if test="addoilTime != null">ADDOIL_TIME, </if>
+            <if test="lastMileage != null">LAST_MILEAGE, </if>
+            <if test="lastTrip != null">LAST_TRIP, </if>
+            <if test="lastOil != null">LAST_OIL, </if>
+            <if test="lastOilConsunption != null">LAST_OIL_CONSUNPTION, </if>
+            <if test="mileage != null">MILEAGE, </if>
+            <if test="region != null and region != ''">REGION, </if>
+            <if test="handleid != null">HANDLEID, </if>
+            <if test="createTime != null">CREATE_TIME, </if>
+            <if test="createPeople != null and createPeople != ''">CREATE_PEOPLE, </if>
+            <if test="updateTime != null">UPDATE_TIME, </if>
+            <if test="updatePeople != null and updatePeople != ''">UPDATE_PEOPLE, </if>
+            <if test="remark != null and remark != ''">REMARK, </if>
+            <if test="deleteCode != null and deleteCode != ''">DELETE_CODE, </if>
+            <if test="companyId != null">COMPANY_ID, </if>
+            <if test="photoUrl != null">PHOTO_URL, </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="unitID != null">#{unitID,jdbcType=INTEGER}, </if>
+            <if test="carID != null">#{carID,jdbcType=VARCHAR}, </if>
+            <if test="oilseedLableID != null">#{oilseedLableID,jdbcType=INTEGER}, </if>
+            <if test="price != null">#{price,jdbcType=FLOAT}, </if>
+            <if test="addiolAmount != null">#{addiolAmount,jdbcType=FLOAT}, </if>
+            <if test="summoney != null">#{summoney,jdbcType=FLOAT}, </if>
+            <if test="addoilTime != null">#{addoilTime,jdbcType=TIMESTAMP}, </if>
+            <if test="lastMileage != null">#{lastMileage,jdbcType=FLOAT}, </if>
+            <if test="lastTrip != null">#{lastTrip,jdbcType=FLOAT}, </if>
+            <if test="lastOil != null">#{lastOil,jdbcType=FLOAT}, </if>
+            <if test="lastOilConsunption != null">#{lastOilConsunption,jdbcType=FLOAT}, </if>
+            <if test="mileage != null">#{mileage,jdbcType=FLOAT}, </if>
+            <if test="region != null and region != ''">#{region,jdbcType=VARCHAR}, </if>
+            <if test="handleid != null">#{handleid,jdbcType=INTEGER}, </if>
+            <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP}, </if>
+            <if test="createPeople != null and createPeople != ''">#{createPeople,jdbcType=VARCHAR}, </if>
+            <if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP}, </if>
+            <if test="updatePeople != null and updatePeople != ''">#{updatePeople,jdbcType=VARCHAR}, </if>
+            <if test="remark != null and remark != ''">#{remark,jdbcType=VARCHAR}, </if>
+            <if test="deleteCode != null and deleteCode != ''">#{deleteCode,jdbcType=INTEGER}, </if>
+            <if test="companyId != null">#{companyId,jdbcType=INTEGER}, </if>
+            <if test="photoUrl != null">#{photoUrl,jdbcType=INTEGER}, </if>
+        </trim>
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT @@IDENTITY AS id
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="carDailyAddoilRecordDO" >
+        UPDATE CAR_DAILY_ADDOIL_RECORD
+        <set>
+            <if test="unitID != null">UNIT_ID = #{unitID,jdbcType=INTEGER}, </if>
+            <if test="carID != null">CAR_ID = #{carID,jdbcType=INTEGER}, </if>
+            <if test="oilseedLableID != null">OILSEED_LABLE_ID = #{oilseedLableID,jdbcType=INTEGER}, </if>
+            <if test="price != null">PRICE = #{price,jdbcType=FLOAT}, </if>
+            <if test="addiolAmount != null">ADDIOL_AMOUNT = #{addiolAmount,jdbcType=FLOAT}, </if>
+            <if test="summoney != null">SUMMONEY = #{summoney,jdbcType=FLOAT}, </if>
+            <if test="addoilTime != null">ADDOIL_TIME = #{addoilTime,jdbcType=TIMESTAMP}, </if>
+            <if test="lastMileage != null">LAST_MILEAGE = #{lastMileage,jdbcType=FLOAT}, </if>
+            <if test="lastTrip != null">LAST_TRIP = #{lastTrip,jdbcType=FLOAT}, </if>
+            <if test="lastOil != null">LAST_OIL = #{lastOil,jdbcType=FLOAT}, </if>
+            <if test="lastOilConsunption != null">LAST_OIL_CONSUNPTION = #{lastOilConsunption,jdbcType=FLOAT}, </if>
+            <if test="mileage != null">MILEAGE = #{mileage,jdbcType=FLOAT}, </if>
+            <if test="region != null">REGION = #{region,jdbcType=VARCHAR}, </if>
+            <if test="handleid != null">HANDLEID = #{handleid,jdbcType=VARCHAR}, </if>
+            <if test="createTime != null">CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}, </if>
+            <if test="createPeople != null">CREATE_PEOPLE = #{createPeople,jdbcType=VARCHAR}, </if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}, </if>
+            <if test="updatePeople != null">UPDATE_PEOPLE = #{updatePeople,jdbcType=VARCHAR}, </if>
+            <if test="remark != null">REMARK = #{remark,jdbcType=VARCHAR}, </if>
+            <if test="photoUrl != null">PHOTO_URL = #{photoUrl,jdbcType=INTEGER}, </if>
+        </set>
+        WHERE ID = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <!-- 批量删除，修改状态删除码	 -->
+    <update id="updateDeleteCode" parameterType="list" >
+        UPDATE CAR_DAILY_ADDOIL_RECORD
+        <set>
+            DELETE_CODE = 2
+        </set>
+        WHERE ID IN 
+         <foreach collection="list" item="item" open="(" separator="," close=")">    
+            #{item}  
+        </foreach>  
+    </update>
+    
+    <delete id="delete" parameterType="java.lang.Integer">
+        DELETE FROM CAR_DAILY_ADDOIL_RECORD WHERE ID = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <select id="getByID" resultMap="ResultMap" parameterType="java.lang.Integer">
+        SELECT CDA.*,CBV.LICENSENO AS LICENSENO,CBC.COMPANY_NAME AS PETROLSTATION,CBS.STAFF_NAME AS HANDLENAME,KCM.DISPLAY AS OILSEEDLABLENAME FROM CAR_DAILY_ADDOIL_RECORD CDA
+        JOIN CAR_BASE_VEHICLE AS CBV ON CDA.CAR_ID = CBV.ID
+        LEFT JOIN CAR_BASE_CONTACTS AS CBC ON CDA.UNIT_ID = CBC.ID
+        LEFT JOIN CAR_BASE_STAFF AS CBS ON CDA.HANDLEID = CBS.ID
+        LEFT JOIN KEY_CODE_MASTER AS KCM ON KCM.KEY_ID = CDA.OILSEED_LABLE_ID
+        WHERE CDA.ID = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <resultMap id="ResultMap" type="carDailyAddoilRecordDO">
+        <id column="ID" property="id" jdbcType="INTEGER" />
+        <result column="UNIT_ID" property="unitID" jdbcType="INTEGER" />
+        <result column="CAR_ID" property="carID" jdbcType="INTEGER" />
+        <result column="OILSEED_LABLE_ID" property="oilseedLableID" jdbcType="INTEGER" />
+        <result column="OILSEEDLABLENAME" property="oilseedLablename" jdbcType="VARCHAR" />
+        <result column="PRICE" property="price" jdbcType="FLOAT" />
+        <result column="ADDIOL_AMOUNT" property="addiolAmount" jdbcType="FLOAT" />
+        <result column="SUMMONEY" property="summoney" jdbcType="FLOAT" />
+        <result column="ADDOIL_TIME" property="addoilTime" jdbcType="TIMESTAMP" />
+        <result column="LAST_MILEAGE" property="lastMileage" jdbcType="FLOAT" />
+        <result column="LAST_TRIP" property="lastTrip" jdbcType="FLOAT" />
+        <result column="LAST_OIL" property="lastOil" jdbcType="FLOAT" />
+        <result column="LAST_OIL_CONSUNPTION" property="lastOilConsunption" jdbcType="FLOAT" />
+        <result column="MILEAGE" property="mileage" jdbcType="FLOAT" />
+        <result column="REGION" property="region" jdbcType="VARCHAR" />
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="CREATE_PEOPLE" property="createPeople" jdbcType="VARCHAR" />
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="UPDATE_PEOPLE" property="updatePeople" jdbcType="VARCHAR" />
+        <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+        <result column="LICENSENO" property="licenseno" jdbcType="VARCHAR" />
+        <result column="PETROLSTATION" property="petrolstation" jdbcType="VARCHAR" />
+        <result column="HANDLEID" property="handleid" jdbcType="INTEGER" />
+        <result column="HANDLENAME" property="handlename" jdbcType="VARCHAR" />
+        <result column="PHOTO_URL" property="photoUrl" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="getList" parameterType="carDailyAddoilRecordDO" resultMap="ResultMap">
+		SELECT CDA.*,CBV.LICENSENO AS LICENSENO,CBC.COMPANY_NAME AS PETROLSTATION,CBS.STAFF_NAME AS HANDLENAME,KCM.DISPLAY AS OILSEEDLABLENAME  FROM CAR_DAILY_ADDOIL_RECORD  AS CDA 
+		LEFT JOIN CAR_BASE_CONTACTS AS CBC ON CDA.UNIT_ID = CBC.ID
+        LEFT JOIN CAR_BASE_VEHICLE AS CBV ON CDA.CAR_ID = CBV.ID
+        LEFT JOIN CAR_BASE_STAFF AS CBS ON CDA.HANDLEID = CBS.ID
+		LEFT JOIN KEY_CODE_MASTER AS KCM ON KCM.KEY_ID = CDA.OILSEED_LABLE_ID
+        WHERE CDA.DELETE_CODE =1
+    </select>
+    
+	<select id="getSearchAddoilRecordList" resultMap="ResultMap">
+		SELECT CDA.*,CBV.LICENSENO AS LICENSENO,CBC.COMPANY_NAME AS PETROLSTATION,CBS.STAFF_NAME AS HANDLENAME,KCM.DISPLAY AS OILSEEDLABLENAME  FROM CAR_DAILY_ADDOIL_RECORD  AS CDA 
+		LEFT JOIN CAR_BASE_CONTACTS AS CBC ON CDA.UNIT_ID = CBC.ID
+        LEFT JOIN CAR_BASE_VEHICLE AS CBV ON CDA.CAR_ID = CBV.ID
+        LEFT JOIN CAR_BASE_STAFF AS CBS ON CDA.HANDLEID = CBS.ID
+		LEFT JOIN KEY_CODE_MASTER AS KCM ON KCM.KEY_ID = CDA.OILSEED_LABLE_ID
+		WHERE CDA.DELETE_CODE = 1
+		AND CONCAT(ifnull(CDA.REMARK, ''),CBC.COMPANY_NAME,CDA.ADDIOL_AMOUNT,CDA.SUMMONEY,CDA.ADDOIL_TIME,CBV.LICENSENO,CBS.STAFF_NAME,KCM.DISPLAY) LIKE CONCAT('%',#{searchStr},'%')
+	</select>
+		<!-- 首页提醒 车辆加油排行榜 -->
+    <select id="getTopList" parameterType="carDailyAddoilRecordDO"  resultType="com.carTravelsky.bean.pageView.TopRow">
+           SELECT '/img/seg' AS 'seqImgPath',DEPT.DEPT_NAME AS 'belongDepName',VEH.LICENSENO AS 'display',count(*) AS 'displayCount' 
+            	FROM car_daily_addoil_record CDAR LEFT JOIN car_base_vehicle VEH ON CDAR.CAR_ID=VEH.ID  
+            	 LEFT JOIN CAR_BASE_DEPTMENT DEPT  ON  VEH.DEPT_ID=DEPT.ID 
+            	 WHERE CDAR.DELETE_CODE='1' AND VEH.DELETE_CODE=1 AND VEH.SEATS=1  AND DEPT.DELETE_CODE=1 AND DEPT.`STATUS`=1  GROUP BY CDAR.CAR_ID,VEH.LICENSENO,DEPT.DEPT_NAME
+   </select>
+
+</mapper>

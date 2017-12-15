@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.carTravelsky.mapper.app.AppCarRefueMapper">
+ 	<!-- 油料标号查询BY 名称 -->
+ 	<select id="searchOilIdByType" parameterType="java.lang.String" resultType="java.lang.Integer">
+ 		SELECT KCM.KEY_ID
+ 		FROM key_code_master KCM
+ 		WHERE KCM.KEY_TYPE = 'FUELOIL' AND KCM.DISPLAY LIKE '${oilType}%'
+ 	</select>
+ 	<!-- 车辆ID查询BY 名称 -->
+ 	<select id="searchCarIdByNo" parameterType="java.lang.String" resultType="java.lang.Integer">
+	 	SELECT CBV.ID
+	 	FROM car_base_vehicle CBV
+	 	WHERE CBV.LICENSENO = #{licenseNumber}
+ 	</select>
+ 	<!-- 检查当前记录是否存在 -->
+ 	<select id="searchCarRecodrIsHave" resultType="java.lang.Integer">
+ 		SELECT CDAR.ID
+ 		FROM car_daily_addoil_record CDAR
+ 		<where>
+ 			CDAR.DELETE_CODE = 1 
+ 			<if test="userId != null">AND CDAR.HANDLEID = #{userId}</if>
+ 			<if test="carId != null">AND CDAR.CAR_ID = #{carId}</if>
+ 			<if test="currentDate != null">AND CDAR.ADDOIL_TIME = #{currentDate}</if>
+ 			</where>
+ 	</select>
+	<!-- 检查车辆是否存在 -->
+	<select id="checkCarNumberIsHave" parameterType="java.lang.String" resultType="java.lang.String">
+		SELECT CBV.LICENSENO
+		FROM car_base_vehicle CBV
+		WHERE CBV.LICENSENO = #{licenseNumber}
+	</select>
+	<!-- 获取油料列表 -->
+	<select id="getOilsList" parameterType="java.lang.String" resultType="generalRS">
+		SELECT KCM.KEY_ID AS id,
+			   KCM.DISPLAY AS type,
+			   KCM.DESCRIPTION AS description
+		FROM key_code_master KCM
+		WHERE KCM.KEY_TYPE = #{oilName}
+	</select>
+</mapper>

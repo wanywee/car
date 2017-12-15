@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.carTravelsky.mapper.app.AppCarRepairMapper">
+	<!-- 查询是否存在记录 -->
+	<select id="searchRepairIsHave" resultType="java.lang.Integer">
+		SELECT CDRE.ID
+		FROM car_daily_repair_record CDRE
+		WHERE CDRE.CAR_ID = #{carID}
+		AND CDRE.`HANDLER` = #{handler}
+		AND CDRE.REPAIR_TIME = #{repairTime}
+	</select>
+</mapper>

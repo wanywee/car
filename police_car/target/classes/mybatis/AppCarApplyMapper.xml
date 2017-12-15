@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.carTravelsky.mapper.app.AppCarApplyMapper">
+	<!-- 部门信息 -->
+	<select id="getAllDeptments" resultType="generalRS">
+		SELECT CBD.ID AS id, 
+		CBD.DEPT_NAME AS type,
+		CBD.MNEMONIC_CODE AS description
+		FROM car_base_deptment CBD
+	</select>
+	<!-- 部门下面车辆 -->
+	<select id="searchCarByDeptment" parameterType="java.lang.Integer" resultType="carDetailListRS">
+		SELECT 
+			CBV.ID AS id,
+			CBV.LICENSENO AS licenseNumber,
+			CBV.LOADING AS loadingNumber,
+			CBV.MILEAGE AS mileNumber,
+			CBV.LOCATION AS location,
+			CSCT.TYPE_NAME AS carType
+		FROM car_base_vehicle CBV,car_sys_car_type CSCT
+		WHERE CBV.CAR_DETAIL_ID = CSCT.ID AND CBV.NOW_STATUS = 1 AND CBV.DEPT_ID = #{id}
+		GROUP BY CBV.MILEAGE ASC
+	</select>
+	<!-- 部门下面车辆 -->
+	<select id="getCarsById" parameterType="java.lang.Integer" resultType="carDetailListRS">
+		SELECT
+			CBV.ID AS id,
+			CBV.LICENSENO AS licenseNumber,
+			CBV.LOADING AS loadingNumber,
+			CBV.MILEAGE AS mileNumber,
+			CBV.LOCATION AS location,
+			CSCT.TYPE_NAME AS carType
+		FROM
+			car_base_vehicle CBV,
+			car_sys_car_type CSCT
+		WHERE
+			CBV.CAR_DETAIL_ID = CSCT.ID
+		AND CBV.ID = #{id}
+		<if test="carStatusApplying !=null">  AND CBV.NOW_STATUS=#{carStatusApplying,jdbcType=INTEGER} </if>
+		GROUP BY
+			CBV.MILEAGE ASC
+	</select>
+	
+	
+	<!-- 部门下面员工 -->
+	<select id="searchStaffByDeptment" parameterType="java.lang.Integer" resultType="staffListRS">
+	SELECT CBS.ID AS id,
+		   CBS.STAFF_NAME AS name,
+		   CBS.STAFF_NO AS code
+	FROM car_base_staff CBS
+	WHERE CBS.DEPT_ID = #{id}
+	</select>
+	<!-- 具有车牌的人员 -->
+	<select id="searchDriverInfoByLicense" resultType="generalRS">
+	SELECT CBS.STAFF_CODE AS id,
+		   CBS.STAFF_NAME AS type,
+		   T.PROFESSIONAL AS description
+	FROM car_base_staff CBS
+	RIGHT JOIN
+		(SELECT CBD.WORK_ID,CBD.PROFESSIONAL
+		FROM car_base_vehicle CBV
+		LEFT JOIN car_base_driver CBD ON CBD.ID = CBV.DREIVER
+		WHERE CBV.NOW_STATUS= 1 
+		AND CBV.DEPT_ID = #{id} 
+		AND CBV.LICENSENO = #{licenseNumber})T
+	ON T.WORK_ID = CBS.ID
+	</select>
+	<!-- 是否存在申请信息 -->
+	<select id="checkCurrentIsHave" resultType="java.lang.Integer">
+		SELECT CDOR.ID
+		FROM car_daily_out_record CDOR
+		WHERE CDOR.CAR_ID = #{carID}
+		AND CDOR.CARUSER = #{caruser}
+		AND CDOR.CAR_TYPE = #{carType}
+		AND CDOR.DELETE_CODE =#{deleteCode}
+		AND CDOR.DEPT_ID = #{deptId}
+	</select>
+	<!-- 获取回车时间 -->
+	<select id="getBackTime" resultType="java.util.Date">
+		SELECT CDOR.BACK_TIME
+		FROM car_daily_out_record CDOR
+		WHERE 
+		CDOR.CAR_TYPE = 2
+		AND CDOR.CARUSER = #{caruser}
+		AND CDOR.CAR_ID = #{carId}
+		AND CDOR.DEPT_ID = #{deptId}
+	</select>
+</mapper>

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.carTravelsky.mapper.carDaily.CarBaseContactsMapper">
+    <resultMap id="BaseResultMap" type="carBaseContactsDO">
+        <id column="ID" property="id" jdbcType="INTEGER" />
+        <result column="MEMONIC_CODE" property="memonicCode" jdbcType="VARCHAR" />
+        <result column="COMPANY_NAME" property="companyName" jdbcType="VARCHAR" />
+        <result column="COMPANY_TYPE" property="companyType" jdbcType="VARCHAR" />
+        <result column="COMPANY_TYPENAME" property="companyTypeName" jdbcType="VARCHAR" />
+        <result column="LINKMAN" property="linkman" jdbcType="VARCHAR" />
+        <result column="PHONE" property="phone" jdbcType="VARCHAR" />
+        <result column="POSTCODE" property="postcode" jdbcType="VARCHAR" />
+        <result column="FAX" property="fax" jdbcType="VARCHAR" />
+        <result column="EMAIL" property="email" jdbcType="VARCHAR" />
+        <result column="COMPANY_ACCOUNT" property="companyAccount" jdbcType="VARCHAR" />
+        <result column="DEPOSIT_BANK" property="depositBank" jdbcType="VARCHAR" />
+        <result column="WEB_SITE" property="webSite" jdbcType="VARCHAR" />
+        <result column="ADDRESS" property="address" jdbcType="VARCHAR" />
+        <result column="LOCATIO" property="locatio" jdbcType="VARCHAR" />
+        <result column="STATUS" property="status" jdbcType="INTEGER" />
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="CREATOR" property="creator" jdbcType="VARCHAR" />
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="UPDATE_OPERATOR" property="updateOperator" jdbcType="VARCHAR" />
+        <result column="COMMENTS" property="comments" jdbcType="VARCHAR" />
+        <result column="MYCOM_ID" property="mycomID" jdbcType="INTEGER" />
+    </resultMap>
+	<!-- 往来单位下拉框搜索 -->
+	<select id="getListContactCompanyByStr" resultMap="BaseResultMap">
+		SELECT * FROM CAR_BASE_CONTACTS 
+		<where>
+			<if test="companyType != null and companyType != ''"> AND COMPANY_TYPE = #{companyType,jdbcType=VARCHAR} </if>
+			AND DELETE_CODE = 1 AND STATUS = 1 
+			<!-- AND MYCOM_ID = #{id,jdbcType=INTEGER} --> 
+			AND COMPANY_NAME LIKE
+			CONCAT('%',#{str},'%')
+		</where>
+	</select>
+
+    <insert id="insert" parameterType="carBaseContactsDO">
+        INSERT INTO CAR_BASE_CONTACTS
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+        	<if test="memonicCode !=null and memonicCode!= ''">MEMONIC_CODE,</if>
+            <if test="companyName != null and companyName != ''">COMPANY_NAME, </if>
+            <if test="companyType != null and companyType != ''">COMPANY_TYPE, </if>
+            <if test="linkman != null and linkman != ''">LINKMAN, </if>
+            <if test="phone != null and phone != ''">PHONE, </if>
+            <if test="postcode != null and postcode != ''">POSTCODE, </if>
+            <if test="fax != null and fax != ''">FAX, </if>
+            <if test="email != null and email != ''">EMAIL, </if>
+            <if test="companyAccount != null and companyAccount != ''">COMPANY_ACCOUNT, </if>
+            <if test="depositBank != null and depositBank != ''">DEPOSIT_BANK, </if>
+            <if test="webSite != null and webSite != ''">WEB_SITE, </if>
+            <if test="address != null and address != ''">ADDRESS, </if>
+            <if test="locatio != null and locatio != ''">LOCATIO, </if>
+            <if test="status != null">STATUS, </if>
+            <if test="createTime != null">CREATE_TIME, </if>
+            <if test="creator != null and creator != ''">CREATOR, </if>
+            <if test="updateTime != null">UPDATE_TIME, </if>
+            <if test="updateOperator != null and updateOperator != ''">UPDATE_OPERATOR, </if>
+            <if test="comments != null and comments != ''">COMMENTS, </if>
+            <if test="mycomID != null">MYCOM_ID, </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+        	<if test="memonicCode !=null and memonicCode!= ''">#{memonicCode,jdbcType=VARCHAR}, </if>
+            <if test="companyName != null and companyName != ''">#{companyName,jdbcType=VARCHAR}, </if>
+            <if test="companyType != null and companyType != ''">#{companyType,jdbcType=VARCHAR}, </if>
+            <if test="linkman != null and linkman != ''">#{linkman,jdbcType=VARCHAR}, </if>
+            <if test="phone != null and phone != ''">#{phone,jdbcType=VARCHAR}, </if>
+            <if test="postcode != null and postcode != ''">#{postcode,jdbcType=VARCHAR}, </if>
+            <if test="fax != null and fax != ''">#{fax,jdbcType=VARCHAR}, </if>
+            <if test="email != null and email != ''">#{email,jdbcType=VARCHAR}, </if>
+            <if test="companyAccount != null and companyAccount != ''">#{companyAccount,jdbcType=VARCHAR}, </if>
+            <if test="depositBank != null and depositBank != ''">#{depositBank,jdbcType=VARCHAR}, </if>
+            <if test="webSite != null and webSite != ''">#{webSite,jdbcType=VARCHAR}, </if>
+            <if test="address != null and address != ''">#{address,jdbcType=VARCHAR}, </if>
+            <if test="locatio != null and locatio != ''">#{locatio,jdbcType=VARCHAR}, </if>
+            <if test="status != null">#{status,jdbcType=INTEGER}, </if>
+            <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP}, </if>
+            <if test="creator != null and creator != ''">#{creator,jdbcType=VARCHAR}, </if>
+            <if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP}, </if>
+            <if test="updateOperator != null and updateOperator != ''">#{updateOperator,jdbcType=VARCHAR}, </if>
+            <if test="comments != null and comments != ''">#{comments,jdbcType=VARCHAR}, </if>
+            <if test="mycomID != null">#{mycomID,jdbcType=INTEGER}, </if>
+        </trim>
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT @@IDENTITY AS id
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="carBaseContactsDO" >
+        UPDATE CAR_BASE_CONTACTS
+        <set>
+        	<if test="memonicCode != null">MEMONIC_CODE = #{memonicCode,jdbcType=VARCHAR}, </if>
+            <if test="companyName != null">COMPANY_NAME = #{companyName,jdbcType=VARCHAR}, </if>
+            <if test="companyType != null">COMPANY_TYPE = #{companyType,jdbcType=VARCHAR}, </if>
+            <if test="linkman != null">LINKMAN = #{linkman,jdbcType=VARCHAR}, </if>
+            <if test="phone != null">PHONE = #{phone,jdbcType=VARCHAR}, </if>
+            <if test="postcode != null">POSTCODE = #{postcode,jdbcType=VARCHAR}, </if>
+            <if test="fax != null">FAX = #{fax,jdbcType=VARCHAR}, </if>
+            <if test="email != null">EMAIL = #{email,jdbcType=VARCHAR}, </if>
+            <if test="companyAccount != null">COMPANY_ACCOUNT = #{companyAccount,jdbcType=VARCHAR}, </if>
+            <if test="depositBank != null">DEPOSIT_BANK = #{depositBank,jdbcType=VARCHAR}, </if>
+            <if test="webSite != null">WEB_SITE = #{webSite,jdbcType=VARCHAR}, </if>
+            <if test="address != null">ADDRESS = #{address,jdbcType=VARCHAR}, </if>
+            <if test="locatio != null">LOCATIO = #{locatio,jdbcType=VARCHAR}, </if>
+            <if test="status != null">STATUS = #{status,jdbcType=INTEGER}, </if>
+            <if test="createTime != null">CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}, </if>
+            <if test="creator != null">CREATOR = #{creator,jdbcType=VARCHAR}, </if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}, </if>
+            <if test="updateOperator != null">UPDATE_OPERATOR = #{updateOperator,jdbcType=VARCHAR}, </if>
+            <if test="comments != null">COMMENTS = #{comments,jdbcType=VARCHAR}, </if>
+            <if test="mycomID != null">MYCOM_ID = #{mycomID,jdbcType=INTEGER}, </if>
+        </set>
+        WHERE ID = #{id,jdbcType=INTEGER}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        DELETE FROM CAR_BASE_CONTACTS WHERE ID = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <select id="getByID" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    	SELECT CBC.*,  CM.DISPLAY  AS COMPANY_TYPENAME  FROM CAR_BASE_CONTACTS  CBC
+    	<!--SELECT * FROM CAR_BASE_CONTACTS AS CON
+        WHERE ID = #{id,jdbcType=INTEGER}-->
+        JOIN key_code_master CM ON CM.CODE = CBC.COMPANY_TYPE 
+        WHERE CBC.ID=#{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="getList" parameterType="carBaseContactsDO" resultMap="BaseResultMap">
+        SELECT *, CAR_BASE_CONTACTS.MYCOM_ID as COMPANY_ID FROM CAR_BASE_CONTACTS
+        <where>
+            <if test="id != null"> AND ID = #{id,jdbcType=INTEGER} </if>
+            <if test="companyName != null and companyName != ''"> AND COMPANY_NAME = #{companyName,jdbcType=VARCHAR} </if>
+            <if test="companyType != null and companyType != ''"> AND COMPANY_TYPE = #{companyType,jdbcType=VARCHAR} </if>
+            <if test="linkman != null and linkman != ''"> AND LINKMAN = #{linkman,jdbcType=VARCHAR} </if>
+            <if test="phone != null and phone != ''"> AND PHONE = #{phone,jdbcType=VARCHAR} </if>
+            <if test="postcode != null and postcode != ''"> AND POSTCODE = #{postcode,jdbcType=VARCHAR} </if>
+            <if test="fax != null and fax != ''"> AND FAX = #{fax,jdbcType=VARCHAR} </if>
+            <if test="email != null and email != ''"> AND EMAIL = #{email,jdbcType=VARCHAR} </if>
+            <if test="companyAccount != null and companyAccount != ''"> AND COMPANY_ACCOUNT = #{companyAccount,jdbcType=VARCHAR} </if>
+            <if test="depositBank != null and depositBank != ''"> AND DEPOSIT_BANK = #{depositBank,jdbcType=VARCHAR} </if>
+            <if test="webSite != null and webSite != ''"> AND WEB_SITE = #{webSite,jdbcType=VARCHAR} </if>
+            <if test="address != null and address != ''"> AND ADDRESS = #{address,jdbcType=VARCHAR} </if>
+            <if test="locatio != null and locatio != ''"> AND LOCATIO = #{locatio,jdbcType=VARCHAR} </if>
+            <if test="status != null"> AND STATUS = #{status,jdbcType=INTEGER} </if>
+            <if test="createTime != null"> AND CREATE_TIME = #{createTime,jdbcType=TIMESTAMP} </if>
+            <if test="creator != null and creator != ''"> AND CREATOR = #{creator,jdbcType=VARCHAR} </if>
+            <if test="updateTime != null"> AND UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP} </if>
+            <if test="updateOperator != null and updateOperator != ''"> AND UPDATE_OPERATOR = #{updateOperator,jdbcType=VARCHAR} </if>
+            <if test="comments != null and comments != ''"> AND COMMENTS = #{comments,jdbcType=VARCHAR} </if>
+            <if test="true"> AND DELETE_CODE = 1  </if>
+           <!--  <if test="mycomID != null"> AND MYCOM_ID = #{mycomID,jdbcType=INTEGER} </if> -->
+        </where>
+         	 
+    </select>
+    <!-- 获取所有往来单位 -->
+     <select id="getListFeeUnits" parameterType="carBaseContactsDO" resultMap="BaseResultMap">
+     	 SELECT * FROM CAR_BASE_CONTACTS WHERE STATUS=1 AND DELETE_CODE=1
+     </select>
+     <!---->
+     <select id="getContactsType" resultType="java.lang.String">
+     	SELECT * FROM KEY_CODE_MASTER WHERE KEY_TYPE='CONTACTS_TYPE'
+     </select>
+     <!--全局搜索-->
+     <select id="getsearchCarContacts" parameterType="Map" resultMap="BaseResultMap">
+     	SELECT CBS.*,CBS.MYCOM_ID AS COMPANY_ID ,CM.DISPLAY  AS COMPANY_TYPENAME  FROM CAR_BASE_CONTACTS  CBS
+     	JOIN KEY_CODE_MASTER AS CM ON CM.CODE = CBS.COMPANY_TYPE  
+        <where>
+        	<!-- <if test="mycomID !=null">AND CBS.MYCOM_ID = #{mycomID,jdbcType=INTEGER}</if> -->
+        	<if test="searchStr !=null">
+        		AND CONCAT(IFNULL(CBS.MEMONIC_CODE,'') , IFNULL(CBS.COMPANY_NAME,''),
+        		IFNULL(CBS.LINKMAN,'') , IFNULL(CBS.PHONE,'') , IFNULL(CBS.EMAIL,'') ,
+        		IFNULL(CBS.COMMENTS,'') , IFNULL(CBS.COMPANY_TYPE,'') , IFNULL(CM.DISPLAY,'')) LIKE
+				CONCAT('%',#{searchStr,jdbcType=VARCHAR},'%')
+        	</if>
+        	
+        </where>
+     </select>
+     <!--是否停用改变status-->
+     <select id="updateStatus">
+     	UPDATE car_base_contacts SET STATUS= #{status,jdbcType=INTEGER} 
+     	WHERE ID=#{id,jdbcType=INTEGER};
+     </select>
+</mapper>

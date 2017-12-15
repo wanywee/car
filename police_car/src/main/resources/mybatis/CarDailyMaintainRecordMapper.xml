@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.carTravelsky.mapper.carDaily.CarDailyMaintainRecordMapper">
+    <resultMap id="BaseResultMap" type="carDailyMaintainRecordDO">
+        <id column="ID" property="id" jdbcType="INTEGER" />
+        <result column="CAR_ID" property="carID" jdbcType="INTEGER" />
+        <result column="MAINTAIN_TYPE" property="maintainType" jdbcType="VARCHAR" />
+        <result column="MAINTAIN_DATE" property="maintainDate" jdbcType="TIMESTAMP" />
+        <result column="END_DATE" property="endDate" jdbcType="TIMESTAMP" />
+        <result column="MAINTAIN_UNIT" property="maintainUnit" jdbcType="INTEGER" />
+        <result column="MAINTAIN_MILEAGE" property="maintainMileage" jdbcType="FLOAT" />
+        <result column="REGION" property="region" jdbcType="VARCHAR" />
+        <result column="MAINTAIN_MONEY" property="maintainMoney" jdbcType="FLOAT" />
+        <result column="MAINTAIN_CONTENT" property="maintainContent" jdbcType="VARCHAR" />
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="CREATE_PEOPLE" property="createPeople" jdbcType="VARCHAR" />
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="UPDATE_PEOPLE" property="updatePeople" jdbcType="VARCHAR" />
+        <result column="DELETE_CODE" property="deleteCode" jdbcType="INTEGER" />
+        <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+        <result column="HANDLEID" property="handleid" jdbcType="INTEGER" />
+        <result column="PHOTO_URL" property="photoUrl" jdbcType="VARCHAR" />
+        <result column="HANDLENAME" property="handlename" jdbcType="VARCHAR" />
+        <result column="LICENSENO" property="licenseno" jdbcType="VARCHAR" />
+        <result column="MAINTAINUNITNAME" property="maintainUnitname" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <insert id="insert" parameterType="carDailyMaintainRecordDO">
+        INSERT INTO CAR_DAILY_MAINTAIN_RECORD
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="carID != null">CAR_ID, </if>
+            <if test="maintainType != null and maintainType != ''">MAINTAIN_TYPE, </if>
+            <if test="maintainDate != null">MAINTAIN_DATE, </if>
+            <if test="endDate != null">END_DATE, </if>
+            <if test="maintainUnit != null and maintainUnit != ''">MAINTAIN_UNIT, </if>
+            <if test="maintainMileage != null">MAINTAIN_MILEAGE, </if>
+            <if test="region != null and region != ''">REGION, </if>
+            <if test="maintainMoney != null">MAINTAIN_MONEY, </if>
+            <if test="maintainContent != null and maintainContent != ''">MAINTAIN_CONTENT, </if>
+            <if test="handleid != null">HANDLEID, </if>
+            <if test="createTime != null">CREATE_TIME, </if>
+            <if test="createPeople != null and createPeople != ''">CREATE_PEOPLE, </if>
+            <if test="updateTime != null">UPDATE_TIME, </if>
+            <if test="updatePeople != null and updatePeople != ''">UPDATE_PEOPLE, </if>
+            <if test="deleteCode != null and deleteCode != ''">DELETE_CODE, </if>
+            <if test="remark != null and remark != ''">REMARK, </if>
+            <if test="companyId != null">COMPANY_ID, </if>
+            <if test="photoUrl != null">PHOTO_URL, </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="carID != null">#{carID,jdbcType=INTEGER}, </if>
+            <if test="maintainType != null and maintainType != ''">#{maintainType,jdbcType=VARCHAR}, </if>
+            <if test="maintainDate != null">#{maintainDate,jdbcType=TIMESTAMP}, </if>
+            <if test="endDate != null">#{endDate,jdbcType=TIMESTAMP}, </if>
+            <if test="maintainUnit != null and maintainUnit != ''">#{maintainUnit,jdbcType=INTEGER}, </if>
+            <if test="maintainMileage != null">#{maintainMileage,jdbcType=FLOAT}, </if>
+            <if test="region != null and region != ''">#{region,jdbcType=VARCHAR}, </if>
+            <if test="maintainMoney != null">#{maintainMoney,jdbcType=FLOAT}, </if>
+            <if test="maintainContent != null and maintainContent != ''">#{maintainContent,jdbcType=VARCHAR}, </if>
+            <if test="handleid != null">#{handleid,jdbcType=INTEGER}, </if>
+            <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP}, </if>
+            <if test="createPeople != null and createPeople != ''">#{createPeople,jdbcType=VARCHAR}, </if>
+            <if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP}, </if>
+            <if test="updatePeople != null and updatePeople != ''">#{updatePeople,jdbcType=VARCHAR}, </if>
+            <if test="deleteCode != null and deleteCode != ''">#{deleteCode,jdbcType=INTEGER}, </if>
+            <if test="remark != null and remark != ''">#{remark,jdbcType=VARCHAR}, </if>
+            <if test="companyId != null">#{companyId,jdbcType=INTEGER}, </if>
+            <if test="photoUrl != null">#{photoUrl,jdbcType=VARCHAR}, </if>
+        </trim>
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT @@IDENTITY AS id
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="carDailyMaintainRecordDO" >
+        UPDATE CAR_DAILY_MAINTAIN_RECORD
+        <set>
+            <if test="carID != null">CAR_ID = #{carID,jdbcType=INTEGER}, </if>
+            <if test="maintainType != null">MAINTAIN_TYPE = #{maintainType,jdbcType=VARCHAR}, </if>
+            <if test="maintainDate != null">MAINTAIN_DATE = #{maintainDate,jdbcType=TIMESTAMP}, </if>
+            <if test="endDate != null">END_DATE = #{endDate,jdbcType=TIMESTAMP}, </if>
+            <if test="maintainUnit != null">MAINTAIN_UNIT = #{maintainUnit,jdbcType=INTEGER}, </if>
+            <if test="maintainMileage != null">MAINTAIN_MILEAGE = #{maintainMileage,jdbcType=FLOAT}, </if>
+            <if test="region != null">REGION = #{region,jdbcType=VARCHAR}, </if>
+            <if test="maintainMoney != null">MAINTAIN_MONEY = #{maintainMoney,jdbcType=FLOAT}, </if>
+            <if test="maintainContent != null">MAINTAIN_CONTENT = #{maintainContent,jdbcType=VARCHAR}, </if>
+            <if test="handleid != null">HANDLEID = #{handleid,jdbcType=VARCHAR}, </if>
+            <if test="createTime != null">CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}, </if>
+            <if test="createPeople != null">CREATE_PEOPLE = #{createPeople,jdbcType=VARCHAR}, </if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}, </if>
+            <if test="updatePeople != null">UPDATE_PEOPLE = #{updatePeople,jdbcType=VARCHAR}, </if>
+            <if test="deleteCode != null">DELETE_CODE = #{deleteCode,jdbcType=INTEGER}, </if>
+            <if test="remark != null">REMARK = #{remark,jdbcType=VARCHAR}, </if>
+            <if test="photoUrl != null">PHOTO_URL = #{photoUrl,jdbcType=VARCHAR}, </if>
+        </set>
+        WHERE ID = #{id,jdbcType=INTEGER}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        DELETE FROM CAR_DAILY_MAINTAIN_RECORD WHERE ID = #{id,jdbcType=INTEGER}
+    </delete>
+    <update id="deleteCarDailyMaintain" parameterType="java.util.List">
+    	 UPDATE CAR_DAILY_MAINTAIN_RECORD
+        <set>
+            DELETE_CODE = 2
+        </set>
+        WHERE ID IN 
+         <foreach collection="list" item="item" open="(" separator="," close=")">    
+            #{item}  
+        </foreach> 
+    </update>
+
+    <select id="getByID" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT CDMR.*,CBV.LICENSENO AS LICENSENO,CBC.COMPANY_NAME AS MAINTAINUNITNAME,CBS.STAFF_NAME AS HANDLENAME FROM CAR_DAILY_MAINTAIN_RECORD AS CDMR
+        JOIN CAR_BASE_VEHICLE AS CBV ON CDMR.CAR_ID = CBV.ID
+        LEFT JOIN CAR_BASE_CONTACTS AS CBC ON CDMR.MAINTAIN_UNIT = CBC.ID
+        LEFT JOIN CAR_BASE_STAFF AS CBS ON CDMR.HANDLEID = CBS.ID
+        WHERE CDMR.ID = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="getList" parameterType="carDailyMaintainRecordDO" resultMap="BaseResultMap">
+        SELECT CDMR.*,CBV.LICENSENO AS LICENSENO,CBC.COMPANY_NAME AS MAINTAINUNITNAME,CBS.STAFF_NAME AS HANDLENAME FROM CAR_DAILY_MAINTAIN_RECORD AS CDMR
+        JOIN CAR_BASE_VEHICLE AS CBV ON CDMR.CAR_ID = CBV.ID
+        LEFT JOIN CAR_BASE_CONTACTS AS CBC ON CDMR.MAINTAIN_UNIT = CBC.ID
+        LEFT JOIN CAR_BASE_STAFF AS CBS ON CDMR.HANDLEID = CBS.ID
+        WHERE CDMR.DELETE_CODE = 1 <!-- AND CDMR.COMPANY_ID = #{companyId,jdbcType=INTEGER} -->
+    </select>
+    <!--到期记录统计-->
+    <select id="ExpireCount" parameterType="carDailyMaintainRecordDO" resultType="java.lang.Integer">
+        SELECT COUNT(CDMR.ID) FROM CAR_DAILY_MAINTAIN_RECORD AS CDMR
+        JOIN CAR_BASE_VEHICLE AS CBV ON CDMR.CAR_ID = CBV.ID
+        LEFT JOIN CAR_BASE_CONTACTS AS CBC ON CDMR.MAINTAIN_UNIT = CBC.ID
+        LEFT JOIN CAR_BASE_STAFF AS CBS ON CDMR.HANDLEID = CBS.ID
+        WHERE CDMR.DELETE_CODE = 1 <!-- AND CDMR.COMPANY_ID = #{companyId,jdbcType=INTEGER} -->
+        <if test = "remindDate !=null"> AND END_DATE BETWEEN END_DATE
+        AND DATE_ADD(NOW(),INTERVAL #{remindDate,jdbcType=INTEGER} DAY)</if>
+    </select>
+    <!--到期记录统计by部门-->
+    <select id="ExpireCountById" parameterType="carDailyMaintainRecordDO" resultType="java.lang.Integer">
+        SELECT COUNT(CDMR.ID) FROM CAR_DAILY_MAINTAIN_RECORD AS CDMR
+        JOIN CAR_BASE_VEHICLE AS CBV ON CDMR.CAR_ID = CBV.ID
+        LEFT JOIN CAR_BASE_CONTACTS AS CBC ON CDMR.MAINTAIN_UNIT = CBC.ID
+        LEFT JOIN CAR_BASE_STAFF AS CBS ON CDMR.HANDLEID = CBS.ID
+        WHERE CDMR.DELETE_CODE = 1 <!-- AND CDMR.COMPANY_ID = #{companyId,jdbcType=INTEGER} -->
+        <if test = "remindDate !=null"> AND END_DATE BETWEEN END_DATE
+        AND DATE_ADD(NOW(),INTERVAL #{remindDate,jdbcType=INTEGER} DAY)</if>
+    </select>
+    <!--到期记录查询-->
+    <select id="ExpireList" parameterType="carDailyMaintainRecordDO" resultMap="BaseResultMap">
+        SELECT CDMR.*,CBV.LICENSENO AS LICENSENO,CBC.COMPANY_NAME AS MAINTAINUNITNAME,CBS.STAFF_NAME AS HANDLENAME FROM CAR_DAILY_MAINTAIN_RECORD AS CDMR
+        JOIN CAR_BASE_VEHICLE AS CBV ON CDMR.CAR_ID = CBV.ID
+        LEFT JOIN CAR_BASE_CONTACTS AS CBC ON CDMR.MAINTAIN_UNIT = CBC.ID
+        LEFT JOIN CAR_BASE_STAFF AS CBS ON CDMR.HANDLEID = CBS.ID
+        WHERE CDMR.DELETE_CODE = 1 <!-- AND CDMR.COMPANY_ID = #{carDailyMaintainRecordDO.companyId,jdbcType=INTEGER} -->
+        <if test = "remindDate !=null"> AND END_DATE BETWEEN END_DATE
+        AND DATE_ADD(NOW(),INTERVAL #{remindDate,jdbcType=INTEGER} DAY)</if>
+    </select>
+    
+	<select id="getSearchCarDailyMaintainList" resultMap="BaseResultMap">
+		SELECT CDMR.*,CBV.LICENSENO AS LICENSENO,CBC.COMPANY_NAME AS MAINTAINUNITNAME,CBS.STAFF_NAME AS HANDLENAME FROM CAR_DAILY_MAINTAIN_RECORD AS CDMR 
+		JOIN CAR_BASE_VEHICLE AS CBV ON CDMR.CAR_ID = CBV.ID
+        LEFT JOIN CAR_BASE_CONTACTS AS CBC ON CDMR.MAINTAIN_UNIT = CBC.ID
+        LEFT JOIN CAR_BASE_STAFF AS CBS ON CDMR.HANDLEID = CBS.ID
+        WHERE CDMR.DELETE_CODE = 1 <!-- AND CDMR.COMPANY_ID = #{companyId,jdbcType=INTEGER} -->
+        AND CONCAT(ifnull(CDMR.REMARK, ''),CBV.LICENSENO,CDMR.MAINTAIN_TYPE,CDMR.MAINTAIN_MONEY,CBC.COMPANY_NAME,CBS.STAFF_NAME,CDMR.MAINTAIN_DATE,CDMR.END_DATE)
+		LIKE CONCAT('%',#{searchStr},'%')
+	</select>
+	<!--搜索+到期记录查询-->
+	<select id="getSearchCarDailyMaintainExpireList" resultMap="BaseResultMap">
+		SELECT CDMR.*,CBV.LICENSENO AS LICENSENO,CBC.COMPANY_NAME AS MAINTAINUNITNAME,CBS.STAFF_NAME AS HANDLENAME FROM CAR_DAILY_MAINTAIN_RECORD AS CDMR 
+		JOIN CAR_BASE_VEHICLE AS CBV ON CDMR.CAR_ID = CBV.ID
+        LEFT JOIN CAR_BASE_CONTACTS AS CBC ON CDMR.MAINTAIN_UNIT = CBC.ID
+        LEFT JOIN CAR_BASE_STAFF AS CBS ON CDMR.HANDLEID = CBS.ID
+        WHERE CDMR.DELETE_CODE = 1 <!-- AND CDMR.COMPANY_ID = #{companyId,jdbcType=INTEGER} -->
+        AND CONCAT(ifnull(CDMR.REMARK, ''),CDMR.CAR_ID,CDMR.MAINTAIN_TYPE,CDMR.MAINTAIN_MONEY,CBV.LICENSENO,CBC.COMPANY_NAME,CBS.STAFF_NAME,CDMR.MAINTAIN_DATE)
+		LIKE CONCAT('%',#{searchStr},'%')
+		<if test = "remindDate !=null"> AND END_DATE BETWEEN END_DATE
+        AND DATE_ADD(NOW(),INTERVAL #{remindDate,jdbcType=INTEGER} DAY)</if>
+	</select>
+	<!-- 首页提醒  获取保养记录排行榜 -->
+	<select id="getTopList" parameterType="carDailyMaintainRecordDO"  resultType="com.carTravelsky.bean.pageView.TopRow">
+		SELECT '/img/seg' AS 'seqImgPath',DEPT.DEPT_NAME AS 'belongDepName',VEH.LICENSENO AS 'display',count(*) AS 'displayCount' 
+		      FROM car_daily_maintain_record CDMR LEFT JOIN car_base_vehicle VEH ON VEH.ID=CDMR.CAR_ID
+		      LEFT JOIN CAR_BASE_STAFF  STAFF  ON  CDMR.HANDLEID=STAFF.ID  
+		      LEFT JOIN CAR_BASE_DEPTMENT DEPT  ON  STAFF.DEPT_ID=DEPT.ID 
+             		WHERE CDMR.DELETE_CODE='1'  AND DEPT.DELETE_CODE=1 AND DEPT.`STATUS`=1 AND VEH.DELETE_CODE=1 AND VEH.`STATUS`='1' 
+             		GROUP BY LICENSENO,DEPT.DEPT_NAME    
+   </select>
+</mapper>

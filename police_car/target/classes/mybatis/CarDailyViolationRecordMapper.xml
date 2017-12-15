@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.carTravelsky.mapper.carDaily.CarDailyViolationRecordMapper">
+    <resultMap id="BaseResultMap" type="carDailyViolationRecordDO">
+        <id column="ID" property="id" jdbcType="INTEGER" />
+        <result column="CAR_ID" property="carID" jdbcType="INTEGER" />
+        <result column="DRIVER" property="driver" jdbcType="VARCHAR" />
+        <result column="VIOLATION_PROJECT" property="violationProject" jdbcType="VARCHAR" />
+        <result column="FINE" property="fine" jdbcType="FLOAT" />
+        <result column="POINTS" property="points" jdbcType="VARCHAR" />
+        <result column="VIOLATION_DATE" property="violationDate" jdbcType="TIMESTAMP" />
+        <result column="REGION" property="region" jdbcType="VARCHAR" />
+        <result column="VIOLATION_ADDRESS" property="violationAddress" jdbcType="VARCHAR" />
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="CREATE_PEOPLE" property="createPeople" jdbcType="VARCHAR" />
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="UPDATE_PEOPLE" property="updatePeople" jdbcType="VARCHAR" />
+        <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+        <result column="DELETE_CODE" property="deleteCode" jdbcType="INTEGER" />
+    </resultMap>
+
+    <insert id="insert" parameterType="carDailyViolationRecordDO">
+        INSERT INTO CAR_DAILY_VIOLATION_RECORD
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="carID != null">CAR_ID, </if>
+            <if test="driver != null and driver != ''">DRIVER, </if>
+            <if test="violationProject != null and violationProject != ''">VIOLATION_PROJECT, </if>
+            <if test="fine != null">FINE, </if>
+            <if test="points != null and points != ''">POINTS, </if>
+            <if test="violationDate != null">VIOLATION_DATE, </if>
+            <if test="region != null and region != ''">REGION, </if>
+            <if test="violationAddress != null and violationAddress != ''">VIOLATION_ADDRESS, </if>
+            <if test="createTime != null">CREATE_TIME, </if>
+            <if test="createPeople != null and createPeople != ''">CREATE_PEOPLE, </if>
+            <if test="updateTime != null">UPDATE_TIME, </if>
+            <if test="updatePeople != null and updatePeople != ''">UPDATE_PEOPLE, </if>
+            <if test="remark != null and remark != ''">REMARK, </if>
+            <if test="deleteCode != null and deleteCode != ''">DELETE_CODE, </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="carID != null">#{carID,jdbcType=INTEGER}, </if>
+            <if test="driver != null and driver != ''">#{driver,jdbcType=VARCHAR}, </if>
+            <if test="violationProject != null and violationProject != ''">#{violationProject,jdbcType=VARCHAR}, </if>
+            <if test="fine != null">#{fine,jdbcType=FLOAT}, </if>
+            <if test="points != null and points != ''">#{points,jdbcType=VARCHAR}, </if>
+            <if test="violationDate != null">#{violationDate,jdbcType=TIMESTAMP}, </if>
+            <if test="region != null and region != ''">#{region,jdbcType=VARCHAR}, </if>
+            <if test="violationAddress != null and violationAddress != ''">#{violationAddress,jdbcType=VARCHAR}, </if>
+            <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP}, </if>
+            <if test="createPeople != null and createPeople != ''">#{createPeople,jdbcType=VARCHAR}, </if>
+            <if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP}, </if>
+            <if test="updatePeople != null and updatePeople != ''">#{updatePeople,jdbcType=VARCHAR}, </if>
+            <if test="remark != null and remark != ''">#{remark,jdbcType=VARCHAR}, </if>
+            <if test="deleteCode != null and deleteCode != ''">#{deleteCode,jdbcType=INTEGER}, </if>
+        </trim>
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT @@IDENTITY AS id
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="carDailyViolationRecordDO" >
+        UPDATE CAR_DAILY_VIOLATION_RECORD
+        <set>
+            <if test="carID != null">CAR_ID = #{carID,jdbcType=INTEGER}, </if>
+            <if test="driver != null">DRIVER = #{driver,jdbcType=VARCHAR}, </if>
+            <if test="violationProject != null">VIOLATION_PROJECT = #{violationProject,jdbcType=VARCHAR}, </if>
+            <if test="fine != null">FINE = #{fine,jdbcType=FLOAT}, </if>
+            <if test="points != null">POINTS = #{points,jdbcType=VARCHAR}, </if>
+            <if test="violationDate != null">VIOLATION_DATE = #{violationDate,jdbcType=TIMESTAMP}, </if>
+            <if test="region != null">REGION = #{region,jdbcType=VARCHAR}, </if>
+            <if test="violationAddress != null">VIOLATION_ADDRESS = #{violationAddress,jdbcType=VARCHAR}, </if>
+            <if test="createTime != null">CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}, </if>
+            <if test="createPeople != null">CREATE_PEOPLE = #{createPeople,jdbcType=VARCHAR}, </if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}, </if>
+            <if test="updatePeople != null">UPDATE_PEOPLE = #{updatePeople,jdbcType=VARCHAR}, </if>
+            <if test="remark != null">REMARK = #{remark,jdbcType=VARCHAR}, </if>
+            <if test="deleteCode != null">DELETE_CODE = #{deleteCode,jdbcType=INTEGER}, </if>
+        </set>
+        WHERE ID = #{id,jdbcType=INTEGER}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        DELETE FROM CAR_DAILY_VIOLATION_RECORD WHERE ID = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <!-- 不完全删除 -->
+    <update id="deleteIncomplete"  parameterType="java.lang.Integer">
+       UPDATE CAR_DAILY_VIOLATION_RECORD  SET DELETE_CODE = 2 WHERE ID = #{id,jdbcType=INTEGER}    
+    </update>
+
+    <select id="getByID" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT
+			CDVR.*, 
+			CBE.LICENSENO AS licenseno,
+			CBS.STAFF_NAME AS staffName
+		FROM
+			CAR_DAILY_VIOLATION_RECORD AS CDVR
+		LEFT JOIN CAR_BASE_VEHICLE AS CBE ON CDVR.CAR_ID = CBE.ID
+		LEFT JOIN CAR_BASE_STAFF AS CBS ON CDVR.DRIVER = CBS.ID
+		WHERE
+			CDVR.DELETE_CODE = 1
+		AND CBS.DELETE_CODE = 1
+		AND CBS.`STATUS` = 1
+		AND CBE.DELETE_CODE = 1
+		AND CBE.`STATUS` = 1
+		AND CDVR.ID = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="getList" parameterType="carDailyViolationRecordDO" resultMap="BaseResultMap">
+        SELECT
+			CDVR.*, CBE.LICENSENO AS licenseno,
+			CBS.STAFF_NAME AS staffName,
+			CBS.DEPT_ID AS COMPANY_ID
+		FROM
+			CAR_DAILY_VIOLATION_RECORD AS CDVR
+		LEFT JOIN CAR_BASE_VEHICLE AS CBE ON CDVR.CAR_ID = CBE.ID
+		LEFT JOIN CAR_BASE_STAFF AS CBS ON CDVR.DRIVER = CBS.ID
+        <where>
+	        CDVR.DELETE_CODE = 1
+			AND CBS.DELETE_CODE = 1
+			AND CBS.`STATUS` = 1
+			AND CBE.DELETE_CODE = 1
+			AND CBE.`STATUS` = 1
+            <if test="id != null"> AND ID = #{id,jdbcType=INTEGER} </if>
+            <if test="carID != null"> AND CAR_ID = #{carID,jdbcType=INTEGER} </if>
+            <if test="driver != null and driver != ''"> AND DRIVER = #{driver,jdbcType=VARCHAR} </if>
+            <if test="violationProject != null and violationProject != ''"> AND VIOLATION_PROJECT = #{violationProject,jdbcType=VARCHAR} </if>
+            <if test="fine != null"> AND FINE = #{fine,jdbcType=FLOAT} </if>
+            <if test="points != null and points != ''"> AND POINTS = #{points,jdbcType=VARCHAR} </if>
+            <if test="violationDate != null"> AND VIOLATION_DATE = #{violationDate,jdbcType=TIMESTAMP} </if>
+            <if test="region != null and region != ''"> AND REGION = #{region,jdbcType=VARCHAR} </if>
+            <if test="violationAddress != null and violationAddress != ''"> AND VIOLATION_ADDRESS = #{violationAddress,jdbcType=VARCHAR} </if>
+            <if test="createTime != null"> AND CREATE_TIME = #{createTime,jdbcType=TIMESTAMP} </if>
+            <if test="createPeople != null and createPeople != ''"> AND CREATE_PEOPLE = #{createPeople,jdbcType=VARCHAR} </if>
+            <if test="updateTime != null"> AND UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP} </if>
+            <if test="updatePeople != null and updatePeople != ''"> AND UPDATE_PEOPLE = #{updatePeople,jdbcType=VARCHAR} </if>
+            <if test="remark != null and remark != ''"> AND REMARK = #{remark,jdbcType=VARCHAR} </if>
+        </where>
+    </select>
+
+	<!-- 根据公司ID获得所有违章记录 -->
+	<select id="getListViolationRecordsByCompanyId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		SELECT
+			CDVR.*, 
+			CBV.LICENSENO AS LICENSENO,
+			CBS.STAFF_NAME AS staffName,
+			CBS.DEPT_ID AS COMPANY_ID
+			
+		FROM
+			(
+				SELECT
+					*
+				FROM
+					CAR_DAILY_VIOLATION_RECORD
+				WHERE
+					DELETE_CODE = 1
+			) AS CDVR
+		JOIN (
+			SELECT
+				*
+			FROM
+				CAR_BASE_VEHICLE
+			WHERE
+				DELETE_CODE = 1
+			<!-- AND COMPANY_ID = #{companyId,jdbcType=INTEGER} -->
+		) AS CBV ON CBV.ID = CDVR.CAR_ID
+		JOIN CAR_BASE_STAFF AS CBS ON CDVR.DRIVER = CBS.ID
+	</select>
+	
+	<!--全局搜索  -->
+    <select id="getSearchCarDailyViolationRecord" resultMap="BaseResultMap" >
+		SELECT
+			CDVR.*,
+			CBV.LICENSENO AS LICENSENO,
+			CBS.STAFF_NAME AS staffName,
+			CBS.DEPT_ID AS COMPANY_ID
+			
+		FROM
+			(
+				SELECT
+					*
+				FROM
+					CAR_DAILY_VIOLATION_RECORD
+				WHERE
+					DELETE_CODE = 1
+			) AS CDVR
+		JOIN (
+			SELECT
+				*
+			FROM
+				CAR_BASE_VEHICLE
+			WHERE
+				DELETE_CODE = 1
+			<!-- AND COMPANY_ID = 1 -->) AS CBV 
+			ON CBV.ID = CDVR.CAR_ID
+		JOIN CAR_BASE_STAFF AS CBS ON CDVR.DRIVER = CBS.ID
+			AND CONCAT(
+				CDVR.ID,
+						IFNULL(CDVR.VIOLATION_PROJECT, ''),
+						IFNULL(CDVR.FINE, ''),
+						IFNULL(CDVR.POINTS, ''),
+						IFNULL(CDVR.VIOLATION_DATE, ''),
+						IFNULL(CDVR.VIOLATION_ADDRESS, ''),
+						IFNULL(CDVR.REMARK, ''),
+						IFNULL(CBV.LICENSENO, ''),
+						IFNULL(CBS.STAFF_NAME, '')
+			) LIKE CONCAT('%',#{searchStr},'%')
+	</select>
+    <!-- 首页提醒 违章事故记录排行榜 -->
+    <select id="getTopList" parameterType="carDailyViolationRecordDO"  resultType="com.carTravelsky.bean.pageView.TopRow">
+            SELECT '/img/seg' AS 'seqImgPath',DEPT.DEPT_NAME AS 'belongDepName',STAFF.STAFF_NAME AS 'display',count(*) AS 'displayCount' 
+            	FROM car_daily_violation_record CDVR LEFT JOIN  CAR_BASE_STAFF  STAFF  ON  CDVR.DRIVER=STAFF.ID 
+            	 LEFT JOIN CAR_BASE_DEPTMENT DEPT  ON  STAFF.DEPT_ID=DEPT.ID 
+            	 WHERE CDVR.DELETE_CODE='1'  AND DEPT.DELETE_CODE=1 AND DEPT.`STATUS`=1  GROUP BY CDVR.DRIVER,STAFF.STAFF_NAME,DEPT.DEPT_NAME
+   </select>
+</mapper>

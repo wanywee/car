@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.carTravelsky.mapper.vehicleState.VehicleStateMapper">
+    <resultMap id="BaseResultMap" type="com.carTravelsky.bean.vehicle.VehicleRS">
+        <id column="ID" property="id" jdbcType="INTEGER" />
+        <result column="LICENSENO" property="licenseno" jdbcType="VARCHAR" />
+        <result column="LOADING" property="loading" jdbcType="FLOAT" />
+        <result column="SEATS" property="seats" jdbcType="INTEGER" />
+        <result column="START_MILE" property="startMile" jdbcType="FLOAT" />
+        <result column="MILEAGE" property="mileage" jdbcType="FLOAT" />
+        <result column="PERIOD" property="period" jdbcType="FLOAT" />
+        <result column="CONSUMPTION" property="consumption" jdbcType="FLOAT" />
+        <result column="ENGINENO" property="engineno" jdbcType="VARCHAR" />
+        <result column="CHASSISNO" property="chassisno" jdbcType="VARCHAR" />
+        <result column="SUPPLY" property="supply" jdbcType="VARCHAR" />
+        <result column="BUY_PRICE" property="buyPrice" jdbcType="FLOAT" />
+        <result column="BUY_TIME" property="buyTime" jdbcType="TIMESTAMP" />
+        <result column="DREIVER" property="dreiver" jdbcType="VARCHAR" />
+        <result column="DEPT_ID" property="deptID" jdbcType="INTEGER" />
+        <result column="NOW_STATUS" property="nowStatus" jdbcType="INTEGER" />
+        <result column="PHOTO_URL" property="photoUrl" jdbcType="VARCHAR" />
+        <result column="LOCATION" property="location" jdbcType="VARCHAR" />
+        <result column="STATUS" property="status" jdbcType="INTEGER" />
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="CREATOR" property="creator" jdbcType="VARCHAR" />
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="UPDATE_OPERATOR" property="updateOperator" jdbcType="VARCHAR" />
+        <result column="COMMENTS" property="comments" jdbcType="VARCHAR" />
+        <result column="CAR_DETAIL_ID" property="carDetailID" jdbcType="INTEGER" />
+        <result column="COMPANY_ID" property="companyID" jdbcType="INTEGER" />
+        <result column="TYPENAME" property="typeName" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="getByID" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT * FROM CAR_BASE_VEHICLE WHERE ID = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="getList" parameterType="carBaseVehicleDO" resultMap="BaseResultMap">
+        SELECT * FROM CAR_BASE_VEHICLE
+        <where>
+            <if test="id != null"> AND ID = #{id,jdbcType=INTEGER} </if>
+            <if test="licenseno != null and licenseno != ''"> AND LICENSENO = #{licenseno,jdbcType=VARCHAR} </if>
+            <if test="loading != null"> AND LOADING = #{loading,jdbcType=FLOAT} </if>
+            <if test="seats != null"> AND SEATS = #{seats,jdbcType=INTEGER} </if>
+            <if test="startMile != null"> AND START_MILE = #{startMile,jdbcType=FLOAT} </if>
+            <if test="mileage != null"> AND MILEAGE = #{mileage,jdbcType=FLOAT} </if>
+            <if test="period != null"> AND PERIOD = #{period,jdbcType=FLOAT} </if>
+            <if test="consumption != null"> AND CONSUMPTION = #{consumption,jdbcType=FLOAT} </if>
+            <if test="engineno != null and engineno != ''"> AND ENGINENO = #{engineno,jdbcType=VARCHAR} </if>
+            <if test="chassisno != null and chassisno != ''"> AND CHASSISNO = #{chassisno,jdbcType=VARCHAR} </if>
+            <if test="supply != null and supply != ''"> AND SUPPLY = #{supply,jdbcType=VARCHAR} </if>
+            <if test="buyPrice != null"> AND BUY_PRICE = #{buyPrice,jdbcType=FLOAT} </if>
+            <if test="buyTime != null"> AND BUY_TIME = #{buyTime,jdbcType=TIMESTAMP} </if>
+            <if test="dreiver != null and dreiver != ''"> AND DREIVER = #{dreiver,jdbcType=VARCHAR} </if>
+            <if test="deptID != null"> AND DEPT_ID = #{deptID,jdbcType=INTEGER} </if>
+            <if test="nowStatus != null"> AND NOW_STATUS = #{nowStatus,jdbcType=INTEGER} </if>
+            <if test="photoUrl != null and photoUrl != ''"> AND PHOTO_URL = #{photoUrl,jdbcType=VARCHAR} </if>
+            <if test="location != null and location != ''"> AND LOCATION = #{location,jdbcType=VARCHAR} </if>
+            <if test="status != null"> AND STATUS = #{status,jdbcType=INTEGER} </if>
+            <if test="createTime != null"> AND CREATE_TIME = #{createTime,jdbcType=TIMESTAMP} </if>
+            <if test="creator != null and creator != ''"> AND CREATOR = #{creator,jdbcType=VARCHAR} </if>
+            <if test="updateTime != null"> AND UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP} </if>
+            <if test="updateOperator != null and updateOperator != ''"> AND UPDATE_OPERATOR = #{updateOperator,jdbcType=VARCHAR} </if>
+            <if test="comments != null and comments != ''"> AND COMMENTS = #{comments,jdbcType=VARCHAR} </if>
+            <if test="carDetailID != null"> AND CAR_DETAIL_ID = #{carDetailID,jdbcType=INTEGER} </if>
+            <!-- <if test="companyID != null"> AND COMPANY_ID = #{companyID,jdbcType=INTEGER} </if> -->
+        </where>
+    </select>
+
+  	<sql id="whereSql">
+    	<where>
+    		KEY_CODE_MASTER.KEY_TYPE='NOW_STATUS'
+			<if test="display != null and display !=''">
+				AND DISPLAY= #{display,jdbcType=VARCHAR}
+			</if>
+			<if test="typeName != null and typeName !=''">
+				AND CAR_SYS_CAR_TYPE.TYPE_NAME = #{typeName,jdbcType=VARCHAR}
+			</if>
+			<if test="searchStr != null and searchStr != ''">
+				AND LICENSENO LIKE CONCAT('%',#{searchStr,jdbcType=VARCHAR},'%')
+			</if>
+    	</where>
+    </sql>
+    <!-- 根据公司ID，获得全部车辆状态 -->
+  	<select id="getVehicleStateList" parameterType="com.carTravelsky.bean.vehicle.VehicleRQ" resultMap="BaseResultMap">
+  		SELECT
+			CBV.*, 
+			KEY_CODE_MASTER.DISPLAY AS DISPLAY,
+			CAR_SYS_CAR_TYPE.TYPE_NAME AS TYPENAME,
+			CAR_SYS_CAR_TYPE.MODEL_NAME AS MODELNAME,
+			CAR_SYS_CAR_TYPE.BRAND_NAME AS BRANDNAME,
+			CAR_SYS_CAR_TYPE.COLOR_NAME AS COLORNAME
+		FROM
+			(
+				SELECT
+					*
+				FROM
+					CAR_BASE_VEHICLE
+				WHERE
+					DELETE_CODE = 1
+					<!-- AND COMPANY_ID = #{id,jdbcType=INTEGER} -->
+			) AS CBV
+		JOIN CAR_SYS_CAR_TYPE ON CBV.CAR_DETAIL_ID = CAR_SYS_CAR_TYPE.ID
+		JOIN KEY_CODE_MASTER ON CBV.NOW_STATUS = KEY_CODE_MASTER.`CODE` <include refid="whereSql"/>
+		ORDER BY
+			CBV.ID ASC 
+		LIMIT #{beginIndex},#{pageSize}
+  	</select>
+  	
+  	<!-- 满足动态查询的所有记录总数 -->
+	<select id="getTotalCount" parameterType="com.carTravelsky.bean.vehicle.VehicleRQ" resultType="int">
+		SELECT
+			COUNT(CBV.ID)
+		FROM
+			(
+				SELECT
+					*
+				FROM
+					CAR_BASE_VEHICLE
+				WHERE
+					DELETE_CODE = 1
+					<!-- AND COMPANY_ID = #{id,jdbcType=INTEGER} -->
+			) AS CBV
+		JOIN CAR_SYS_CAR_TYPE ON CBV.CAR_DETAIL_ID = CAR_SYS_CAR_TYPE.ID
+		JOIN KEY_CODE_MASTER ON CBV.NOW_STATUS = KEY_CODE_MASTER.`CODE` <include refid="whereSql"/>
+	</select>
+	<!-- 根据车辆类型ID 查询车辆类型名称 -->
+	<select id="getVehicleByCarId" parameterType="java.lang.Integer" resultType="java.lang.String">
+		  SELECT TYPE_NAME FROM CAR_SYS_CAR_TYPE WHERE ID = #{carDetailID,jdbcType=INTEGER}
+	</select>
+</mapper>

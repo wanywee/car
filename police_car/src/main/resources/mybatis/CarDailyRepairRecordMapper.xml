@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.carTravelsky.mapper.carDaily.CarDailyRepairRecordMapper">
+    <resultMap id="BaseResultMap" type="carDailyRepairRecordDO">
+        <id column="ID" property="id" jdbcType="INTEGER" />
+        <result column="CAR_ID" property="carID" jdbcType="INTEGER" />
+        <result column="HANDLER" property="handler" jdbcType="VARCHAR" />
+        <result column="REPAIR_TIME" property="repairTime" jdbcType="TIMESTAMP" />
+        <result column="ESTIMATE_TACKCAR" property="estimateTackcar" jdbcType="TIMESTAMP" />
+        <result column="REPAIR_REASON" property="repairReason" jdbcType="VARCHAR" />
+        <result column="REGION" property="region" jdbcType="VARCHAR" />
+        <result column="REPAIR_PD" property="repairPd" jdbcType="VARCHAR" />
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="CREATE_PEOPLE" property="createPeople" jdbcType="VARCHAR" />
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="UPDATE_PEOPLE" property="updatePeople" jdbcType="VARCHAR" />
+        <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+        <result column="DELETE_CODE" property="deleteCode" jdbcType="INTEGER" />
+         <result column="PHOTO_URL" property="photoUrl" jdbcType="VARCHAR" />
+    </resultMap>
+
+	<!-- 根据主键查询维修记录 -->
+	<select id="getCarDailyRepairRecordByKeyId" resultMap="BaseResultMap">
+		SELECT CBV.LICENSENO AS LICENSENO, CDRR.* ,s.STAFF_NAME staffName ,c.COMPANY_NAME repairPdName FROM 
+		(SELECT * FROM CAR_DAILY_REPAIR_RECORD WHERE DELETE_CODE = 1 AND ID = #{id,jdbcType=INTEGER}) AS CDRR 
+		JOIN 
+		(SELECT * FROM CAR_BASE_VEHICLE WHERE DELETE_CODE = 1 <!-- AND COMPANY_ID = #{companyId,jdbcType=INTEGER} -->) AS CBV 
+		ON CBV.ID = CDRR.CAR_ID 
+		LEFT JOIN car_base_staff s ON CDRR.HANDLER=s.ID
+		LEFT JOIN car_base_contacts c ON CDRR.REPAIR_PD = c.ID
+	</select>
+
+	<!-- 所有维修记录 -->
+	<select id="getListRepairRecordsByCompanyId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		SELECT CBV.LICENSENO AS LICENSENO, CDRR.* ,s.STAFF_NAME staffName ,c.COMPANY_NAME repairPdName,s.DEPT_ID AS  COMPANY_ID FROM 
+		(SELECT * FROM CAR_DAILY_REPAIR_RECORD WHERE DELETE_CODE = 1) AS CDRR 
+		JOIN 
+		(SELECT * FROM CAR_BASE_VEHICLE WHERE DELETE_CODE = 1 <!-- AND COMPANY_ID = #{companyId,jdbcType=INTEGER} -->) AS CBV 
+		ON CBV.ID = CDRR.CAR_ID 
+		LEFT JOIN car_base_staff s ON CDRR.HANDLER=s.ID
+		LEFT JOIN car_base_contacts c ON CDRR.REPAIR_PD = c.ID
+	</select>
+
+	<!-- 全局搜索 维修记录 -->
+	<select id="getsearchRepairRecords" resultMap="BaseResultMap">
+		SELECT CBV.LICENSENO AS LICENSENO, CDRR.*,s.STAFF_NAME staffName ,c.COMPANY_NAME repairPdName FROM 
+		(SELECT * FROM CAR_DAILY_REPAIR_RECORD WHERE DELETE_CODE = 1) AS CDRR 
+		JOIN 
+		(SELECT * FROM CAR_BASE_VEHICLE WHERE DELETE_CODE = 1 <!-- AND COMPANY_ID = #{id,jdbcType=INTEGER} -->) AS CBV 
+		ON CBV.ID = CDRR.CAR_ID
+		LEFT JOIN car_base_staff s ON CDRR.HANDLER=s.ID
+		LEFT JOIN car_base_contacts c ON CDRR.REPAIR_PD = c.ID
+		WHERE CONCAT(ifnull(CDRR.REMARK, ''),CBV.LICENSENO, s.STAFF_NAME , c.COMPANY_NAME, CDRR.REPAIR_TIME, CDRR.ESTIMATE_TACKCAR) LIKE
+		CONCAT('%',#{searchStr},'%')
+	</select>
+
+    <insert id="insert" parameterType="carDailyRepairRecordDO">
+        INSERT INTO CAR_DAILY_REPAIR_RECORD
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="carID != null">CAR_ID, </if>
+            <if test="handler != null and handler != ''">HANDLER, </if>
+            <if test="repairTime != null">REPAIR_TIME, </if>
+            <if test="estimateTackcar != null">ESTIMATE_TACKCAR, </if>
+            <if test="repairReason != null and repairReason != ''">REPAIR_REASON, </if>
+            <if test="region != null and region != ''">REGION, </if>
+            <if test="repairPd != null and repairPd != ''">REPAIR_PD, </if>
+            <if test="createTime != null">CREATE_TIME, </if>
+            <if test="createPeople != null and createPeople != ''">CREATE_PEOPLE, </if>
+            <if test="updateTime != null">UPDATE_TIME, </if>
+            <if test="updatePeople != null and updatePeople != ''">UPDATE_PEOPLE, </if>
+            <if test="remark != null and remark != ''">REMARK, </if>
+            <if test="photoUrl != null and photoUrl != ''">PHOTO_URL, </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="carID != null">#{carID,jdbcType=INTEGER}, </if>
+            <if test="handler != null and handler != ''">#{handler,jdbcType=VARCHAR}, </if>
+            <if test="repairTime != null">#{repairTime,jdbcType=TIMESTAMP}, </if>
+            <if test="estimateTackcar != null">#{estimateTackcar,jdbcType=TIMESTAMP}, </if>
+            <if test="repairReason != null and repairReason != ''">#{repairReason,jdbcType=VARCHAR}, </if>
+            <if test="region != null and region != ''">#{region,jdbcType=VARCHAR}, </if>
+            <if test="repairPd != null and repairPd != ''">#{repairPd,jdbcType=VARCHAR}, </if>
+            <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP}, </if>
+            <if test="createPeople != null and createPeople != ''">#{createPeople,jdbcType=VARCHAR}, </if>
+            <if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP}, </if>
+            <if test="updatePeople != null and updatePeople != ''">#{updatePeople,jdbcType=VARCHAR}, </if>
+            <if test="remark != null and remark != ''">#{remark,jdbcType=VARCHAR}, </if>
+            <if test="photoUrl != null and photoUrl != ''">#{photoUrl,jdbcType=VARCHAR},</if>
+        </trim>
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT @@IDENTITY AS id
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="carDailyRepairRecordDO" >
+        UPDATE CAR_DAILY_REPAIR_RECORD
+        <set>
+            <if test="carID != null">CAR_ID = #{carID,jdbcType=INTEGER}, </if>
+            <if test="handler != null">HANDLER = #{handler,jdbcType=VARCHAR}, </if>
+            <if test="repairTime != null">REPAIR_TIME = #{repairTime,jdbcType=TIMESTAMP}, </if>
+            <if test="estimateTackcar != null">ESTIMATE_TACKCAR = #{estimateTackcar,jdbcType=TIMESTAMP}, </if>
+            <if test="repairReason != null">REPAIR_REASON = #{repairReason,jdbcType=VARCHAR}, </if>
+            <if test="region != null">REGION = #{region,jdbcType=VARCHAR}, </if>
+            <if test="repairPd != null">REPAIR_PD = #{repairPd,jdbcType=VARCHAR}, </if>
+            <if test="createTime != null">CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}, </if>
+            <if test="createPeople != null">CREATE_PEOPLE = #{createPeople,jdbcType=VARCHAR}, </if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}, </if>
+            <if test="updatePeople != null">UPDATE_PEOPLE = #{updatePeople,jdbcType=VARCHAR}, </if>
+            <if test="remark != null">REMARK = #{remark,jdbcType=VARCHAR}, </if>
+            <if test="deleteCode != null">DELETE_CODE = #{deleteCode,jdbcType=INTEGER}, </if>
+       		<if test="photoUrl != null">PHOTO_URL = #{photoUrl,jdbcType=VARCHAR},</if>
+        </set>
+        WHERE ID = #{id,jdbcType=INTEGER}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        DELETE FROM CAR_DAILY_REPAIR_RECORD WHERE ID = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <select id="getByID" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT * FROM CAR_DAILY_REPAIR_RECORD WHERE ID = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="getList" parameterType="carDailyRepairRecordDO" resultMap="BaseResultMap">
+        SELECT * FROM CAR_DAILY_REPAIR_RECORD
+        <where>
+            <if test="id != null"> AND ID = #{id,jdbcType=INTEGER} </if>
+            <if test="carID != null"> AND CAR_ID = #{carID,jdbcType=INTEGER} </if>
+            <if test="handler != null and handler != ''"> AND HANDLER = #{handler,jdbcType=VARCHAR} </if>
+            <if test="repairTime != null"> AND REPAIR_TIME = #{repairTime,jdbcType=TIMESTAMP} </if>
+            <if test="estimateTackcar != null"> AND ESTIMATE_TACKCAR = #{estimateTackcar,jdbcType=TIMESTAMP} </if>
+            <if test="repairReason != null and repairReason != ''"> AND REPAIR_REASON = #{repairReason,jdbcType=VARCHAR} </if>
+            <if test="region != null and region != ''"> AND REGION = #{region,jdbcType=VARCHAR} </if>
+            <if test="repairPd != null and repairPd != ''"> AND REPAIR_PD = #{repairPd,jdbcType=VARCHAR} </if>
+            <if test="createTime != null"> AND CREATE_TIME = #{createTime,jdbcType=TIMESTAMP} </if>
+            <if test="createPeople != null and createPeople != ''"> AND CREATE_PEOPLE = #{createPeople,jdbcType=VARCHAR} </if>
+            <if test="updateTime != null"> AND UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP} </if>
+            <if test="updatePeople != null and updatePeople != ''"> AND UPDATE_PEOPLE = #{updatePeople,jdbcType=VARCHAR} </if>
+            <if test="remark != null and remark != ''"> AND REMARK = #{remark,jdbcType=VARCHAR} </if>
+        	<if test="photoUrl != null">AND PHOTO_URL = #{photoUrl,jdbcType=VARCHAR},</if>
+        </where>
+    </select>
+   <!-- 首页提醒 获取维修记录排行榜 -->
+   <select id="getTopList" parameterType="carDailyRepairRecordDO"  resultType="com.carTravelsky.bean.pageView.TopRow">
+        SELECT '/img/seg' AS 'seqImgPath',DEPT.DEPT_NAME AS 'belongDepName',VEH.LICENSENO AS 'display',count(*) AS 'displayCount' FROM CAR_DAILY_REPAIR_RECORD CRR LEFT JOIN car_base_vehicle VEH ON VEH.ID=CRR.CAR_ID LEFT JOIN CAR_BASE_STAFF  STAFF  ON  CRR.`HANDLER`=STAFF.ID  LEFT JOIN CAR_BASE_DEPTMENT DEPT  ON  STAFF.DEPT_ID=DEPT.ID WHERE CRR.DELETE_CODE='1'  AND DEPT.DELETE_CODE=1 AND DEPT.`STATUS`=1 AND VEH.DELETE_CODE=1 AND VEH.`STATUS`='1' GROUP BY LICENSENO,DEPT.DEPT_NAME    
+   </select>
+
+</mapper>

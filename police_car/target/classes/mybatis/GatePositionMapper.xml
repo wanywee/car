@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.carTravelsky.mapper.carDaily.GatePositionMapper">
+	<resultMap id="BaseResultMap" type="gatePositionDO">
+		<id column="ID" property="id" jdbcType="INTEGER" />
+		<result column="GATE_POSITION_CODE" property="gatePositionCode" jdbcType="VARCHAR"/>
+		<result column="COORD" property="coord" jdbcType="VARCHAR"/>
+		<result column="SCAN_RADII" property="scanRadii" jdbcType="FLOAT"/>
+		<result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+		<result column="CREATE_PEOPLE" property="createPeople" jdbcType="VARCHAR"/>
+		<result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+		<result column="UPDATE_PEOPLE" property="updatePeople" jdbcType="VARCHAR"/>
+		<result column="DELETE_CODE" property="deleteCode" jdbcType="INTEGER"/>
+		<result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<!-- 获取分页列表 -->
+	<select id="getList" parameterType="gatePositionDO" resultMap="BaseResultMap">
+		SELECT * FROM  GATE_POSITION 
+		<where>
+			<if test="id != null"> AND ID = #{id,jdbcType=INTEGER} </if>
+			<!-- <if test="companyId != null"> AND COMPANY_ID = #{companyId,jdbcType=INTEGER} </if> -->
+			<if test="gatePositionCode !=null and gatePositionCode != ''">AND GATE_POSITION_CODE = #{gatePositionCode,jdbcType=VARCHAR} </if>
+			<if test="coord !=null and coord != ''">AND COORD = #{coord,jdbcType=VARCHAR} </if>
+			<if test="scanRadii !=null">AND SCAN_RADII = #{scanRadii,jdbcType=FLOAT} </if>
+			<if test="createTime !=null">AND CREATE_TIME = #{createTime,jdbcType=TIMESTAMP} </if>
+			<if test="createPeople !=null and createPeople != ''">AND CREATE_PEOPLE = #{createPeople,jdbcType=VARCHAR} </if>
+			<if test="updateTime !=null ">AND UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP} </if>
+			<if test="updatePeople !=null and updatePeople != ''">AND UPDATE_PEOPLE = #{updatePeople,jdbcType=VARCHAR} </if>
+			<if test="deleteCode !=null and deleteCode != '2'">AND DELETE_CODE = #{deleteCode,jdbcType=VARCHAR} </if>
+			<if test="remark !=null and remark != ''">AND REMARK = #{remark,jdbcType=VARCHAR} </if>
+		</where>
+	</select>
+	
+	<!-- 根据id获取单条停机位信息 -->
+	<select id="getByID" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		SELECT * FROM GATE_POSITION WHERE ID = #{id,jdbcType=INTEGER}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="gatePositionDO">
+		INSERT INTO GATE_POSITION
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="companyId != null">COMPANY_ID,</if>
+			<if test="gatePositionCode != null and gatePositionCode !=''">GATE_POSITION_CODE,</if>
+			<if test="coord != null and coord !=''">COORD,</if>
+			<if test="scanRadii != null">SCAN_RADII,</if>
+			<if test="createTime != null">CREATE_TIME,</if>
+			<if test="createPeople != null and createPeople !=''">CREATE_PEOPLE,</if>
+			<if test="updateTime != null">UPDATE_TIME,</if>
+			<if test="updatePeople != null and updatePeople !=''">UPDATE_PEOPLE,</if>
+			<if test="deleteCode != null and deleteCode !=''">DELETE_CODE,</if>
+			<if test="remark != null and remark !=''">REMARK</if>
+		</trim>
+		<trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+			<if test="companyId != null">#{companyId,jdbcType=INTEGER},</if>
+			<if test="gatePositionCode != null and gatePositionCode !=''">#{gatePositionCode,jdbcType=VARCHAR},</if>
+			<if test="coord != null and coord !=''">#{coord,jdbcType=VARCHAR},</if>
+			<if test="scanRadii != null">#{scanRadii,jdbcType=FLOAT},</if>
+			<if test="createTime != null">#{createTime,jdbcType=TIMESTAMP},</if>
+			<if test="createPeople != null and createPeople !=''">#{createPeople,jdbcType=VARCHAR},</if>
+			<if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP},</if>
+			<if test="updatePeople != null and updatePeople !=''">#{updatePeople,jdbcType=VARCHAR},</if>
+			<if test="deleteCode != null and deleteCode !=''">#{deleteCode,jdbcType=INTEGER},</if>
+			<if test="remark != null and remark !=''">#{remark,jdbcType=VARCHAR}</if>
+		</trim>
+		<selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT @@IDENTITY AS id
+        </selectKey>
+	</insert>
+	
+	<!-- 修改数据 -->
+	<update id="update" parameterType="gatePositionDO">
+		UPDATE GATE_POSITION 
+		<set>
+			<if test="gatePositionCode != null">GATE_POSITION_CODE = #{gatePositionCode,jdbcType=VARCHAR},</if>
+			<if test="coord != null">COORD = #{coord,jdbcType=VARCHAR},</if>
+			<if test="scanRadii != null">SCAN_RADII = #{scanRadii,jdbcType=FLOAT},</if>
+			<if test="createTime != null">CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},</if>
+			<if test="createPeople != null">CREATE_PEOPLE = #{createPeople,jdbcType=VARCHAR},</if>
+			<if test="updateTime != null">UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},</if>
+			<if test="updatePeople != null">UPDATE_PEOPLE = #{updatePeople,jdbcType=VARCHAR},</if>
+			<if test="deleteCode != null">DELETE_CODE = #{deleteCode,jdbcType=INTEGER},</if>
+			<if test="remark != null">REMARK = #{remark,jdbcType=VARCHAR}</if>
+		</set>
+		WHERE ID = #{id,jdbcType=INTEGER}
+	</update>
+	
+	<!-- 状态删除，修改状态删除码 -->
+	<update id="updateDeleteCode" parameterType="list">
+		UPDATE GATE_POSITION
+        <set>
+            DELETE_CODE = 2
+        </set>
+        WHERE ID IN 
+         <foreach collection="list" item="item" open="(" separator="," close=")">    
+            #{item}  
+        </foreach>  
+	</update>
+	
+	<!-- 全局搜索 -->
+	<select id="getSearchGatePositionList" parameterType="java.util.Map" resultMap="BaseResultMap">
+		SELECT * FROM GATE_POSITION WHERE DELETE_CODE = 1 AND COMPANY_ID = #{companyId,jdbcType=INTEGER} AND  CONCAT(ifnull(REMARK, ''),
+		GATE_POSITION_CODE,COORD) LIKE CONCAT('%',#{searchStr},'%')
+	</select>
+	
+	<!-- 修改扫描半径 -->
+	<update id="updateScanRadii" parameterType="java.util.Map">
+		UPDATE GATE_POSITION
+        <set>
+            SCAN_RADII = #{scanRadiiNumber,jdbcType=FLOAT}
+        </set>
+        WHERE ID IN 
+         <foreach collection="list" item="item" open="(" separator="," close=")">    
+            #{item}  
+        </foreach>  
+	</update>
+	
+</mapper>

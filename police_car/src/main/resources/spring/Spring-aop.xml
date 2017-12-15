@@ -1,0 +1,62 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+	 http://www.springframework.org/schema/beans
+	 http://www.springframework.org/schema/beans/spring-beans.xsd
+	 http://www.springframework.org/schema/context
+	 http://www.springframework.org/schema/context/spring-context.xsd
+	 http://www.springframework.org/schema/mvc 
+	 http://www.springframework.org/schema/mvc/spring-mvc.xsd
+	 http://www.springframework.org/schema/aop 
+	 http://www.springframework.org/schema/aop/spring-aop.xsd
+	 http://www.springframework.org/schema/tx 
+	 http://www.springframework.org/schema/tx/spring-tx.xsd">
+	<!-- 避免上面单独出现会出现错误 -->
+	<context:component-scan base-package="com.carTravelsky" />
+	<!-- 配置mvc驱动 -->
+	<mvc:annotation-driven conversion-service="conversionService"></mvc:annotation-driven>
+
+	<!-- <mvc:default-servlet-handler /> -->
+		
+ 	 <mvc:interceptors>
+		<mvc:interceptor>
+			<!-- 匹配的是url路径， 如果不配置或/**,将拦截所有的Controller  --> 
+			<mvc:mapping path="/**" />
+			<bean class="com.carTravelsky.listener.system.WechatInterceptor">
+				<property name="uncheckUrls">
+					<list>
+						<value>/validateCode</value>
+						<value>/home</value>
+						<value>/vehicleRecord/getListVehicleRecordsThirdParty</value>
+						<value>/carInfo</value>
+					</list>
+				</property>
+			</bean>
+		</mvc:interceptor> 
+		<mvc:interceptor>
+		<mvc:mapping path="/**" />
+		<bean class="com.carTravelsky.listener.system.PermissionInterceptor">
+		<property name="uncheckUrls">
+					<list>
+						<value>/validateCode</value>
+						<value>/home</value>
+						<value>/index</value>
+						<value>/refreshCache</value>
+						<value>/auser/login</value>
+						<value>/carInfo</value>
+					</list>
+				</property>
+		</bean>
+	</mvc:interceptor>
+	</mvc:interceptors> 
+	<bean id="systemLogInterceptor" class="com.carTravelsky.listener.system.SystemLogInterceptor" />
+	<!--aop配置 -->
+	<aop:config>
+		<aop:aspect ref="systemLogInterceptor">
+			<aop:around method="recordLog" pointcut="execution(* com.carTravelsky.control..*(..))" />
+		</aop:aspect>
+	</aop:config>
+
+</beans>

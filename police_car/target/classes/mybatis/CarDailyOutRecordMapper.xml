@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.carTravelsky.mapper.carDaily.CarDailyOutRecordMapper">
+    <resultMap id="BaseResultMap" type="carDailyOutRecordDO">
+        <id column="ID" property="id" jdbcType="INTEGER" />
+        <result column="CAR_ID" property="carID" jdbcType="INTEGER" />
+        <result column="STFF_ID" property="stffID" jdbcType="INTEGER" />
+        <result column="CARUSER" property="caruser" jdbcType="VARCHAR" />
+        <result column="ENTOURAGE" property="entourage" jdbcType="VARCHAR" />
+        <result column="DEPT_ID" property="deptID" jdbcType="INTEGER" />
+        <result column="OUTCAR_TIME" property="outcarTime" jdbcType="TIMESTAMP" />
+        <result column="ESTIMATE_RETURN_TIME" property="estimateReturnTime" jdbcType="TIMESTAMP" />
+        <result column="OUTCAR_MILEAGE" property="outcarMileage" jdbcType="FLOAT" />
+        <result column="DESITINATION" property="desitination" jdbcType="VARCHAR" />
+        <result column="PHONENUMBER" property="phonenumber" jdbcType="VARCHAR" />
+        <result column="REGION" property="region" jdbcType="VARCHAR" />
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="CREATE_PEOPLE" property="createPeople" jdbcType="VARCHAR" />
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="UPDATE_PEOPLE" property="updatePeople" jdbcType="VARCHAR" />
+        <result column="OUT_REMARK" property="outRemark" jdbcType="VARCHAR" />
+        <result column="DELETE_CODE" property="deleteCode" jdbcType="INTEGER" />
+        <result column="BACK_TIME" property="backTime" jdbcType="TIMESTAMP" />
+        <result column="BACKCAR_MILEAGE" property="backcarMileage" jdbcType="FLOAT" />
+        <result column="TRIP" property="trip" jdbcType="FLOAT" />
+        <result column="PARK_POSITION" property="parkPosition" jdbcType="VARCHAR" />
+  		<result column="BACK_REMARK" property="backRemark" jdbcType="VARCHAR" />
+  		<result column="OUT_CAUSE" property="outCause" jdbcType="VARCHAR" />
+  		<result column="CAR_TYPE" property="carType" jdbcType="INTEGER" />
+  		<result column="DEST_AREA" property="destArea" jdbcType="VARCHAR" />
+  		<result column="ENTOURAGE_DISPLAY"  property="entourageDisplay" jdbcType="VARCHAR"/>
+    </resultMap>
+
+	<!-- 获取申请的出车记录 -->
+	<select id="getApplyByID" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+       	SELECT o.*,v.LICENSENO licenseno ,v.NOW_STATUS newStatus,d.DEPT_NAME vehicleDept, s.STAFF_NAME driver 
+       	FROM CAR_DAILY_OUT_RECORD o
+        LEFT JOIN car_base_vehicle v ON o.CAR_ID=v.ID
+				LEFT JOIN car_base_deptment d ON o.DEPT_ID=d.ID
+				LEFT JOIN car_base_driver r ON o.STFF_ID=r.WORK_ID
+				LEFT JOIN car_base_staff s ON r.WORK_ID=s.ID
+        WHERE o.DELETE_CODE=1 AND v.DELETE_CODE=1 and o.ID = #{id,jdbcType=INTEGER}
+    </select>
+	
+    <insert id="insert" parameterType="carDailyOutRecordDO">
+        INSERT INTO CAR_DAILY_OUT_RECORD
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="carID != null">CAR_ID, </if>
+            <if test="stffID != null">STFF_ID, </if>
+            <if test="caruser != null and caruser != ''">CARUSER, </if>
+            <if test="entourage != null and entourage != ''">ENTOURAGE, </if>
+            <if test="deptID != null and deptID != ''">DEPT_ID, </if>
+            <if test="outcarTime != null">OUTCAR_TIME, </if>
+            <if test="estimateReturnTime != null">ESTIMATE_RETURN_TIME, </if>
+            <if test="outcarMileage != null">OUTCAR_MILEAGE, </if>
+            <if test="desitination != null and desitination != ''">DESITINATION, </if>
+            <if test="phonenumber != null and phonenumber != ''">PHONENUMBER, </if>
+            <if test="region != null and region != ''">REGION, </if>
+            <if test="createTime != null">CREATE_TIME, </if>
+            <if test="createPeople != null and createPeople != ''">CREATE_PEOPLE, </if>
+            <if test="updateTime != null">UPDATE_TIME, </if>
+            <if test="updatePeople != null and updatePeople != ''">UPDATE_PEOPLE, </if>
+            <if test="outRemark != null and outRemark != ''">OUT_REMARK, </if>
+            <if test="deleteCode != null">DELETE_CODE, </if>
+            <if test="backTime != null">BACK_TIME, </if>
+            <if test="backcarMileage != null">BACKCAR_MILEAGE, </if>
+            <if test="trip != null">TRIP, </if>
+            <if test="parkPosition != null and parkPosition != ''">PARK_POSITION, </if>
+            <if test="backRemark != null and backRemark != ''">BACK_REMARK,</if>
+            <if test="outCause != null and outCause != ''">OUT_CAUSE,</if>
+            <if test="carType != null and carType != ''">CAR_TYPE,</if>
+            <if test="destArea != null and destArea != ''">DEST_AREA,</if>
+            <if test="companyID != null and companyID != ''">COMPANY_ID</if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="carID != null">#{carID,jdbcType=INTEGER}, </if>
+            <if test="stffID != null">#{stffID,jdbcType=INTEGER}, </if>
+            <if test="caruser != null and caruser != ''">#{caruser,jdbcType=VARCHAR}, </if>
+            <if test="entourage != null and entourage != ''">#{entourage,jdbcType=VARCHAR}, </if>
+            <if test="deptID != null and deptID != ''">#{deptID,jdbcType=INTEGER}, </if>
+            <if test="outcarTime != null">#{outcarTime,jdbcType=TIMESTAMP}, </if>
+            <if test="estimateReturnTime != null">#{estimateReturnTime,jdbcType=TIMESTAMP}, </if>
+            <if test="outcarMileage != null">#{outcarMileage,jdbcType=FLOAT}, </if>
+            <if test="desitination != null and desitination != ''">#{desitination,jdbcType=VARCHAR}, </if>
+            <if test="phonenumber != null and phonenumber != ''">#{phonenumber,jdbcType=VARCHAR}, </if>
+            <if test="region != null and region != ''">#{region,jdbcType=VARCHAR}, </if>
+            <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP}, </if>
+            <if test="createPeople != null and createPeople != ''">#{createPeople,jdbcType=VARCHAR}, </if>
+            <if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP}, </if>
+            <if test="updatePeople != null and updatePeople != ''">#{updatePeople,jdbcType=VARCHAR}, </if>
+            <if test="outRemark != null and outRemark != ''">#{outRemark,jdbcType=VARCHAR}, </if>
+            <if test="deleteCode != null">#{deleteCode,jdbcType=INTEGER}, </if>
+            <if test="backTime != null">#{backTime,jdbcType=TIMESTAMP}, </if>
+            <if test="backcarMileage != null">#{backcarMileage,jdbcType=FLOAT}, </if>
+            <if test="trip != null">#{trip,jdbcType=FLOAT}, </if>
+            <if test="parkPosition != null and parkPosition != ''">#{parkPosition,jdbcType=VARCHAR}, </if>
+       	 	<if test="backRemark != null and backRemark != ''">#{backRemark,jdbcType=VARCHAR}, </if>
+       	 	<if test="outCause != null and outCause != ''">#{outCause,jdbcType=VARCHAR},</if>
+       	 	<if test="carType != null and carType != ''">#{carType,jdbcType=INTEGER},</if>
+       	 	<if test="destArea != null and destArea != ''">#{destArea,jdbcType=VARCHAR},</if>
+       	 	<if test="companyID != null and companyID != ''">#{companyID,jdbcType=INTEGER}</if>
+        </trim>
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT @@IDENTITY AS id
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="carDailyOutRecordDO" >
+        UPDATE CAR_DAILY_OUT_RECORD
+        <set>
+            <if test="carID != null">CAR_ID = #{carID,jdbcType=INTEGER}, </if>
+            <if test="stffID != null">STFF_ID = #{stffID,jdbcType=INTEGER}, </if>
+            <if test="caruser != null">CARUSER = #{caruser,jdbcType=VARCHAR}, </if>
+            <if test="entourage != null">ENTOURAGE = #{entourage,jdbcType=VARCHAR}, </if>
+            <if test="deptID != null">DEPT_ID = #{deptID,jdbcType=INTEGER}, </if>
+            <if test="outcarTime != null">OUTCAR_TIME = #{outcarTime,jdbcType=TIMESTAMP}, </if>
+            <if test="estimateReturnTime != null">ESTIMATE_RETURN_TIME = #{estimateReturnTime,jdbcType=TIMESTAMP}, </if>
+            <if test="outcarMileage != null">OUTCAR_MILEAGE = #{outcarMileage,jdbcType=FLOAT}, </if>
+            <if test="desitination != null">DESITINATION = #{desitination,jdbcType=VARCHAR}, </if>
+            <if test="phonenumber != null">PHONENUMBER = #{phonenumber,jdbcType=VARCHAR}, </if>
+            <if test="region != null">REGION = #{region,jdbcType=VARCHAR}, </if>
+            <if test="createTime != null">CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}, </if>
+            <if test="createPeople != null">CREATE_PEOPLE = #{createPeople,jdbcType=VARCHAR}, </if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}, </if>
+            <if test="updatePeople != null">UPDATE_PEOPLE = #{updatePeople,jdbcType=VARCHAR}, </if>
+            <if test="outRemark != null">OUT_REMARK = #{outRemark,jdbcType=VARCHAR}, </if>
+            <if test="deleteCode != null">DELETE_CODE = #{deleteCode,jdbcType=INTEGER}, </if>
+            <if test="backTime != null">BACK_TIME = #{backTime,jdbcType=TIMESTAMP}, </if>
+            <if test="backcarMileage != null">BACKCAR_MILEAGE = #{backcarMileage,jdbcType=FLOAT}, </if>
+            <if test="trip != null">TRIP = #{trip,jdbcType=FLOAT}, </if>
+            <if test="parkPosition != null">PARK_POSITION = #{parkPosition,jdbcType=VARCHAR}, </if>
+      		 <if test="backRemark != null and backRemark != ''">BACK_REMARK = #{backRemark,jdbcType=VARCHAR}, </if>
+      		 <if test="outCause != null and outCause != ''">OUT_CAUSE=#{outCause,jdbcType=VARCHAR},</if>
+      		<if test="carType != null and carType != ''">CAR_TYPE=#{carType,jdbcType=INTEGER},</if>
+      		<if test="destArea != null and destArea != ''">DEST_AREA=#{destArea,jdbcType=VARCHAR},</if>
+        </set>
+        WHERE ID = #{id,jdbcType=INTEGER}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        DELETE FROM CAR_DAILY_OUT_RECORD WHERE ID = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <select id="getByID" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+	    SELECT
+			o.*, v.LICENSENO licenseno,
+			v.NOW_STATUS newStatus,
+			d.DEPT_NAME vehicleDept,
+			s.STAFF_NAME driver,
+			vo.STAFF_NAME AS caruserDisplay,
+			findStaffNmByStaffId(o.ENTOURAGE) AS ENTOURAGE_DISPLAY
+		FROM
+			CAR_DAILY_OUT_RECORD o
+		LEFT JOIN car_base_vehicle v ON o.CAR_ID = v.ID
+		LEFT JOIN car_base_deptment d ON o.DEPT_ID = d.ID
+		LEFT JOIN car_base_driver r ON o.STFF_ID = r.WORK_ID
+		LEFT JOIN car_base_staff s ON r.WORK_ID = s.ID
+		JOIN (
+			SELECT
+				u.ID,
+				s.STAFF_NAME
+			FROM
+				car_sys_user u,
+				car_base_staff s
+			WHERE
+				u.STAFF_ID = s.ID
+		) vo ON o.CARUSER = vo.ID
+		WHERE
+			o.DELETE_CODE = 1
+		AND v.DELETE_CODE = 1
+		AND o.ID = #{id,jdbcType=INTEGER}
+    </select>
+    <!-- 根据车辆id 查询数据 -->
+	<select id="getOutByCarID" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+       SELECT o.*,v.LICENSENO licenseno ,v.NOW_STATUS newStatus,d.DEPT_NAME vehicleDept FROM CAR_DAILY_OUT_RECORD o
+        LEFT JOIN car_base_vehicle v ON o.CAR_ID=v.ID
+				LEFT JOIN car_base_deptment d ON o.DEPT_ID=d.ID
+        WHERE o.DELETE_CODE=1 AND v.DELETE_CODE=1 and o.CAR_ID=#{carID,jdbcType=INTEGER} order by o.OUTCAR_TIME desc limit 1
+    </select>
+    <!-- 根据车辆id 查询数据 -->
+	<select id="getBackByCarID" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+       SELECT o.*,v.LICENSENO licenseno ,v.NOW_STATUS newStatus,d.DEPT_NAME vehicleDept, v.CURRENT_MILEAGE outcarMileage FROM CAR_DAILY_OUT_RECORD o
+        LEFT JOIN car_base_vehicle v ON o.CAR_ID=v.ID
+				LEFT JOIN car_base_deptment d ON o.DEPT_ID=d.ID
+        WHERE o.DELETE_CODE=1 AND v.DELETE_CODE=1 and o.CAR_ID=#{carID,jdbcType=INTEGER} order by o.BACK_TIME desc limit 1
+    </select>
+    <select id="getList" parameterType="carDailyOutRecordDO" resultMap="BaseResultMap">
+        SELECT CAR_DAILY_OUT_RECORD.*,v.LICENSENO licenseno ,v.NOW_STATUS newStatus 
+        FROM CAR_DAILY_OUT_RECORD
+        LEFT JOIN car_base_vehicle v ON CAR_DAILY_OUT_RECORD.CAR_ID=v.ID
+        <where>
+            <if test="id != null"> AND ID = #{id,jdbcType=INTEGER} </if>
+            <if test="carID != null"> AND CAR_ID = #{carID,jdbcType=INTEGER} </if>
+           	<if test="stffID != null and stffID != ''">AND STFF_ID=#{stffID,jdbcType=INTEGER}, </if>
+            <if test="caruser != null and caruser != ''"> AND CARUSER = #{caruser,jdbcType=VARCHAR} </if>
+            <if test="entourage != null and entourage != ''"> AND ENTOURAGE = #{entourage,jdbcType=VARCHAR} </if>
+            <if test="deptID != null and deptID != ''"> AND DEPT_ID = #{deptID,jdbcType=INTEGER} </if>
+            <if test="outcarTime != null"> AND OUTCAR_TIME = #{outcarTime,jdbcType=TIMESTAMP} </if>
+            <if test="estimateReturnTime != null"> AND ESTIMATE_RETURN_TIME = #{estimateReturnTime,jdbcType=TIMESTAMP} </if>
+            <if test="outcarMileage != null"> AND OUTCAR_MILEAGE = #{outcarMileage,jdbcType=FLOAT} </if>
+            <if test="desitination != null and desitination != ''"> AND DESITINATION = #{desitination,jdbcType=VARCHAR} </if>
+            <if test="phonenumber != null and phonenumber != ''"> AND PHONENUMBER = #{phonenumber,jdbcType=VARCHAR} </if>
+            <if test="region != null and region != ''"> AND REGION = #{region,jdbcType=VARCHAR} </if>
+            <if test="createTime != null"> AND CREATE_TIME = #{createTime,jdbcType=TIMESTAMP} </if>
+            <if test="createPeople != null and createPeople != ''"> AND CREATE_PEOPLE = #{createPeople,jdbcType=VARCHAR} </if>
+            <if test="updateTime != null"> AND UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP} </if>
+            <if test="updatePeople != null and updatePeople != ''"> AND UPDATE_PEOPLE = #{updatePeople,jdbcType=VARCHAR} </if>
+            <if test="outRemark != null and outRemark != ''"> AND OUT_REMARK = #{outRemark,jdbcType=VARCHAR} </if>
+            <if test="deleteCode != null"> AND DELETE_CODE = #{deleteCode,jdbcType=INTEGER} </if>
+            <if test="backTime != null"> AND BACK_TIME = #{backTime,jdbcType=TIMESTAMP} </if>
+            <if test="backcarMileage != null"> AND BACKCAR_MILEAGE = #{backcarMileage,jdbcType=FLOAT} </if>
+            <if test="trip != null"> AND TRIP = #{trip,jdbcType=FLOAT} </if>
+            <if test="parkPosition != null and parkPosition != ''"> AND PARK_POSITION = #{parkPosition,jdbcType=VARCHAR} </if>
+       		<if test="backRemark != null and backRemark != ''"> AND BACK_REMARK = #{backRemark,jdbcType=VARCHAR} </if>
+       		<if test="outCause != null and outCause != ''"> AND OUT_CAUSE=#{outCause,jdbcType=VARCHAR}</if>
+       		<if test="carType != null and carType != ''">AND CAR_TYPE=#{carType,jdbcType=INTEGER}</if>
+       		AND CAR_DAILY_OUT_RECORD.DELETE_CODE=1 AND v.DELETE_CODE=1 <!-- AND v.COMPANY_ID=#{companyID,jdbcType=INTEGER} -->
+        </where>
+    </select>
+    <!-- 回车提醒时间 -->
+	 <select id="getHour" resultType="java.lang.Integer" >
+	       select k.CODE from key_code_master k where k.KEY_ID = 360;
+			<!-- AND v.COMPANY_ID=#{carDailyOutRecordDO.companyID} -->
+		</select>
+     <!--回车记录 集合  数据车状态为1 3  可用  -->
+     <select id="getBackListByType" parameterType="carDailyOutRecordDO" resultMap="BaseResultMap">
+        SELECT CAR_DAILY_OUT_RECORD.*,v.LICENSENO licenseno ,
+        s.STAFF_NO stffNo,
+        v.NOW_STATUS newStatus,
+        k.DISPLAY carTypeName 
+      <!--  	DATE_ADD(
+		CAR_DAILY_OUT_RECORD.ESTIMATE_RETURN_TIME,
+		INTERVAL (select key_code_master.CODE from key_code_master where key_code_master.KEY_ID = 360) HOUR
+		) AS estimateReturnTime -->
+        FROM CAR_DAILY_OUT_RECORD
+        LEFT JOIN car_base_vehicle v ON CAR_DAILY_OUT_RECORD.CAR_ID=v.ID
+        LEFT JOIN car_base_staff s ON CAR_DAILY_OUT_RECORD.STFF_ID=s.ID
+		LEFT JOIN key_code_master k on v.CAR_DETAIL_ID = k.KEY_ID
+        <where>
+            <if test="id != null"> AND ID = #{id,jdbcType=INTEGER} </if>
+            <if test="carID != null"> AND CAR_ID = #{carID,jdbcType=INTEGER} </if>
+            <if test="stffID != null and stffID != ''">AND STFF_ID=#{stffID,jdbcType=INTEGER}, </if>
+            <if test="caruser != null and caruser != ''"> AND CARUSER = #{caruser,jdbcType=VARCHAR} </if>
+            <if test="entourage != null and entourage != ''"> AND ENTOURAGE = #{entourage,jdbcType=VARCHAR} </if>
+            <if test="deptID != null and deptID != ''"> AND DEPT_ID = #{deptID,jdbcType=INTEGER} </if>
+            <if test="outcarTime != null"> AND OUTCAR_TIME = #{outcarTime,jdbcType=TIMESTAMP} </if>
+            <if test="estimateReturnTime != null"> AND ESTIMATE_RETURN_TIME = #{estimateReturnTime,jdbcType=TIMESTAMP} </if>
+            <if test="outcarMileage != null"> AND OUTCAR_MILEAGE = #{outcarMileage,jdbcType=FLOAT} </if>
+            <if test="desitination != null and desitination != ''"> AND DESITINATION = #{desitination,jdbcType=VARCHAR} </if>
+            <if test="phonenumber != null and phonenumber != ''"> AND PHONENUMBER = #{phonenumber,jdbcType=VARCHAR} </if>
+            <if test="region != null and region != ''"> AND REGION = #{region,jdbcType=VARCHAR} </if>
+            <if test="createTime != null"> AND CREATE_TIME = #{createTime,jdbcType=TIMESTAMP} </if>
+            <if test="createPeople != null and createPeople != ''"> AND CREATE_PEOPLE = #{createPeople,jdbcType=VARCHAR} </if>
+            <if test="updateTime != null"> AND UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP} </if>
+            <if test="updatePeople != null and updatePeople != ''"> AND UPDATE_PEOPLE = #{updatePeople,jdbcType=VARCHAR} </if>
+            <if test="outRemark != null and outRemark != ''"> AND OUT_REMARK = #{outRemark,jdbcType=VARCHAR} </if>
+            <if test="deleteCode != null"> AND DELETE_CODE = #{deleteCode,jdbcType=INTEGER} </if>
+            <if test="backTime != null"> AND BACK_TIME = #{backTime,jdbcType=TIMESTAMP} </if>
+            <if test="backcarMileage != null"> AND BACKCAR_MILEAGE = #{backcarMileage,jdbcType=FLOAT} </if>
+            <if test="trip != null"> AND TRIP = #{trip,jdbcType=FLOAT} </if>
+            <if test="parkPosition != null and parkPosition != ''"> AND PARK_POSITION = #{parkPosition,jdbcType=VARCHAR} </if>
+       		<if test="backRemark != null and backRemark != ''"> AND BACK_REMARK = #{backRemark,jdbcType=VARCHAR} </if>
+       		<if test="outCause != null and outCause != ''"> AND OUT_CAUSE=#{outCause,jdbcType=VARCHAR}</if>
+       		<if test="carType != null and carType != ''">AND CAR_TYPE=#{carType,jdbcType=INTEGER}</if>
+       		AND CAR_DAILY_OUT_RECORD.DELETE_CODE=1 AND v.DELETE_CODE=1 AND CAR_DAILY_OUT_RECORD.CAR_TYPE=1 or CAR_DAILY_OUT_RECORD.CAR_TYPE=3 <!-- AND v.COMPANY_ID=#{companyID,jdbcType=INTEGER} -->
+        </where>
+    </select>
+    <!--回车记录 集合  数据车状态为2  可用  -->
+     <select id="getBackList" parameterType="carDailyOutRecordDO" resultMap="BaseResultMap">
+        SELECT CAR_DAILY_OUT_RECORD.*,v.LICENSENO licenseno ,findStaffNmByStaffId(CAR_DAILY_OUT_RECORD.ENTOURAGE) AS ENTOURAGE_DISPLAY,
+        s.STAFF_NO stffNo, vo.STAFF_NAME as caruserDisplay,
+        v.NOW_STATUS newStatus,
+        k.DISPLAY carTypeName 
+        FROM CAR_DAILY_OUT_RECORD
+        LEFT JOIN car_base_vehicle v ON CAR_DAILY_OUT_RECORD.CAR_ID=v.ID
+        LEFT JOIN car_base_staff s ON CAR_DAILY_OUT_RECORD.STFF_ID=s.ID
+		LEFT JOIN key_code_master k on v.CAR_DETAIL_ID = k.KEY_ID
+		JOIN (
+			SELECT
+				u.ID,
+				s.STAFF_NAME
+			FROM
+				car_sys_user u,
+				car_base_staff s
+			WHERE
+				u.STAFF_ID = s.ID
+			) vo ON car_daily_out_record.CARUSER = vo.ID
+        <where>
+            <if test="id != null"> AND ID = #{id,jdbcType=INTEGER} </if>
+            <if test="carID != null"> AND CAR_ID = #{carID,jdbcType=INTEGER} </if>
+            <if test="stffID != null and stffID != ''">AND STFF_ID=#{stffID,jdbcType=INTEGER}, </if>
+            <if test="caruser != null and caruser != ''"> AND CARUSER = #{caruser,jdbcType=VARCHAR} </if>
+            <if test="entourage != null and entourage != ''"> AND ENTOURAGE = #{entourage,jdbcType=VARCHAR} </if>
+            <if test="deptID != null and deptID != ''"> AND DEPT_ID = #{deptID,jdbcType=INTEGER} </if>
+            <if test="outcarTime != null"> AND OUTCAR_TIME = #{outcarTime,jdbcType=TIMESTAMP} </if>
+            <if test="estimateReturnTime != null"> AND ESTIMATE_RETURN_TIME = #{estimateReturnTime,jdbcType=TIMESTAMP} </if>
+            <if test="outcarMileage != null"> AND OUTCAR_MILEAGE = #{outcarMileage,jdbcType=FLOAT} </if>
+            <if test="desitination != null and desitination != ''"> AND DESITINATION = #{desitination,jdbcType=VARCHAR} </if>
+            <if test="phonenumber != null and phonenumber != ''"> AND PHONENUMBER = #{phonenumber,jdbcType=VARCHAR} </if>
+            <if test="region != null and region != ''"> AND REGION = #{region,jdbcType=VARCHAR} </if>
+            <if test="createTime != null"> AND CREATE_TIME = #{createTime,jdbcType=TIMESTAMP} </if>
+            <if test="createPeople != null and createPeople != ''"> AND CREATE_PEOPLE = #{createPeople,jdbcType=VARCHAR} </if>
+            <if test="updateTime != null"> AND UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP} </if>
+            <if test="updatePeople != null and updatePeople != ''"> AND UPDATE_PEOPLE = #{updatePeople,jdbcType=VARCHAR} </if>
+            <if test="outRemark != null and outRemark != ''"> AND OUT_REMARK = #{outRemark,jdbcType=VARCHAR} </if>
+            <if test="deleteCode != null"> AND DELETE_CODE = #{deleteCode,jdbcType=INTEGER} </if>
+            <if test="backTime != null"> AND BACK_TIME = #{backTime,jdbcType=TIMESTAMP} </if>
+            <if test="backcarMileage != null"> AND BACKCAR_MILEAGE = #{backcarMileage,jdbcType=FLOAT} </if>
+            <if test="trip != null"> AND TRIP = #{trip,jdbcType=FLOAT} </if>
+            <if test="parkPosition != null and parkPosition != ''"> AND PARK_POSITION = #{parkPosition,jdbcType=VARCHAR} </if>
+       		<if test="backRemark != null and backRemark != ''"> AND BACK_REMARK = #{backRemark,jdbcType=VARCHAR} </if>
+       		<if test="outCause != null and outCause != ''"> AND OUT_CAUSE=#{outCause,jdbcType=VARCHAR}</if>
+       		<if test="carType != null and carType != ''">AND CAR_TYPE=#{carType,jdbcType=INTEGER}</if>
+       		AND CAR_DAILY_OUT_RECORD.DELETE_CODE=1 AND v.DELETE_CODE=1 <!-- AND v.COMPANY_ID=#{companyID,jdbcType=INTEGER} -->
+        </where>
+    </select>
+    
+	<!-- 出车记录   全局搜索 -->
+	 <select id="getSearchCarOutList" resultMap="BaseResultMap" >
+	       select o.*,v.LICENSENO licenseno,findStaffNmByStaffId(o.ENTOURAGE) AS ENTOURAGE_DISPLAY from CAR_DAILY_OUT_RECORD o 
+			LEFT JOIN car_base_vehicle v ON o.CAR_ID=v.ID
+			where CONCAT(
+			ifnull(v.LICENSENO, ''),
+			ifnull(findStaffNmByStaffId(o.ENTOURAGE), ''),
+			ifnull(o.DESITINATION, ''),		
+			ifnull(o.CARUSER, ''),
+    		ifnull(o.PHONENUMBER, ''),
+			ifnull(o.PARK_POSITION, ''),			
+			ifnull(o.OUTCAR_TIME, ''),
+			ifnull(o.PARK_POSITION, ''),
+			ifnull(o.BACK_TIME, '')			
+			) LIKE
+			CONCAT('%',#{searchStr},'%') AND o.DELETE_CODE=1 AND v.DELETE_CODE=1<!-- AND v.COMPANY_ID=#{carDailyOutRecordDO.companyID} -->
+		</select>
+		<!-- 回车记录   全局搜索 type 1 3-->
+	<select id="getSearchCarBackListByType" resultMap="BaseResultMap" >
+	      SELECT o.*,v.LICENSENO licenseno ,
+        s.STAFF_NO stffNo,
+        v.NOW_STATUS newStatus,
+        k.DISPLAY carTypeName 
+        FROM CAR_DAILY_OUT_RECORD o
+        LEFT JOIN car_base_vehicle v ON o.CAR_ID=v.ID
+        LEFT JOIN car_base_staff s ON o.STFF_ID=s.ID
+		LEFT JOIN key_code_master k on v.CAR_DETAIL_ID = k.KEY_ID
+		where CONCAT(
+			ifnull(v.LICENSENO, ''),
+			ifnull(o.ENTOURAGE, ''),
+			ifnull(o.DESITINATION, ''),		
+			ifnull(o.CARUSER, ''),
+    		ifnull(o.PHONENUMBER, ''),
+			ifnull(o.PARK_POSITION, ''),			
+			ifnull(o.OUTCAR_TIME, ''),
+			ifnull(o.PARK_POSITION, ''),
+			ifnull(o.BACK_TIME, '')			
+			) LIKE
+			CONCAT('%',#{searchStr},'%') AND o.DELETE_CODE=1 AND v.DELETE_CODE=1 AND o.CAR_TYPE=1 or o.CAR_TYPE=3<!-- AND v.COMPANY_ID=#{carDailyOutRecordDO.companyID} -->
+	</select>
+	<!-- 回车记录   全局搜索 -->
+	<select id="getSearchCarBackList" resultMap="BaseResultMap" >
+	      SELECT o.*,v.LICENSENO licenseno ,
+        s.STAFF_NO stffNo,
+        v.NOW_STATUS newStatus,
+        k.DISPLAY carTypeName 
+        FROM CAR_DAILY_OUT_RECORD o
+        LEFT JOIN car_base_vehicle v ON o.CAR_ID=v.ID
+        LEFT JOIN car_base_staff s ON o.STFF_ID=s.ID
+		LEFT JOIN key_code_master k on v.CAR_DETAIL_ID = k.KEY_ID
+		where CONCAT(
+			ifnull(v.LICENSENO, ''),
+			ifnull(o.ENTOURAGE, ''),
+			ifnull(o.DESITINATION, ''),		
+			ifnull(o.CARUSER, ''),
+    		ifnull(o.PHONENUMBER, ''),
+			ifnull(o.PARK_POSITION, ''),			
+			ifnull(o.OUTCAR_TIME, ''),
+			ifnull(o.PARK_POSITION, ''),
+			ifnull(o.BACK_TIME, '')			
+			) LIKE
+			CONCAT('%',#{searchStr},'%') AND o.DELETE_CODE=1 AND v.DELETE_CODE=1 <!-- AND v.COMPANY_ID=#{carDailyOutRecordDO.companyID} -->
+	</select>
+	<insert id="saveOutRecord" parameterType="carDailyOutRecordDO">
+		INSERT INTO CAR_DAILY_OUT_RECORD
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="carID != null">CAR_ID, </if>
+            <if test="stffID != null">STFF_ID, </if>
+            <if test="caruser != null and caruser != ''">CARUSER, </if>
+            <if test="entourage != null and entourage != ''">ENTOURAGE, </if>
+            <if test="deptID != null and deptID != ''">DEPT_ID, </if>
+            <if test="outcarTime != null">OUTCAR_TIME, </if>
+            <if test="estimateReturnTime != null">ESTIMATE_RETURN_TIME, </if>
+            <if test="outcarMileage != null">OUTCAR_MILEAGE, </if>
+            <if test="desitination != null and desitination != ''">DESITINATION, </if>
+            <if test="phonenumber != null and phonenumber != ''">PHONENUMBER, </if>
+            <if test="region != null and region != ''">REGION, </if>
+            <if test="createTime != null">CREATE_TIME, </if>
+            <if test="createPeople != null and createPeople != ''">CREATE_PEOPLE, </if>
+            <if test="updateTime != null">UPDATE_TIME, </if>
+            <if test="updatePeople != null and updatePeople != ''">UPDATE_PEOPLE, </if>
+            <if test="outRemark != null and outRemark != ''">OUT_CAUSE, </if>
+            <if test="deleteCode != null">DELETE_CODE, </if>
+            <if test="backTime != null">BACK_TIME, </if>
+            <if test="backcarMileage != null">BACKCAR_MILEAGE, </if>
+            <if test="trip != null">TRIP, </if>
+            <if test="parkPosition != null and parkPosition != ''">PARK_POSITION, </if>
+            <if test="backRemark != null and backRemark != ''">BACK_REMARK,</if>
+            <if test="outCause != null and outCause != ''">OUT_CAUSE,</if>
+            <if test="carType != null and carType != ''">CAR_TYPE,</if>
+            <if test="destArea != null and destArea != ''">DEST_AREA</if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="carID != null">#{carID,jdbcType=INTEGER}, </if>
+            <if test="stffID != null">#{stffID,jdbcType=INTEGER}, </if>
+            <if test="caruser != null and caruser != ''">#{caruser,jdbcType=VARCHAR}, </if>
+            <if test="entourage != null and entourage != ''">#{entourage,jdbcType=VARCHAR}, </if>
+            <if test="deptID != null and deptID != ''">#{deptID,jdbcType=INTEGER}, </if>
+            <if test="outcarTime != null">#{outcarTime,jdbcType=TIMESTAMP}, </if>
+            <if test="estimateReturnTime != null">#{estimateReturnTime,jdbcType=TIMESTAMP}, </if>
+            <if test="outcarMileage != null">#{outcarMileage,jdbcType=FLOAT}, </if>
+            <if test="desitination != null and desitination != ''">#{desitination,jdbcType=VARCHAR}, </if>
+            <if test="phonenumber != null and phonenumber != ''">#{phonenumber,jdbcType=VARCHAR}, </if>
+            <if test="region != null and region != ''">#{region,jdbcType=VARCHAR}, </if>
+            <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP}, </if>
+            <if test="createPeople != null and createPeople != ''">#{createPeople,jdbcType=VARCHAR}, </if>
+            <if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP}, </if>
+            <if test="updatePeople != null and updatePeople != ''">#{updatePeople,jdbcType=VARCHAR}, </if>
+            <if test="outRemark != null and outRemark != ''">#{outRemark,jdbcType=VARCHAR}, </if>
+            <if test="deleteCode != null">#{deleteCode,jdbcType=INTEGER}, </if>
+            <if test="backTime != null">#{backTime,jdbcType=TIMESTAMP}, </if>
+            <if test="backcarMileage != null">#{backcarMileage,jdbcType=FLOAT}, </if>
+            <if test="trip != null">#{trip,jdbcType=FLOAT}, </if>
+            <if test="parkPosition != null and parkPosition != ''">#{parkPosition,jdbcType=VARCHAR}, </if>
+       	 	<if test="backRemark != null and backRemark != ''">#{backRemark,jdbcType=VARCHAR}, </if>
+       	 	<if test="outCause != null and outCause != ''">#{outCause,jdbcType=VARCHAR},</if>
+       	 	<if test="carType != null and carType != ''">#{carType,jdbcType=INTEGER},</if>
+       	 	<if test="destArea != null and destArea != ''">#{destArea,jdbcType=VARCHAR}</if>
+        </trim>
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT @@IDENTITY AS id
+        </selectKey>
+	</insert>
+	<!--出车申请，改变车辆状态为出车申请-->
+	<update id = "changeNowStatus" parameterType="java.lang.Integer">
+		UPDATE car_base_vehicle set NOW_STATUS='5' where ID=#{id}
+	</update>
+	<!-- 特定更新回车时间 -->
+	<update id="updateBackTimeByCondition">
+		UPDATE car_daily_out_record CDOR
+		<set>
+			<if test="next != null">CDOR.BACK_TIME = #{next},</if>
+			<if test="next != null">CDOR.ESTIMATE_RETURN_TIME=#{next},</if>
+			<if test="remark != null">CDOR.BACK_REMARK=#{remark},</if>
+		</set>
+		<where>
+			CDOR.CAR_TYPE = 2
+			<if test="deptId != null">AND CDOR.DEPT_ID = #{deptId} </if>
+			<if test="carId != null">AND CDOR.CAR_ID = #{carId}</if>
+			<if test="caruser != null">AND CDOR.CARUSER = #{caruser}</if>
+		</where>
+	</update>
+</mapper>

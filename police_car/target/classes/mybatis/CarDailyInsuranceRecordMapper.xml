@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.carTravelsky.mapper.carDaily.CarDailyInsuranceRecordMapper">
+    <resultMap id="BaseResultMap" type="carDailyInsuranceRecordDO">
+        <id column="ID" property="id" jdbcType="INTEGER" />
+        <result column="CAR_ID" property="carID" jdbcType="INTEGER" />
+        <result column="POLICY_NUMBER" property="policyNumber" jdbcType="VARCHAR" />
+        <result column="HANDLER" property="handler" jdbcType="VARCHAR" />
+        <result column="INSURE_MONEY" property="insureMoney" jdbcType="FLOAT" />
+        <result column="INSURE_DATE" property="insureDate" jdbcType="TIMESTAMP" />
+        <result column="END_DATE" property="endDate" jdbcType="TIMESTAMP" />
+        <result column="INSURANCE_TYPE" property="insuranceType" jdbcType="VARCHAR" />
+        <result column="REGION" property="region" jdbcType="VARCHAR" />
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="CREATE_PEOPLE" property="createPeople" jdbcType="VARCHAR" />
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="UPDATE_PEOPLE" property="updatePeople" jdbcType="VARCHAR" />
+        <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+        <result column="INSURANCE_CP_ID" property="insuranceCpID" jdbcType="INTEGER" />
+        
+        <result column="PHOTO_URL" property="photoUrl" jdbcType="VARCHAR" />
+        <result column="LICENSENO" property="licenseno" jdbcType="VARCHAR" />
+        <result column="HANDLENAME" property="handlename" jdbcType="VARCHAR" />
+        <result column="INSURANCETYPENM" property="insuranceTypeNm" jdbcType="VARCHAR" />
+        <result column="INSURANCECPNM" property="insuranceCpNm" jdbcType="VARCHAR" />
+        <result column="INSURANCEREMARK" property="insuranceRemark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <insert id="insert" parameterType="carDailyInsuranceRecordDO">
+        INSERT INTO CAR_DAILY_INSURANCE_RECORD
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="carID != null">CAR_ID, </if>
+            <if test="policyNumber != null and policyNumber != ''">POLICY_NUMBER, </if>
+            <if test="handler != null and handler != ''">HANDLER, </if>
+            <if test="insureMoney != null">INSURE_MONEY, </if>
+            <if test="insureDate != null">INSURE_DATE, </if>
+            <if test="endDate != null">END_DATE, </if>
+            <if test="insuranceType != null and insuranceType != ''">INSURANCE_TYPE, </if>
+            <if test="region != null and region != ''">REGION, </if>
+            <if test="createTime != null">CREATE_TIME, </if>
+            <if test="createPeople != null and createPeople != ''">CREATE_PEOPLE, </if>
+            <if test="updateTime != null">UPDATE_TIME, </if>
+            <if test="updatePeople != null and updatePeople != ''">UPDATE_PEOPLE, </if>
+            <if test="remark != null and remark != ''">REMARK, </if>
+            <if test="insuranceCpID != null">INSURANCE_CP_ID, </if>
+            <if test="companyid != null">COMPANY_ID, </if>
+            <if test="insuranceRemark != null">INSURANCEREMARK, </if>
+            <if test="photoUrl != null">PHOTO_URL, </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="carID != null">#{carID,jdbcType=INTEGER}, </if>
+            <if test="policyNumber != null and policyNumber != ''">#{policyNumber,jdbcType=VARCHAR}, </if>
+            <if test="handler != null and handler != ''">#{handler,jdbcType=INTEGER}, </if>
+            <if test="insureMoney != null">#{insureMoney,jdbcType=FLOAT}, </if>
+            <if test="insureDate != null">#{insureDate,jdbcType=TIMESTAMP}, </if>
+            <if test="endDate != null">#{endDate,jdbcType=TIMESTAMP}, </if>
+            <if test="insuranceType != null and insuranceType != ''">#{insuranceType,jdbcType=INTEGER}, </if>
+            <if test="region != null and region != ''">#{region,jdbcType=VARCHAR}, </if>
+            <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP}, </if>
+            <if test="createPeople != null and createPeople != ''">#{createPeople,jdbcType=VARCHAR}, </if>
+            <if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP}, </if>
+            <if test="updatePeople != null and updatePeople != ''">#{updatePeople,jdbcType=VARCHAR}, </if>
+            <if test="remark != null and remark != ''">#{remark,jdbcType=VARCHAR}, </if>
+            <if test="insuranceCpID != null">#{insuranceCpID,jdbcType=INTEGER}, </if>
+            <if test="companyid != null">#{companyid,jdbcType=INTEGER}, </if>
+            <if test="insuranceRemark != null and insuranceRemark !=''">#{insuranceRemark,jdbcType=VARCHAR}, </if>
+            <if test="photoUrl != null">#{photoUrl,jdbcType=VARCHAR}, </if>
+        </trim>
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT @@IDENTITY AS id
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="carDailyInsuranceRecordDO" >
+        UPDATE CAR_DAILY_INSURANCE_RECORD
+        <set>
+            <if test="carID != null">CAR_ID = #{carID,jdbcType=INTEGER}, </if>
+            <if test="policyNumber != null">POLICY_NUMBER = #{policyNumber,jdbcType=VARCHAR}, </if>
+            <if test="handler != null">HANDLER = #{handler,jdbcType=INTEGER}, </if>
+            <if test="insureMoney != null">INSURE_MONEY = #{insureMoney,jdbcType=FLOAT}, </if>
+            <if test="insureDate != null">INSURE_DATE = #{insureDate,jdbcType=TIMESTAMP}, </if>
+            <if test="endDate != null">END_DATE = #{endDate,jdbcType=TIMESTAMP}, </if>
+            <if test="insuranceType != null">INSURANCE_TYPE = #{insuranceType,jdbcType=INTEGER}, </if>
+            <if test="region != null">REGION = #{region,jdbcType=VARCHAR}, </if>
+            <if test="createTime != null">CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}, </if>
+            <if test="createPeople != null">CREATE_PEOPLE = #{createPeople,jdbcType=VARCHAR}, </if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}, </if>
+            <if test="updatePeople != null">UPDATE_PEOPLE = #{updatePeople,jdbcType=VARCHAR}, </if>
+            <if test="remark != null">REMARK = #{remark,jdbcType=VARCHAR}, </if>
+            <if test="insuranceCpID != null">INSURANCE_CP_ID = #{insuranceCpID,jdbcType=INTEGER}, </if>
+            <if test="companyid != null">COMPANY_ID = #{companyid,jdbcType=INTEGER}, </if>
+            <if test="insuranceRemark != null">INSURANCEREMARK = #{insuranceRemark,jdbcType=VARCHAR}, </if>
+            <if test="photoUrl != null">PHOTO_URL = #{photoUrl,jdbcType=VARCHAR}, </if>
+        </set>
+        WHERE ID = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <!-- 状态删除单挑 -->
+    <update id="delete" parameterType="java.lang.Integer">
+    	UPDATE CAR_DAILY_INSURANCE_RECORD SET DELETE_CODE = 2 WHERE ID = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <!-- 批量删除 -->
+	<update id="updateDeletecode" parameterType="list">
+		UPDATE CAR_DAILY_INSURANCE_RECORD
+		<set>
+			DELETE_CODE = 2
+		</set>
+			WHERE ID IN
+		<foreach collection="list" item="item" open="(" separator="," close=")">
+			#{item} 
+		</foreach>
+	</update>
+	
+	<!-- 获取单条记录信息 -->
+    <select id="getByID" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT CDIR.*,CBV.LICENSENO AS LICENSENO,CBC.COMPANY_NAME AS INSURANCECPNM,CBS.STAFF_NAME AS HANDLENAME,KCM.DISPLAY AS INSURANCETYPENM,CBS.DEPT_ID AS  COMPANY_ID FROM CAR_DAILY_INSURANCE_RECORD AS CDIR
+        JOIN CAR_BASE_VEHICLE AS CBV ON CDIR.CAR_ID = CBV.ID
+        LEFT JOIN CAR_BASE_CONTACTS AS CBC ON CDIR.INSURANCE_CP_ID = CBC.ID
+        LEFT JOIN CAR_BASE_STAFF AS CBS ON CDIR.HANDLER = CBS.ID
+        LEFT JOIN KEY_CODE_MASTER AS KCM ON CDIR.INSURANCE_TYPE = KCM.KEY_ID
+        WHERE CDIR.ID = #{id,jdbcType=INTEGER} 
+    </select>
+
+	<!-- 获取未删除列表 -->
+    <select id="getList" parameterType="carDailyInsuranceRecordDO" resultMap="BaseResultMap">
+        SELECT
+			CDIR.*, CBV.LICENSENO AS LICENSENO,
+			CBC.COMPANY_NAME AS INSURANCECPNM,
+			CBS.STAFF_NAME AS HANDLENAME,
+			KCM.DISPLAY AS INSURANCETYPENM
+		FROM
+			CAR_DAILY_INSURANCE_RECORD AS CDIR
+		JOIN CAR_BASE_VEHICLE AS CBV ON CDIR.CAR_ID = CBV.ID
+		LEFT JOIN CAR_BASE_CONTACTS AS CBC ON CDIR.INSURANCE_CP_ID = CBC.ID
+		LEFT JOIN CAR_BASE_STAFF AS CBS ON CDIR. HANDLER = CBS.ID
+		LEFT JOIN KEY_CODE_MASTER AS KCM ON CDIR.INSURANCE_TYPE = KCM.KEY_ID
+		WHERE
+			CDIR.DELETE_CODE = 1 <!-- AND CDIR.COMPANY_ID = #{companyid,jdbcType=INTEGER} -->
+		ORDER BY CDIR.END_DATE
+    </select>
+    <!-- 全局搜索 -->
+    <select id="getListCarInsuranceSearchStr" resultMap="BaseResultMap">
+    SELECT
+		CDIR.*, CBV.LICENSENO AS LICENSENO,
+			CBC.COMPANY_NAME AS INSURANCECPNM,
+			CBS.STAFF_NAME AS HANDLENAME,
+			KCM.DISPLAY AS INSURANCETYPENM,
+      		CBS.DEPT_ID AS  COMPANY_ID
+		FROM
+			CAR_DAILY_INSURANCE_RECORD AS CDIR
+		JOIN CAR_BASE_VEHICLE AS CBV ON CDIR.CAR_ID = CBV.ID
+		LEFT JOIN CAR_BASE_CONTACTS AS CBC ON CDIR.INSURANCE_CP_ID = CBC.ID
+		LEFT JOIN CAR_BASE_STAFF AS CBS ON CDIR. HANDLER = CBS.ID
+		LEFT JOIN KEY_CODE_MASTER AS KCM ON CDIR.INSURANCE_TYPE = KCM.KEY_ID
+	WHERE		
+ <!-- AND CDIR.COMPANY_ID = #{companyId,jdbcType=INTEGER} -->  
+	CONCAT(
+	    CDIR.ID,
+		ifnull(CDIR.REMARK, ''),
+		ifnull(CDIR.POLICY_NUMBER, ''),
+		ifnull(CDIR.INSURE_MONEY, ''),
+		ifnull(CDIR.INSURE_DATE, ''),
+		ifnull(CBV.LICENSENO, ''),
+		ifnull(CBC.COMPANY_NAME, ''),
+		ifnull(CBS.STAFF_NAME, '')
+		
+	) LIKE CONCAT(
+		'%',
+		#{searchStr},'%')
+		AND  CDIR.DELETE_CODE = 1
+    </select>
+    
+        <!-- 保险过期数量统计 -->
+        <select id="countExpire"  parameterType="java.lang.Integer" resultType="java.lang.Integer">
+              SELECT
+					COUNT(ID)
+				FROM
+					CAR_DAILY_INSURANCE_RECORD
+				WHERE
+					DELETE_CODE = 1
+				AND END_DATE BETWEEN END_DATE
+				AND DATE_ADD(
+					NOW(),
+					INTERVAL #{id,jdbcType=INTEGER} DAY)
+        </select>
+        <!-- 保险过期数量统计 by部门-->
+        <select id="countExpireBycomID"  parameterType="java.lang.Integer" resultType="java.lang.Integer">
+              SELECT
+					COUNT(ID)
+				FROM
+					CAR_DAILY_INSURANCE_RECORD
+				WHERE
+					DELETE_CODE = 1
+				AND END_DATE BETWEEN END_DATE
+				AND DATE_ADD(
+					NOW(),
+					INTERVAL #{id,jdbcType=INTEGER} DAY)
+        </select>
+         
+         <!--得到保险到期提醒列表  -->
+         <select id="getExpireList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+         		SELECT
+						*
+					FROM
+						CAR_DAILY_INSURANCE_RECORD
+					WHERE
+						DELETE_CODE = 1
+					AND END_DATE BETWEEN END_DATE
+					AND DATE_ADD(
+						NOW(),
+						INTERVAL #{id,jdbcType=INTEGER} DAY)
+         
+         </select>
+
+</mapper>

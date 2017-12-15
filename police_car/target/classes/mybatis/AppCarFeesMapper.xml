@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.carTravelsky.mapper.app.AppCarFeesMapper">
+	<!-- 检查当前记录是否存在 -->
+ 	<select id="searchFeesainRecodrIsHave" resultType="java.lang.Integer">
+ 		SELECT
+			CAFM.ID
+		FROM
+			car_daily_fee_manage_record CAFM
+ 		<where>
+ 			DELETE_CODE = 1 
+ 			<if test="carId != null">AND CAR_ID = #{carId}</if>
+ 			<if test="username != null">AND CREATE_PEOPLE = #{username}</if>
+ 			<if test="currentDate != null">AND CREATE_TIME = #{currentDate}</if>
+ 		</where>
+ 	</select>
+ 	
+ 	<!--规费字典名称列表  -->
+ 	<select id="getFeesList" parameterType="java.lang.String" resultType="generalRS">
+ 		SELECT KCM.KEY_ID AS id,
+			   KCM.DISPLAY AS type,
+			   KCM.DESCRIPTION AS description
+		FROM key_code_master KCM
+		WHERE KCM.KEY_TYPE = #{name}
+ 	</select>
+ 	
+</mapper>

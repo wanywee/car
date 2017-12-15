@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.carTravelsky.mapper.system.CarSysRoleMenuMapper">
+    <resultMap id="BaseResultMap" type="carSysRoleMenuDO">
+        <id column="ID" property="id" jdbcType="INTEGER" />
+        <result column="ROLE_ID" property="roleID" jdbcType="INTEGER" />
+        <result column="MENU_ID" property="menuID" jdbcType="INTEGER" />
+    </resultMap>
+
+    <insert id="insert" parameterType="carSysRoleMenuDO">
+        INSERT INTO CAR_SYS_ROLE_MENU
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roleID != null">ROLE_ID, </if>
+            <if test="menuID != null">MENU_ID, </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="roleID != null">#{roleID,jdbcType=INTEGER}, </if>
+            <if test="menuID != null">#{menuID,jdbcType=INTEGER}, </if>
+        </trim>
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT @@IDENTITY AS id
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="carSysRoleMenuDO" >
+        UPDATE CAR_SYS_ROLE_MENU
+        <set>
+            <if test="roleID != null">ROLE_ID = #{roleID,jdbcType=INTEGER}, </if>
+            <if test="menuID != null">MENU_ID = #{menuID,jdbcType=INTEGER}, </if>
+        </set>
+        WHERE ID = #{id,jdbcType=INTEGER}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        DELETE FROM CAR_SYS_ROLE_MENU WHERE ID = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <select id="getByID" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT * FROM CAR_SYS_ROLE_MENU WHERE ID = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="getList" parameterType="carSysRoleMenuDO" resultMap="BaseResultMap">
+        SELECT * FROM CAR_SYS_ROLE_MENU
+        <where>
+            <if test="id != null"> AND ID = #{id,jdbcType=INTEGER} </if>
+            <if test="roleID != null"> AND ROLE_ID = #{roleID,jdbcType=INTEGER} </if>
+            <if test="menuID != null"> AND MENU_ID = #{menuID,jdbcType=INTEGER} </if>
+        </where>
+    </select>
+    
+    <delete id="deletePermission" parameterType="carSysRoleMenuDO">
+		DELETE FROM car_sys_role_menu
+		  <where>
+            <if test="id != null"> AND ID = #{id,jdbcType=INTEGER} </if>
+            <if test="roleID != null"> AND ROLE_ID = #{roleID,jdbcType=INTEGER} </if>
+            <if test="menuID != null"> AND MENU_ID = #{menuID,jdbcType=INTEGER} </if>
+        </where>
+    </delete>
+	<delete id="deletePermissionByrole" parameterType="java.lang.Integer">
+		     DELETE FROM car_sys_role_menu WHERE ROLE_ID = #{roleID,jdbcType=INTEGER}
+	</delete>
+		<insert id="insertList" parameterType="java.util.List">
+			INSERT INTO car_sys_role_menu (ROLE_ID, MENU_ID) VALUES
+			<foreach collection="list" item="rp" index="index" separator=",">
+				(#{rp.roleID}, #{rp.menuID})
+			</foreach>
+		</insert>
+		
+		<delete id="deleteList" parameterType="java.util.List">
+			DELETE FROM car_sys_role_menu WHERE ID IN
+			<foreach collection="list" item="permissionID" index="index" separator="," open="(" close=")">
+				#{permissionID}
+			</foreach>
+		</delete>
+</mapper>

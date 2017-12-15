@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.carTravelsky.mapper.app.AppCarMaintMapper">
+	<!-- 检查当前记录是否存在 -->
+ 	<select id="searchMaintainRecodrIsHave" resultType="java.lang.Integer">
+ 		SELECT CDMR.ID
+ 		FROM car_daily_maintain_record CDMR
+ 		<where>
+ 			DELETE_CODE = 1 
+ 			<if test="carId != null">AND CAR_ID = #{carId}</if>
+ 			<if test="username != null">AND CREATE_PEOPLE = #{username}</if>
+ 			<if test="maintDate != null">AND CREATE_TIME = #{maintDate}</if>
+ 		</where>
+ 		
+ 	</select>
+ 	
+ 	<!-- 根据公司ID查询是否是保养公司 -->
+ 	
+</mapper>

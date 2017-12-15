@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.carTravelsky.mapper.carDaily.CarDailyAccidentRecordMapper">
+    <resultMap id="BaseResultMap" type="carDailyAccidentRecordDO">
+        <id column="ID" property="id" jdbcType="INTEGER" />
+        <result column="CAR_ID" property="carID" jdbcType="INTEGER" />
+        <result column="DRIVER" property="driver" jdbcType="VARCHAR" />
+        <result column="ACCIDENT_DATE" property="accidentDate" jdbcType="TIMESTAMP" />
+        <result column="WEBEAR_MONEY" property="webearMoney" jdbcType="FLOAT" />
+        <result column="OPBEAR_MONEY" property="opbearMoney" jdbcType="FLOAT" />
+        <result column="INSURANCE_MONEY" property="insuranceMoney" jdbcType="FLOAT" />
+        <result column="HAPPEN_ADDRESS" property="happenAddress" jdbcType="VARCHAR" />
+        <result column="ACCIDENT_EXPLAIN" property="accidentExplain" jdbcType="VARCHAR" />
+        <result column="OUR_SITUATION" property="ourSituation" jdbcType="VARCHAR" />
+        <result column="OTHER_SITUATION" property="otherSituation" jdbcType="VARCHAR" />
+        <result column="TREATMENT_RESULT" property="treatmentResult" jdbcType="VARCHAR" />
+        <result column="REGION" property="region" jdbcType="VARCHAR" />
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="CREATE_PEOPLE" property="createPeople" jdbcType="VARCHAR" />
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="UPDATE_PEOPLE" property="updatePeople" jdbcType="VARCHAR" />
+        <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+        <result column="DELETE_CODE" property="deleteCode" jdbcType="INTEGER" />
+         <result column="WEBEAR_LOSS" property="webearLoss" jdbcType="DOUBLE" />
+        <result column="OPBEAR_LOSS" property="opbearLoss" jdbcType="DOUBLE" />
+    </resultMap>
+
+    <insert id="insert" parameterType="carDailyAccidentRecordDO">
+        INSERT INTO CAR_DAILY_ACCIDENT_RECORD
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="carID != null">CAR_ID, </if>
+            <if test="driver != null and driver != ''">DRIVER, </if>
+            <if test="accidentDate != null">ACCIDENT_DATE, </if>
+            <if test="webearMoney != null">WEBEAR_MONEY, </if>
+            <if test="opbearMoney != null">OPBEAR_MONEY, </if>
+            <if test="insuranceMoney != null">INSURANCE_MONEY, </if>
+            <if test="happenAddress != null and happenAddress != ''">HAPPEN_ADDRESS, </if>
+            <if test="accidentExplain != null and accidentExplain != ''">ACCIDENT_EXPLAIN, </if>
+            <if test="ourSituation != null and ourSituation != ''">OUR_SITUATION, </if>
+            <if test="otherSituation != null and otherSituation != ''">OTHER_SITUATION, </if>
+            <if test="treatmentResult != null and treatmentResult != ''">TREATMENT_RESULT, </if>
+            <if test="region != null and region != ''">REGION, </if>
+            <if test="createTime != null">CREATE_TIME, </if>
+            <if test="createPeople != null and createPeople != ''">CREATE_PEOPLE, </if>
+            <if test="updateTime != null">UPDATE_TIME, </if>
+            <if test="updatePeople != null and updatePeople != ''">UPDATE_PEOPLE, </if>
+            <if test="remark != null and remark != ''">REMARK, </if>
+            <if test="deleteCode != null and deleteCode != ''">DELETE_CODE, </if>
+            <if test="webearLoss != null and webearLoss != ''">WEBEAR_LOSS, </if>
+            <if test="opbearLoss != null and opbearLoss != ''">OPBEAR_LOSS, </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="carID != null">#{carID,jdbcType=INTEGER}, </if>
+            <if test="driver != null and driver != ''">#{driver,jdbcType=VARCHAR}, </if>
+            <if test="accidentDate != null">#{accidentDate,jdbcType=DATE}, </if>
+            <if test="webearMoney != null">#{webearMoney,jdbcType=FLOAT}, </if>
+            <if test="opbearMoney != null">#{opbearMoney,jdbcType=FLOAT}, </if>
+            <if test="insuranceMoney != null">#{insuranceMoney,jdbcType=FLOAT}, </if>
+            <if test="happenAddress != null and happenAddress != ''">#{happenAddress,jdbcType=VARCHAR}, </if>
+            <if test="accidentExplain != null and accidentExplain != ''">#{accidentExplain,jdbcType=VARCHAR}, </if>
+            <if test="ourSituation != null and ourSituation != ''">#{ourSituation,jdbcType=VARCHAR}, </if>
+            <if test="otherSituation != null and otherSituation != ''">#{otherSituation,jdbcType=VARCHAR}, </if>
+            <if test="treatmentResult != null and treatmentResult != ''">#{treatmentResult,jdbcType=VARCHAR}, </if>
+            <if test="region != null and region != ''">#{region,jdbcType=VARCHAR}, </if>
+            <if test="createTime != null">#{createTime,jdbcType=DATE}, </if>
+            <if test="createPeople != null and createPeople != ''">#{createPeople,jdbcType=VARCHAR}, </if>
+            <if test="updateTime != null">#{updateTime,jdbcType=DATE}, </if>
+            <if test="updatePeople != null and updatePeople != ''">#{updatePeople,jdbcType=VARCHAR}, </if>
+            <if test="remark != null and remark != ''">#{remark,jdbcType=VARCHAR}, </if>
+            <if test="deleteCode != null and deleteCode != ''">#{deleteCode,jdbcType=INTEGER}, </if>
+            <if test="webearLoss != null and webearLoss != ''">#{webearLoss}, </if>
+            <if test="opbearLoss != null and opbearLoss != ''">#{opbearLoss}, </if>
+        </trim>
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT @@IDENTITY AS id
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="carDailyAccidentRecordDO" >
+        UPDATE CAR_DAILY_ACCIDENT_RECORD
+        <set>
+            <if test="carID != null">CAR_ID = #{carID,jdbcType=INTEGER}, </if>
+            <if test="driver != null">DRIVER = #{driver,jdbcType=VARCHAR}, </if>
+            <if test="accidentDate != null">ACCIDENT_DATE = #{accidentDate,jdbcType=DATE}, </if>
+            <if test="webearMoney != null">WEBEAR_MONEY = #{webearMoney,jdbcType=FLOAT}, </if>
+            <if test="opbearMoney != null">OPBEAR_MONEY = #{opbearMoney,jdbcType=FLOAT}, </if>
+            <if test="insuranceMoney != null">INSURANCE_MONEY = #{insuranceMoney,jdbcType=FLOAT}, </if>
+            <if test="happenAddress != null">HAPPEN_ADDRESS = #{happenAddress,jdbcType=VARCHAR}, </if>
+            <if test="accidentExplain != null">ACCIDENT_EXPLAIN = #{accidentExplain,jdbcType=VARCHAR}, </if>
+            <if test="ourSituation != null">OUR_SITUATION = #{ourSituation,jdbcType=VARCHAR}, </if>
+            <if test="otherSituation != null">OTHER_SITUATION = #{otherSituation,jdbcType=VARCHAR}, </if>
+            <if test="treatmentResult != null">TREATMENT_RESULT = #{treatmentResult,jdbcType=VARCHAR}, </if>
+            <if test="region != null">REGION = #{region,jdbcType=VARCHAR}, </if>
+            <if test="createTime != null">CREATE_TIME = #{createTime,jdbcType=DATE}, </if>
+            <if test="createPeople != null">CREATE_PEOPLE = #{createPeople,jdbcType=VARCHAR}, </if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime,jdbcType=DATE}, </if>
+            <if test="updatePeople != null">UPDATE_PEOPLE = #{updatePeople,jdbcType=VARCHAR}, </if>
+            <if test="remark != null">REMARK = #{remark,jdbcType=VARCHAR}, </if>
+            <if test="deleteCode != null">DELETE_CODE = #{deleteCode,jdbcType=INTEGER}, </if>
+            <if test="opbearLoss != null">OPBEAR_LOSS = #{opbearLoss}, </if>
+            <if test="webearLoss != null ">WEBEAR_LOSS = #{webearLoss}, </if>
+        </set>
+        WHERE ID = #{id,jdbcType=INTEGER}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        DELETE FROM CAR_DAILY_ACCIDENT_RECORD WHERE ID = #{id,jdbcType=INTEGER}
+    </delete>
+    
+      <!-- 不完全删除 -->
+      <update id="deleteIncomplete"  parameterType="java.lang.Integer">
+         UPDATE CAR_DAILY_ACCIDENT_RECORD  SET DELETE_CODE = 2 WHERE ID = #{id,jdbcType=INTEGER}    
+      </update>
+
+    <select id="getByID" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+         SELECT CDAR.* ,CBE.LICENSENO as licenseno,CBS.STAFF_NAME AS staffName  FROM
+                CAR_DAILY_ACCIDENT_RECORD    AS  CDAR  
+          LEFT  JOIN   CAR_BASE_VEHICLE  AS CBE  ON  CDAR.CAR_ID =CBE.ID
+          LEFT  JOIN    CAR_BASE_STAFF AS CBS  ON   CDAR.DRIVER =CBS.ID
+
+				 WHERE  CDAR.DELETE_CODE = 1 AND  CBS.DELETE_CODE = 1 AND  CBS.`STATUS` =1
+           AND  CBE.DELETE_CODE = 1 AND  CBE.`STATUS` =1 AND  CDAR.ID = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="getList" parameterType="carDailyAccidentRecordDO" resultMap="BaseResultMap">
+       SELECT
+			CDAR.*,
+			CBE.LICENSENO AS licenseno,
+			CBS.STAFF_NAME AS staffName,
+			CBS.DEPT_ID AS COMPANY_ID
+		FROM
+			CAR_DAILY_ACCIDENT_RECORD AS CDAR
+		LEFT JOIN CAR_BASE_VEHICLE AS CBE ON CDAR.CAR_ID = CBE.ID
+		LEFT JOIN CAR_BASE_STAFF AS CBS ON CDAR.DRIVER = CBS.ID
+        <where>
+           CDAR.DELETE_CODE = 1 AND  CBS.DELETE_CODE = 1 AND  CBS.`STATUS` =1
+           AND  CBE.DELETE_CODE = 1 AND  CBE.`STATUS` =1
+            <if test="id != null"> AND ID = #{id,jdbcType=INTEGER} </if>
+            <if test="carID != null"> AND CAR_ID = #{carID,jdbcType=INTEGER} </if>
+            <if test="driver != null and driver != ''"> AND DRIVER = #{driver,jdbcType=VARCHAR} </if>
+            <if test="accidentDate != null"> AND ACCIDENT_DATE = #{accidentDate,jdbcType=TIMESTAMP} </if>
+            <if test="webearMoney != null"> AND WEBEAR_MONEY = #{webearMoney,jdbcType=FLOAT} </if>
+            <if test="opbearMoney != null"> AND OPBEAR_MONEY = #{opbearMoney,jdbcType=FLOAT} </if>
+            <if test="insuranceMoney != null"> AND INSURANCE_MONEY = #{insuranceMoney,jdbcType=FLOAT} </if>
+            <if test="happenAddress != null and happenAddress != ''"> AND HAPPEN_ADDRESS = #{happenAddress,jdbcType=VARCHAR} </if>
+            <if test="accidentExplain != null and accidentExplain != ''"> AND ACCIDENT_EXPLAIN = #{accidentExplain,jdbcType=VARCHAR} </if>
+            <if test="ourSituation != null and ourSituation != ''"> AND OUR_SITUATION = #{ourSituation,jdbcType=VARCHAR} </if>
+            <if test="otherSituation != null and otherSituation != ''"> AND OTHER_SITUATION = #{otherSituation,jdbcType=VARCHAR} </if>
+            <if test="treatmentResult != null and treatmentResult != ''"> AND TREATMENT_RESULT = #{treatmentResult,jdbcType=VARCHAR} </if>
+            <if test="region != null and region != ''"> AND REGION = #{region,jdbcType=VARCHAR} </if>
+            <if test="createTime != null"> AND CREATE_TIME = #{createTime,jdbcType=TIMESTAMP} </if>
+            <if test="createPeople != null and createPeople != ''"> AND CREATE_PEOPLE = #{createPeople,jdbcType=VARCHAR} </if>
+            <if test="updateTime != null"> AND UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP} </if>
+            <if test="updatePeople != null and updatePeople != ''"> AND UPDATE_PEOPLE = #{updatePeople,jdbcType=VARCHAR} </if>
+            <if test="remark != null and remark != ''"> AND REMARK = #{remark,jdbcType=VARCHAR} </if>
+         	 <if test="opbearLoss != null">AND OPBEAR_LOSS = #{opbearLoss}, </if>
+            <if test="webearLoss != null "> AND WEBEAR_LOSS = #{webearLoss}, </if>
+        </where>
+    </select>
+    <!--全局搜索  -->
+    <select id="getsearchCarDailyAccidentRecord" resultMap="BaseResultMap" >
+		SELECT
+	CDAR.*,
+			CBE.LICENSENO AS licenseno,
+			CBS.STAFF_NAME AS staffName,
+			CBS.DEPT_ID AS COMPANY_ID
+		FROM
+			CAR_DAILY_ACCIDENT_RECORD AS CDAR
+		LEFT JOIN CAR_BASE_VEHICLE AS CBE ON CDAR.CAR_ID = CBE.ID
+		LEFT JOIN CAR_BASE_STAFF AS CBS ON CDAR.DRIVER = CBS.ID
+WHERE
+	CONCAT(
+		ifnull(CDAR.ACCIDENT_DATE, ''),
+		ifnull(CDAR.HAPPEN_ADDRESS, ' '),
+		ifnull(CDAR.ACCIDENT_EXPLAIN, ' '),
+		ifnull(CDAR.REMARK, ''),
+		ifnull(CBE.LICENSENO, ' '),
+		ifnull(CBS.STAFF_NAME, ' ')
+	) LIKE CONCAT(
+		'%',
+		#{searchStr},'%') AND CDAR.DELETE_CODE = 1 AND CDAR.DELETE_CODE = 1 AND  CBS.DELETE_CODE = 1 AND  CBS.`STATUS` =1
+           AND  CBE.DELETE_CODE = 1 AND  CBE.`STATUS` =1
+		  
+	</select>
+	
+	
+	<!-- 首页提醒 事故记录排行榜 -->
+    <select id="getTopList" parameterType="carDailyAccidentRecordDO"  resultType="com.carTravelsky.bean.pageView.TopRow">
+            SELECT '/img/seg' AS 'seqImgPath',DEPT.DEPT_NAME AS 'belongDepName',STAFF.STAFF_NAME AS 'display',count(*) AS 'displayCount' 
+            	FROM car_daily_accident_record CDVR LEFT JOIN  CAR_BASE_STAFF  STAFF  ON  CDVR.DRIVER=STAFF.ID 
+            	 LEFT JOIN CAR_BASE_DEPTMENT DEPT  ON  STAFF.DEPT_ID=DEPT.ID 
+            	 WHERE CDVR.DELETE_CODE='1'  AND DEPT.DELETE_CODE=1 AND DEPT.`STATUS`=1  GROUP BY CDVR.DRIVER,STAFF.STAFF_NAME,DEPT.DEPT_NAME
+   </select>
+	
+
+</mapper>

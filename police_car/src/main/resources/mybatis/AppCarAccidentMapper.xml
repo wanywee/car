@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.carTravelsky.mapper.app.AppCarAccidentMapper">
+
+	<!-- 车牌号查询 ID -->
+	<select id="searchCarIdByNumber" parameterType="java.lang.String" resultType="java.lang.Integer">
+		SELECT CBV.ID
+	 	FROM car_base_vehicle CBV
+	 	WHERE CBV.LICENSENO = #{licenseNumber}
+	</select>
+	
+	<!-- 检查事故记录是否存在 -->
+	<select id="searchAccidentIsHave" resultType="java.lang.Integer">
+		SELECT CDAR.ID
+		FROM car_daily_accident_record CDAR
+		WHERE 
+		CDAR.DELETE_CODE = 1
+		AND CDAR.ACCIDENT_DATE = #{accidentDate,jdbcType=DATE}
+		AND CDAR.CAR_ID =  #{carID,jdbcType=INTEGER}
+		AND CDAR.DRIVER =  #{driver,jdbcType=VARCHAR}
+	</select>
+</mapper>

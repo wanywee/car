@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.carTravelsky.mapper.trafficManage.DispatchCenterMapper">
+	<resultMap type="com.carTravelsky.bean.carDaily.CarDailyOutRecordDO" id="BaseResultMap">
+		<id column="ID" property="id"/>
+		<result column="CAR_ID" property="carID"/>
+		<result column="STFFNO" property="stffNo"/>
+		<result column="CARUSER" property="caruser"/>
+		<result column="VEHICLEDEPT" property="vehicleDept"/>
+		<result column="OUTCAR_TIME" property="outcarTime"/>
+		<result column="ESTIMATE_RETURN_TIME" property="estimateReturnTime"/>
+		<result column="OUT_CAUSE" property="outCause"/>
+		<result column="DESITINATION" property="desitination"/>
+	</resultMap>
+	
+	<!-- 获取当前未审批的出车记录 -->
+	<select id="getListDispatchCenter" resultMap="BaseResultMap">
+		SELECT CDOR.ID AS ID,CDOR.CAR_ID AS CAR_ID,CBS.STAFF_NO AS STFFNO,CBS.STAFF_NAME AS CARUSER,
+		CBD.DEPT_NAME AS VEHICLEDEPT,CDOR.OUTCAR_TIME AS OUTCAR_TIME,CDOR.ESTIMATE_RETURN_TIME AS ESTIMATE_RETURN_TIME,
+		CDOR.OUT_CAUSE AS OUT_CAUSE,CDOR.DESITINATION AS DESITINATION FROM CAR_DAILY_OUT_RECORD AS CDOR
+		LEFT JOIN CAR_BASE_STAFF AS CBS ON CBS.ID = CDOR.CARUSER
+		LEFT JOIN CAR_BASE_DEPTMENT AS CBD ON CDOR.DEPT_ID = CBD.ID
+		WHERE CDOR.DELETE_CODE = 3
+	</select>
+	
+	<!-- 全局搜索 -->
+	<select id="serchDispatchCenter" resultMap="BaseResultMap">
+		SELECT
+				CDOR.ID AS ID,
+				CDOR.CAR_ID AS CAR_ID,
+				CBS.STAFF_NO AS STFFNO,
+				CBS.STAFF_NAME AS CARUSER,
+				CBD.DEPT_NAME AS VEHICLEDEPT,
+				CDOR.OUTCAR_TIME AS OUTCAR_TIME,
+				CDOR.ESTIMATE_RETURN_TIME AS ESTIMATE_RETURN_TIME,
+				CDOR.OUT_CAUSE AS OUT_CAUSE,
+				CDOR.DESITINATION AS DESITINATION
+			FROM
+				CAR_DAILY_OUT_RECORD AS CDOR
+			LEFT JOIN car_sys_user	U ON CDOR.CARUSER=U.ID
+					LEFT JOIN car_base_staff AS CBS ON U.STAFF_ID = CBS.ID
+			LEFT JOIN CAR_BASE_DEPTMENT AS CBD ON CDOR.DEPT_ID = CBD.ID
+		<where>
+		   <if test="true"> AND CDOR.DELETE_CODE = 1 </if>
+		   <if test=" searchStr!=null and searchStr !='' "> AND CONCAT(ifnull(CBS.STAFF_NO,''),CBS.STAFF_NAME,CBD.DEPT_NAME,CDOR.OUT_CAUSE,CDOR.DESITINATION,CDOR.OUTCAR_TIME,CDOR.ESTIMATE_RETURN_TIME)LIKE CONCAT('%',#{searchStr},'%') </if>
+		   <if test="carDailyOutRecordDO.carType !=null" > AND  CAR_TYPE=#{carDailyOutRecordDO.carType,jdbcType=INTEGER} </if>
+		</where>
+		
+	</select>
+	
+	<!-- 拒绝出车申请 -->
+	<update id="dispatchTurnDown" parameterType="list">
+		UPDATE CAR_DAILY_OUT_RECORD 
+		<set>
+			CAR_TYPE=4
+		</set>
+		WHERE ID IN
+		<foreach collection="list" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+	<!-- 获取拒绝出车的车辆信息 -->
+	<select id="dispatchTurnDownList" parameterType="list" resultMap="BaseResultMap">
+		SELECT CAR_DAILY_OUT_RECORD.CAR_ID FROM CAR_DAILY_OUT_RECORD WHERE ID IN 
+		<foreach collection="list" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	<!--修改被拒绝出车的车辆当前可用状态-->
+	<update id="changeCarNowStatus" parameterType="list">
+		UPDATE CAR_BASE_VEHICLE
+		<set>
+			NOW_STATUS=1
+		</set>
+		WHERE ID IN
+		<foreach collection="list" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+	<!-- 获取当前部门所拥有的车辆 -->
+	<select id="getDepartmentCars" resultMap="deptCarsResultMap">
+		SELECT DISTINCT CBV.ID as CARID,CBV.LICENSENO AS LICENSENO,KCM.DISPLAY AS CARTYPE,CBV.LOADING AS LOADING,CBV.MILEAGE AS MILEAGE,CBD.DEPT_NAME AS LOCATION 
+		FROM CAR_BASE_VEHICLE AS CBV LEFT JOIN CAR_DAILY_OUT_RECORD AS CDOR ON CDOR.CAR_ID = CBV.ID
+		LEFT JOIN CAR_BASE_DEPTMENT AS CBD ON CBD.ID = CBV.DEPT_ID
+		LEFT JOIN KEY_CODE_MASTER AS KCM ON KCM.`CODE` = CBV.CAR_DETAIL_ID 
+		WHERE CBV.DEPT_ID = (SELECT CDOR.DEPT_ID FROM CAR_DAILY_OUT_RECORD AS CDOR WHERE ID = #{outCarId}) 
+		AND KCM.KEY_TYPE = 'CAR_TYPE' AND CDOR.CAR_TYPE = 1
+		ORDER BY CASE WHEN CBV.ID = (SELECT CDOR.CAR_ID FROM CAR_DAILY_OUT_RECORD AS CDOR WHERE ID = #{outCarId}) then 0 else 1 end
+	</select>
+	<resultMap type="com.carTravelsky.bean.carDaily.DepartmentCarDO" id="deptCarsResultMap">
+		<result column="CARID" property="carId"/>
+		<result column="LICENSENO" property="licenseno"/>
+		<result column="CARTYPE" property="carType"/>
+		<result column="LOADING" property="loading"/>
+		<result column="MILEAGE" property="mileage"/>
+		<result column="LOCATION" property="location"/>
+	</resultMap>
+	
+</mapper>

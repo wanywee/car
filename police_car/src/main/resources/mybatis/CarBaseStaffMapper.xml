@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.carTravelsky.mapper.carDaily.CarBaseStaffMapper">
+    <resultMap id="BaseResultMap" type="carBaseStaffDO">
+        <id column="ID" property="id" jdbcType="INTEGER" />
+        <result column="STAFF_CODE" property="staffCode" jdbcType="VARCHAR" />
+        <result column="STAFF_NAME" property="staffName" jdbcType="VARCHAR" />
+        <result column="STAFF_PHONE" property="staffPhone" jdbcType="VARCHAR" />
+        <result column="STAFF_BIRTHDAY" property="staffBirthday" jdbcType="VARCHAR" />
+        <result column="STAFF_SEX" property="staffSex" jdbcType="INTEGER" />
+        <result column="MNEMONIC_CODE" property="mnemonicCode" jdbcType="VARCHAR" />
+        <result column="STAFF_NATION" property="staffNation" jdbcType="VARCHAR" />
+        <result column="STAFF_NATIVE" property="staffNative" jdbcType="VARCHAR" />
+        <result column="STAFF_EMAIL" property="staffEmail" jdbcType="VARCHAR" />
+        <result column="DEPT_ID" property="deptID" jdbcType="INTEGER" />
+        <result column="STAFF_DUTY" property="staffDuty" jdbcType="VARCHAR" />
+        <result column="EDUCATION" property="education" jdbcType="VARCHAR" />
+        <result column="GRADUATE_SCHOOL" property="graduateSchool" jdbcType="VARCHAR" />
+        <result column="IDCARD" property="idcard" jdbcType="VARCHAR" />
+        <result column="ADDRESS" property="address" jdbcType="VARCHAR" />
+        <result column="ENTRY_TIME" property="entryTime" jdbcType="TIMESTAMP" />
+        <result column="LOCATION" property="location" jdbcType="VARCHAR" />
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="CREATOR" property="creator" jdbcType="VARCHAR" />
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="UPDATE_OPERATOR" property="updateOperator" jdbcType="VARCHAR" />
+        <result column="COMMENTS" property="comments" jdbcType="VARCHAR" />
+        <result column="STATUS" property="status" jdbcType="INTEGER" />
+        <result column="COMPANY_ID" property="companyID" jdbcType="INTEGER" />
+        <result column="DELETE_CODE" property="deleteCode" jdbcType="INTEGER" />
+        <result column="STAFF_NO" property="staffNo" jdbcType="VARCHAR" />
+    </resultMap>
+
+	<!-- 下拉框 部门信息 负责人 -->
+	<select id="getListStaffByStr" resultMap="BaseResultMap">
+		SELECT * FROM CAR_BASE_STAFF WHERE <!-- COMPANY_ID = #{id,jdbcType=INTEGER}  -->
+		<!-- AND --> DELETE_CODE = 1 AND STATUS =1 AND STAFF_NAME LIKE
+		CONCAT('%',#{str},'%') 
+	</select>
+
+	<!-- 根据公司ID查询职员信息 -->
+	<select id="getListStaffByCompanyId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		SELECT * FROM CAR_BASE_STAFF WHERE <!-- COMPANY_ID = #{id,jdbcType=INTEGER}  -->
+		<!-- AND  --> DELETE_CODE = 1 AND STATUS = 1 
+	</select>
+	
+	<!-- 下拉框 驾驶员 -->
+	<select id="getListSelect2Driver" parameterType="map" resultMap="BaseResultMap">
+		SELECT STAFF.* FROM
+		(SELECT * FROM CAR_BASE_STAFF 
+		<where>
+			DELETE_CODE = 1 AND STATUS =1
+			<if test="deptId != null">AND DEPT_ID = #{deptId, jdbcType=INTEGER}</if>
+		</where>
+		<!-- COMPANY_ID = #{id,jdbcType=INTEGER}  -->
+		<!-- AND -->  ) AS STAFF 
+		<!-- JOIN CAR_BASE_DRIVER DRIVER ON STAFF.ID = DRIVER.WORK_ID
+		where DRIVER.Curr_STATUS = 0  -->
+	</select>
+	
+	<!-- 下拉框 驾驶员 搜索 -->
+	<select id="getListSelect2DriverByStr" resultMap="BaseResultMap">
+		SELECT STAFF.* FROM
+		(SELECT * FROM CAR_BASE_STAFF WHERE <!-- COMPANY_ID = #{id,jdbcType=INTEGER} 
+		AND --> DELETE_CODE = 1 AND STATUS =1 AND STAFF_NAME LIKE
+		CONCAT('%',#{str},'%')) AS STAFF 
+		JOIN CAR_BASE_DRIVER ON STAFF.ID = CAR_BASE_DRIVER.WORK_ID 
+	</select>
+
+    <insert id="insert" parameterType="carBaseStaffDO">
+        INSERT INTO CAR_BASE_STAFF
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="staffCode != null and staffCode != ''">STAFF_CODE, </if>
+            <if test="staffName != null and staffName != ''">STAFF_NAME, </if>
+            <if test="staffPhone != null and staffPhone != ''">STAFF_PHONE, </if>
+            <if test="staffBirthday != null and staffBirthday != ''">STAFF_BIRTHDAY, </if>
+            <if test="staffSex != null">STAFF_SEX, </if>
+            <if test="mnemonicCode != null and mnemonicCode != ''">MNEMONIC_CODE, </if>
+            <if test="staffNation != null and staffNation != ''">STAFF_NATION, </if>
+            <if test="staffNative != null and staffNative != ''">STAFF_NATIVE, </if>
+            <if test="staffEmail != null and staffEmail != ''">STAFF_EMAIL, </if>
+            <if test="deptID != null">DEPT_ID, </if>
+            <if test="staffDuty != null and staffDuty != ''">STAFF_DUTY, </if>
+            <if test="education != null and education != ''">EDUCATION, </if>
+            <if test="graduateSchool != null and graduateSchool != ''">GRADUATE_SCHOOL, </if>
+            <if test="idcard != null and idcard != ''">IDCARD, </if>
+            <if test="address != null and address != ''">ADDRESS, </if>
+            <if test="entryTime != null">ENTRY_TIME, </if>
+            <if test="location != null and location != ''">LOCATION, </if>
+            <if test="createTime != null">CREATE_TIME, </if>
+            <if test="creator != null and creator != ''">CREATOR, </if>
+            <if test="updateTime != null">UPDATE_TIME, </if>
+            <if test="updateOperator != null and updateOperator != ''">UPDATE_OPERATOR, </if>
+            <if test="comments != null and comments != ''">COMMENTS, </if>
+            <if test="status != null">STATUS, </if>
+            <if test="companyID != null">COMPANY_ID, </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="staffCode != null and staffCode != ''">#{staffCode,jdbcType=VARCHAR}, </if>
+            <if test="staffName != null and staffName != ''">#{staffName,jdbcType=VARCHAR}, </if>
+            <if test="staffPhone != null and staffPhone != ''">#{staffPhone,jdbcType=VARCHAR}, </if>
+            <if test="staffBirthday != null and staffBirthday != ''">#{staffBirthday,jdbcType=VARCHAR}, </if>
+            <if test="staffSex != null">#{staffSex,jdbcType=INTEGER}, </if>
+            <if test="mnemonicCode != null and mnemonicCode != ''">#{mnemonicCode,jdbcType=VARCHAR}, </if>
+            <if test="staffNation != null and staffNation != ''">#{staffNation,jdbcType=VARCHAR}, </if>
+            <if test="staffNative != null and staffNative != ''">#{staffNative,jdbcType=VARCHAR}, </if>
+            <if test="staffEmail != null and staffEmail != ''">#{staffEmail,jdbcType=VARCHAR}, </if>
+            <if test="deptID != null">#{deptID,jdbcType=INTEGER}, </if>
+            <if test="staffDuty != null and staffDuty != ''">#{staffDuty,jdbcType=VARCHAR}, </if>
+            <if test="education != null and education != ''">#{education,jdbcType=VARCHAR}, </if>
+            <if test="graduateSchool != null and graduateSchool != ''">#{graduateSchool,jdbcType=VARCHAR}, </if>
+            <if test="idcard != null and idcard != ''">#{idcard,jdbcType=VARCHAR}, </if>
+            <if test="address != null and address != ''">#{address,jdbcType=VARCHAR}, </if>
+            <if test="entryTime != null">#{entryTime,jdbcType=TIMESTAMP}, </if>
+            <if test="location != null and location != ''">#{location,jdbcType=VARCHAR}, </if>
+            <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP}, </if>
+            <if test="creator != null and creator != ''">#{creator,jdbcType=VARCHAR}, </if>
+            <if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP}, </if>
+            <if test="updateOperator != null and updateOperator != ''">#{updateOperator,jdbcType=VARCHAR}, </if>
+            <if test="comments != null and comments != ''">#{comments,jdbcType=VARCHAR}, </if>
+            <if test="status != null">#{status,jdbcType=INTEGER}, </if>
+            <if test="companyID != null">#{companyID,jdbcType=INTEGER}, </if>
+        </trim>
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT @@IDENTITY AS id
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="carBaseStaffDO" >
+        UPDATE CAR_BASE_STAFF
+        <set>
+            <if test="staffCode != null">STAFF_CODE = #{staffCode,jdbcType=VARCHAR}, </if>
+            <if test="staffName != null">STAFF_NAME = #{staffName,jdbcType=VARCHAR}, </if>
+            <if test="staffPhone != null">STAFF_PHONE = #{staffPhone,jdbcType=VARCHAR}, </if>
+            <if test="staffBirthday != null">STAFF_BIRTHDAY = #{staffBirthday,jdbcType=VARCHAR}, </if>
+            <if test="staffSex != null">STAFF_SEX = #{staffSex,jdbcType=INTEGER}, </if>
+            <if test="mnemonicCode != null">MNEMONIC_CODE = #{mnemonicCode,jdbcType=VARCHAR}, </if>
+            <if test="staffNation != null">STAFF_NATION = #{staffNation,jdbcType=VARCHAR}, </if>
+            <if test="staffNative != null">STAFF_NATIVE = #{staffNative,jdbcType=VARCHAR}, </if>
+            <if test="staffEmail != null">STAFF_EMAIL = #{staffEmail,jdbcType=VARCHAR}, </if>
+            <if test="deptID != null">DEPT_ID = #{deptID,jdbcType=INTEGER}, </if>
+            <if test="staffDuty != null">STAFF_DUTY = #{staffDuty,jdbcType=VARCHAR}, </if>
+            <if test="education != null">EDUCATION = #{education,jdbcType=VARCHAR}, </if>
+            <if test="graduateSchool != null">GRADUATE_SCHOOL = #{graduateSchool,jdbcType=VARCHAR}, </if>
+            <if test="idcard != null">IDCARD = #{idcard,jdbcType=VARCHAR}, </if>
+            <if test="address != null">ADDRESS = #{address,jdbcType=VARCHAR}, </if>
+            <if test="entryTime != null">ENTRY_TIME = #{entryTime,jdbcType=TIMESTAMP}, </if>
+            <if test="location != null">LOCATION = #{location,jdbcType=VARCHAR}, </if>
+            <if test="createTime != null">CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}, </if>
+            <if test="creator != null">CREATOR = #{creator,jdbcType=VARCHAR}, </if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}, </if>
+            <if test="updateOperator != null">UPDATE_OPERATOR = #{updateOperator,jdbcType=VARCHAR}, </if>
+            <if test="comments != null">COMMENTS = #{comments,jdbcType=VARCHAR}, </if>
+            <if test="status != null">STATUS = #{status,jdbcType=INTEGER}, </if>
+            <if test="companyID != null">COMPANY_ID = #{companyID,jdbcType=INTEGER}, </if>
+        </set>
+        WHERE ID = #{id,jdbcType=INTEGER}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        DELETE FROM CAR_BASE_STAFF WHERE ID = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <select id="getByID" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT * FROM CAR_BASE_STAFF WHERE ID = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="getList" parameterType="carBaseStaffDO" resultMap="BaseResultMap">
+        SELECT * FROM CAR_BASE_STAFF
+        <where>
+            <if test="id != null"> AND ID = #{id,jdbcType=INTEGER} </if>
+            <if test="staffCode != null and staffCode != ''"> AND STAFF_CODE = #{staffCode,jdbcType=VARCHAR} </if>
+            <if test="staffName != null and staffName != ''"> AND STAFF_NAME = #{staffName,jdbcType=VARCHAR} </if>
+            <if test="staffPhone != null and staffPhone != ''"> AND STAFF_PHONE = #{staffPhone,jdbcType=VARCHAR} </if>
+            <if test="staffBirthday != null and staffBirthday != ''"> AND STAFF_BIRTHDAY = #{staffBirthday,jdbcType=VARCHAR} </if>
+            <if test="staffSex != null"> AND STAFF_SEX = #{staffSex,jdbcType=INTEGER} </if>
+            <if test="mnemonicCode != null and mnemonicCode != ''"> AND MNEMONIC_CODE = #{mnemonicCode,jdbcType=VARCHAR} </if>
+            <if test="staffNation != null and staffNation != ''"> AND STAFF_NATION = #{staffNation,jdbcType=VARCHAR} </if>
+            <if test="staffNative != null and staffNative != ''"> AND STAFF_NATIVE = #{staffNative,jdbcType=VARCHAR} </if>
+            <if test="staffEmail != null and staffEmail != ''"> AND STAFF_EMAIL = #{staffEmail,jdbcType=VARCHAR} </if>
+            <if test="deptID != null"> AND DEPT_ID = #{deptID,jdbcType=INTEGER} </if>
+            <if test="staffDuty != null and staffDuty != ''"> AND STAFF_DUTY = #{staffDuty,jdbcType=VARCHAR} </if>
+            <if test="education != null and education != ''"> AND EDUCATION = #{education,jdbcType=VARCHAR} </if>
+            <if test="graduateSchool != null and graduateSchool != ''"> AND GRADUATE_SCHOOL = #{graduateSchool,jdbcType=VARCHAR} </if>
+            <if test="idcard != null and idcard != ''"> AND IDCARD = #{idcard,jdbcType=VARCHAR} </if>
+            <if test="address != null and address != ''"> AND ADDRESS = #{address,jdbcType=VARCHAR} </if>
+            <if test="entryTime != null"> AND ENTRY_TIME = #{entryTime,jdbcType=TIMESTAMP} </if>
+            <if test="location != null and location != ''"> AND LOCATION = #{location,jdbcType=VARCHAR} </if>
+            <if test="createTime != null"> AND CREATE_TIME = #{createTime,jdbcType=TIMESTAMP} </if>
+            <if test="creator != null and creator != ''"> AND CREATOR = #{creator,jdbcType=VARCHAR} </if>
+            <if test="updateTime != null"> AND UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP} </if>
+            <if test="updateOperator != null and updateOperator != ''"> AND UPDATE_OPERATOR = #{updateOperator,jdbcType=VARCHAR} </if>
+            <if test="comments != null and comments != ''"> AND COMMENTS = #{comments,jdbcType=VARCHAR} </if>
+            <if test="status != null"> AND STATUS = #{status,jdbcType=INTEGER} </if>
+            <!-- <if test="companyID != null"> AND COMPANY_ID = #{companyID,jdbcType=INTEGER} </if> -->
+        </where>
+    </select>
+    
+    <insert id="addDriverStaffInfo" useGeneratedKeys="true" keyProperty="staffId" parameterType="com.carTravelsky.bean.carDaily.CarBaseDriverRecordDo">
+        INSERT INTO CAR_BASE_STAFF
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="staffCode != null and staffCode != ''">STAFF_CODE, </if>
+            <if test="staffName != null and staffName != ''">STAFF_NAME, </if>
+            <if test="staffPhone != null and staffPhone != ''">STAFF_PHONE, </if>
+            <if test="birth != null and birth != ''">STAFF_BIRTHDAY, </if>
+            <if test="staffSex != null">STAFF_SEX, </if>
+            <if test="mnemonicCode != null and mnemonicCode != ''">MNEMONIC_CODE, </if>
+            <if test="nation != null and nation != ''">STAFF_NATION, </if>
+            <if test="staffNative != null and staffNative != ''">STAFF_NATIVE, </if>
+            <if test="email != null and email != ''">STAFF_EMAIL, </if>
+            <if test="dept != null">DEPT_ID, </if>
+            <if test="duty != null and duty != ''">STAFF_DUTY, </if>
+            <if test="education != null and education != ''">EDUCATION, </if>
+            <if test="graduteSchool != null and graduteSchool != ''">GRADUATE_SCHOOL, </if>
+            <if test="idCard != null and idCard != ''">IDCARD, </if>
+            <if test="address != null and address != ''">ADDRESS, </if>
+            <if test="entryTime != null">ENTRY_TIME, </if>
+            <if test="location != null and location != ''">LOCATION, </if>
+            <if test="createTime != null">CREATE_TIME, </if>
+            <if test="creator != null and creator != ''">CREATOR, </if>
+            <if test="updateTime != null">UPDATE_TIME, </if>
+            <if test="updateOperator != null and updateOperator != ''">UPDATE_OPERATOR, </if>
+            <if test="comments != null and comments != ''">COMMENTS, </if>
+            <if test="status != null">STATUS, </if>
+            <if test="companyID != null">COMPANY_ID, </if>
+            <if test="staffNo != null">STAFF_NO, </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="staffCode != null and staffCode != ''">#{staffCode,jdbcType=VARCHAR}, </if>
+            <if test="staffName != null and staffName != ''">#{staffName,jdbcType=VARCHAR}, </if>
+            <if test="staffPhone != null and staffPhone != ''">#{staffPhone,jdbcType=VARCHAR}, </if>
+            <if test="birth != null and birth != ''">#{birth,jdbcType=VARCHAR}, </if>
+            <if test="staffSex != null">#{staffSex,jdbcType=INTEGER}, </if>
+            <if test="mnemonicCode != null and mnemonicCode != ''">#{mnemonicCode,jdbcType=VARCHAR}, </if>
+            <if test="nation != null and nation != ''">#{nation,jdbcType=VARCHAR}, </if>
+            <if test="staffNative != null and staffNative != ''">#{staffNative,jdbcType=VARCHAR}, </if>
+            <if test="email != null and email != ''">#{email,jdbcType=VARCHAR}, </if>
+            <if test="dept != null">#{dept,jdbcType=INTEGER}, </if>
+            <if test="duty != null and duty != ''">#{duty,jdbcType=VARCHAR}, </if>
+            <if test="education != null and education != ''">#{education,jdbcType=VARCHAR}, </if>
+            <if test="graduteSchool != null and graduteSchool != ''">#{graduteSchool,jdbcType=VARCHAR}, </if>
+            <if test="idCard != null and idCard != ''">#{idCard,jdbcType=VARCHAR}, </if>
+            <if test="address != null and address != ''">#{address,jdbcType=VARCHAR}, </if>
+            <if test="entryTime != null">#{entryTime,jdbcType=TIMESTAMP}, </if>
+            <if test="location != null and location != ''">#{location,jdbcType=VARCHAR}, </if>
+            <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP}, </if>
+            <if test="creator != null and creator != ''">#{creator,jdbcType=VARCHAR}, </if>
+            <if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP}, </if>
+            <if test="updateOperator != null and updateOperator != ''">#{updateOperator,jdbcType=VARCHAR}, </if>
+            <if test="comments != null and comments != ''">#{comments,jdbcType=VARCHAR}, </if>
+            <if test="status != null">#{status,jdbcType=INTEGER}, </if>
+            <if test="companyID != null">#{companyID,jdbcType=INTEGER}, </if>
+             <if test="staffNo != null">#{staffNo,jdbcType=VARCHAR}, </if>
+        </trim>
+    </insert>
+     <update id="updateBaseStaffById" parameterType="com.carTravelsky.bean.carDaily.CarBaseDriverRecordDo" >
+        UPDATE CAR_BASE_STAFF
+        <set>
+            <if test="staffCode != null">STAFF_CODE = #{staffCode,jdbcType=VARCHAR}, </if>
+            <if test="staffName != null">STAFF_NAME = #{staffName,jdbcType=VARCHAR}, </if>
+            <if test="staffPhone != null">STAFF_PHONE = #{staffPhone,jdbcType=VARCHAR}, </if>
+            <if test="birth != null">STAFF_BIRTHDAY = #{birth,jdbcType=VARCHAR}, </if>
+            <if test="staffSex != null">STAFF_SEX = #{staffSex,jdbcType=INTEGER}, </if>
+            <if test="mnemonicCode != null">MNEMONIC_CODE = #{mnemonicCode,jdbcType=VARCHAR}, </if>
+            <if test="nation != null">STAFF_NATION = #{nation,jdbcType=VARCHAR}, </if>
+            <if test="staffNative != null">STAFF_NATIVE = #{staffNative,jdbcType=VARCHAR}, </if>
+            <if test="email != null">STAFF_EMAIL = #{email,jdbcType=VARCHAR}, </if>
+            <if test="dept != null">DEPT_ID = #{dept,jdbcType=INTEGER}, </if>
+            <if test="duty != null">STAFF_DUTY = #{duty,jdbcType=VARCHAR}, </if>
+            <if test="education != null">EDUCATION = #{education,jdbcType=VARCHAR}, </if>
+            <if test="graduteSchool != null">GRADUATE_SCHOOL = #{graduteSchool,jdbcType=VARCHAR}, </if>
+            <if test="idCard != null">IDCARD = #{idCard,jdbcType=VARCHAR}, </if>
+            <if test="address != null">ADDRESS = #{address,jdbcType=VARCHAR}, </if>
+            <if test="entryTime != null">ENTRY_TIME = #{entryTime,jdbcType=TIMESTAMP}, </if>
+            <if test="location != null">LOCATION = #{location,jdbcType=VARCHAR}, </if>
+            <if test="createTime != null">CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}, </if>
+            <if test="creator != null">CREATOR = #{creator,jdbcType=VARCHAR}, </if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}, </if>
+            <if test="updateOperator != null">UPDATE_OPERATOR = #{updateOperator,jdbcType=VARCHAR}, </if>
+            <if test="comments != null">COMMENTS = #{comments,jdbcType=VARCHAR}, </if>
+            <if test="status != null">STATUS = #{status,jdbcType=INTEGER}, </if>
+            <if test="companyID != null">COMPANY_ID = #{companyID,jdbcType=INTEGER}, </if>
+            <if test="staffNo != null">STAFF_NO = #{staffNo,jdbcType=VARCHAR}, </if>
+        </set>
+        WHERE ID = #{staffId,jdbcType=INTEGER}
+    </update>
+     <select id="getCarBaseAllStaffList" parameterType="carBaseStaffDO" resultMap="BaseResultMapS">
+         SELECT s.*,d.DEPT_NAME FROM CAR_BASE_STAFF s join car_base_deptment d on s.DEPT_ID=d.ID WHERE s.DELETE_CODE=1
+          <if test="companyID!=null">AND s.COMPANY_ID!=#{companyID,jdbcType=INTEGER}</if>
+     </select>
+       <insert id="addStaffInformation" parameterType="carBaseStaffDO">
+        INSERT INTO CAR_BASE_STAFF
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="staffCode != null and staffCode != ''">STAFF_CODE, </if>
+            <if test="staffName != null and staffName != ''">STAFF_NAME, </if>
+            <if test="staffPhone != null and staffPhone != ''">STAFF_PHONE, </if>
+            <if test="staffBirthday != null and staffBirthday != ''">STAFF_BIRTHDAY, </if>
+            <if test="staffSex != null">STAFF_SEX, </if>
+            <if test="mnemonicCode != null and mnemonicCode != ''">MNEMONIC_CODE, </if>
+            <if test="staffNation != null and staffNation != ''">STAFF_NATION, </if>
+            <if test="staffNative != null and staffNative != ''">STAFF_NATIVE, </if>
+            <if test="staffEmail != null and staffEmail != ''">STAFF_EMAIL, </if>
+            <if test="deptID != null">DEPT_ID, </if>
+            <if test="staffDuty != null and staffDuty != ''">STAFF_DUTY, </if>
+            <if test="education != null and education != ''">EDUCATION, </if>
+            <if test="graduateSchool != null and graduateSchool != ''">GRADUATE_SCHOOL, </if>
+            <if test="idcard != null and idcard != ''">IDCARD, </if>
+            <if test="address != null and address != ''">ADDRESS, </if>
+            <if test="entryTime != null">ENTRY_TIME, </if>
+            <if test="location != null and location != ''">LOCATION, </if>
+            <if test="createTime != null">CREATE_TIME, </if>
+            <if test="creator != null and creator != ''">CREATOR, </if>
+            <if test="updateTime != null">UPDATE_TIME, </if>
+            <if test="updateOperator != null and updateOperator != ''">UPDATE_OPERATOR, </if>
+            <if test="comments != null and comments != ''">COMMENTS, </if>
+            <if test="status != null">STATUS, </if>
+            <if test="companyID != null">COMPANY_ID, </if>
+            <if test="staffNo != null">STAFF_NO, </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="staffCode != null and staffCode != ''">#{staffCode,jdbcType=VARCHAR}, </if>
+            <if test="staffName != null and staffName != ''">#{staffName,jdbcType=VARCHAR}, </if>
+            <if test="staffPhone != null and staffPhone != ''">#{staffPhone,jdbcType=VARCHAR}, </if>
+            <if test="staffBirthday != null and staffBirthday != ''">#{staffBirthday,jdbcType=VARCHAR}, </if>
+            <if test="staffSex != null">#{staffSex,jdbcType=INTEGER}, </if>
+            <if test="mnemonicCode != null and mnemonicCode != ''">#{mnemonicCode,jdbcType=VARCHAR}, </if>
+            <if test="staffNation != null and staffNation != ''">#{staffNation,jdbcType=VARCHAR}, </if>
+            <if test="staffNative != null and staffNative != ''">#{staffNative,jdbcType=VARCHAR}, </if>
+            <if test="staffEmail != null and staffEmail != ''">#{staffEmail,jdbcType=VARCHAR}, </if>
+            <if test="deptID != null">#{deptID,jdbcType=INTEGER}, </if>
+            <if test="staffDuty != null and staffDuty != ''">#{staffDuty,jdbcType=VARCHAR}, </if>
+            <if test="education != null and education != ''">#{education,jdbcType=VARCHAR}, </if>
+            <if test="graduateSchool != null and graduateSchool != ''">#{graduateSchool,jdbcType=VARCHAR}, </if>
+            <if test="idcard != null and idcard != ''">#{idcard,jdbcType=VARCHAR}, </if>
+            <if test="address != null and address != ''">#{address,jdbcType=VARCHAR}, </if>
+            <if test="entryTime != null">#{entryTime,jdbcType=TIMESTAMP}, </if>
+            <if test="location != null and location != ''">#{location,jdbcType=VARCHAR}, </if>
+            <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP}, </if>
+            <if test="creator != null and creator != ''">#{creator,jdbcType=VARCHAR}, </if>
+            <if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP}, </if>
+            <if test="updateOperator != null and updateOperator != ''">#{updateOperator,jdbcType=VARCHAR}, </if>
+            <if test="comments != null and comments != ''">#{comments,jdbcType=VARCHAR}, </if>
+            <if test="status != null">#{status,jdbcType=INTEGER}, </if>
+            <if test="companyID != null">#{companyID,jdbcType=INTEGER}, </if>
+            <if test="staffNo != null">#{staffNo,jdbcType=VARCHAR}, </if>
+        </trim>
+    </insert>
+    <update id="updateStaffInformation" parameterType="carBaseStaffDO" >
+        UPDATE CAR_BASE_STAFF
+        <set>
+            <if test="staffCode != null">STAFF_CODE = #{staffCode,jdbcType=VARCHAR}, </if>
+            <if test="staffName != null">STAFF_NAME = #{staffName,jdbcType=VARCHAR}, </if>
+            <if test="staffPhone != null">STAFF_PHONE = #{staffPhone,jdbcType=VARCHAR}, </if>
+            <if test="staffBirthday != null">STAFF_BIRTHDAY = #{staffBirthday,jdbcType=VARCHAR}, </if>
+            <if test="staffSex != null">STAFF_SEX = #{staffSex,jdbcType=INTEGER}, </if>
+            <if test="mnemonicCode != null">MNEMONIC_CODE = #{mnemonicCode,jdbcType=VARCHAR}, </if>
+            <if test="staffNation != null">STAFF_NATION = #{staffNation,jdbcType=VARCHAR}, </if>
+            <if test="staffNative != null">STAFF_NATIVE = #{staffNative,jdbcType=VARCHAR}, </if>
+            <if test="staffEmail != null">STAFF_EMAIL = #{staffEmail,jdbcType=VARCHAR}, </if>
+            <if test="deptID != null">DEPT_ID = #{deptID,jdbcType=INTEGER}, </if>
+            <if test="staffDuty != null">STAFF_DUTY = #{staffDuty,jdbcType=VARCHAR}, </if>
+            <if test="education != null">EDUCATION = #{education,jdbcType=VARCHAR}, </if>
+            <if test="graduateSchool != null">GRADUATE_SCHOOL = #{graduateSchool,jdbcType=VARCHAR}, </if>
+            <if test="idcard != null">IDCARD = #{idcard,jdbcType=VARCHAR}, </if>
+            <if test="address != null">ADDRESS = #{address,jdbcType=VARCHAR}, </if>
+            <if test="entryTime != null">ENTRY_TIME = #{entryTime,jdbcType=TIMESTAMP}, </if>
+            <if test="location != null">LOCATION = #{location,jdbcType=VARCHAR}, </if>
+            <if test="createTime != null">CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}, </if>
+            <if test="creator != null">CREATOR = #{creator,jdbcType=VARCHAR}, </if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}, </if>
+            <if test="updateOperator != null">UPDATE_OPERATOR = #{updateOperator,jdbcType=VARCHAR}, </if>
+            <if test="comments != null">COMMENTS = #{comments,jdbcType=VARCHAR}, </if>
+            <if test="status != null">STATUS = #{status,jdbcType=INTEGER}, </if>
+            <if test="companyID != null">COMPANY_ID = #{companyID,jdbcType=INTEGER}, </if>
+             <if test="staffNo != null">STAFF_NO = #{staffNo,jdbcType=INTEGER}, </if>
+        </set>
+        WHERE ID = #{id,jdbcType=INTEGER}
+    </update>
+     <update id="deleteStaffInformationInfoById" parameterType="carBaseStaffDO" >
+        UPDATE CAR_BASE_STAFF SET DELETE_CODE=2  WHERE ID = #{id,jdbcType=INTEGER}
+    </update>
+     <!--全局搜索 -->
+   <select id="getsearchBaseStaffInfo" resultMap="BaseResultMapS" parameterType="java.lang.String" >
+		SELECT s.*,d.DEPT_NAME FROM CAR_BASE_STAFF s join car_base_deptment d on s.DEPT_ID=d.ID WHERE s.DELETE_CODE=1 AND CONCAT(ifnull(s.COMMENTS,
+		''),s.STAFF_NAME,STAFF_DUTY,s.STAFF_PHONE,s.STAFF_NO,d.DEPT_NAME) LIKE
+		CONCAT('%',#{searchString},'%') 
+		 <if test='searchString=="男"'>OR (s.STAFF_SEX =1 AND s.DELETE_CODE=1)</if>
+		 <if test='searchString=="女"'>OR (s.STAFF_SEX =2 AND s.DELETE_CODE=1)</if>
+		 <if test="carBaseStaffDO.companyID!=null">AND s.COMPANY_ID!=#{carBaseStaffDO.companyID,jdbcType=INTEGER}</if>
+	</select>
+     <resultMap id="BaseResultMapS" type="carBaseStaffDO">
+        <id column="ID" property="id" jdbcType="INTEGER" />
+        <result column="STAFF_CODE" property="staffCode" jdbcType="VARCHAR" />
+        <result column="STAFF_NAME" property="staffName" jdbcType="VARCHAR" />
+        <result column="STAFF_PHONE" property="staffPhone" jdbcType="VARCHAR" />
+        <result column="STAFF_BIRTHDAY" property="staffBirthday" jdbcType="VARCHAR" />
+        <result column="STAFF_SEX" property="staffSex" jdbcType="INTEGER" />
+        <result column="MNEMONIC_CODE" property="mnemonicCode" jdbcType="VARCHAR" />
+        <result column="STAFF_NATION" property="staffNation" jdbcType="VARCHAR" />
+        <result column="STAFF_NATIVE" property="staffNative" jdbcType="VARCHAR" />
+        <result column="STAFF_EMAIL" property="staffEmail" jdbcType="VARCHAR" />
+        <result column="DEPT_ID" property="deptID" jdbcType="INTEGER" />
+        <result column="STAFF_DUTY" property="staffDuty" jdbcType="VARCHAR" />
+        <result column="EDUCATION" property="education" jdbcType="VARCHAR" />
+        <result column="GRADUATE_SCHOOL" property="graduateSchool" jdbcType="VARCHAR" />
+        <result column="IDCARD" property="idcard" jdbcType="VARCHAR" />
+        <result column="ADDRESS" property="address" jdbcType="VARCHAR" />
+        <result column="ENTRY_TIME" property="entryTime" jdbcType="TIMESTAMP" />
+        <result column="LOCATION" property="location" jdbcType="VARCHAR" />
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="CREATOR" property="creator" jdbcType="VARCHAR" />
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="UPDATE_OPERATOR" property="updateOperator" jdbcType="VARCHAR" />
+        <result column="COMMENTS" property="comments" jdbcType="VARCHAR" />
+         <result column="DEPT_NAME" property="deptName" jdbcType="VARCHAR" />
+        <result column="STATUS" property="status" jdbcType="INTEGER" />
+        <result column="COMPANY_ID" property="companyID" jdbcType="INTEGER" />
+        <result column="DELETE_CODE" property="deleteCode" jdbcType="INTEGER" />
+        <result column="STAFF_NO" property="staffNo" jdbcType="VARCHAR" />
+    </resultMap>
+    <select id="getCarBaseStaffNo" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        SELECT * FROM CAR_BASE_STAFF WHERE STAFF_NO= #{staffNo,jdbcType=VARCHAR} AND DELETE_CODE=1
+    </select>
+      <update id="isUseStaffInfoRecords" parameterType="carBaseStaffDO" >
+        UPDATE CAR_BASE_STAFF  
+        <set>
+        	<if test="status != null">STATUS = #{status,jdbcType=INTEGER}, </if>
+        	<if test="updateTime != null">UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}, </if>
+            <if test="updateOperator != null">UPDATE_OPERATOR = #{updateOperator,jdbcType=VARCHAR}, </if>
+        </set>	
+         WHERE ID = #{id,jdbcType=INTEGER}
+    </update>
+    <select id="searchHandlerIdByName" parameterType="java.lang.String" resultType="java.lang.Integer">
+    	SELECT CBS.ID
+    	FROM CAR_BASE_STAFF CBS
+    	WHERE CBS.STAFF_NAME = #{handlerName}
+    </select>
+     <select id="searchHandlerNameById" parameterType="java.lang.Integer" resultType="java.lang.String">
+    	SELECT CBS.STAFF_NAME
+    	FROM CAR_BASE_STAFF CBS
+    	WHERE CBS.ID = #{handlerId}
+    </select>
+    <select id="getPhoneByUsername" resultMap="BaseResultMap">
+    	SELECT *
+		FROM car_base_staff CBS
+		WHERE CBS.STAFF_NO = #{name}
+    </select>
+</mapper>

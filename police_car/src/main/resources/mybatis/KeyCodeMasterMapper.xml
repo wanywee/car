@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.carTravelsky.mapper.system.KeyCodeMasterMapper">
+    <resultMap id="BaseResultMap" type="keyCodeMasterDO">
+        <id column="KEY_ID" property="keyID" jdbcType="INTEGER" />
+        <result column="KEY_TYPE" property="keyType" jdbcType="VARCHAR" />
+        <result column="CODE" property="code" jdbcType="VARCHAR" />
+        <result column="DECODE" property="decode" jdbcType="VARCHAR" />
+        <result column="DISPLAY" property="display" jdbcType="VARCHAR" />
+        <result column="DEFAULT_IND" property="defaultInd" jdbcType="CHAR" />
+        <result column="EDITABLE_IND" property="editableInd" jdbcType="CHAR" />
+        <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+        <result column="PRIORITY" property="priority" jdbcType="INTEGER" />
+        <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" />
+        <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" />
+        <result column="LAST_MODIFIED" property="lastModified" jdbcType="TIMESTAMP" />
+        <result column="DELETE_CODE" property="deleteCode" jdbcType="VARCHAR" />
+        <result column="COMPANY_ID" property="companyId" jdbcType="INTEGER" />
+    </resultMap>
+
+	<!-- 根据keyType查询实体类list -->
+	<select id="getKeyCodeMasterListByKeyType" resultMap="BaseResultMap" parameterType="string">
+		SELECT * FROM KEY_CODE_MASTER WHERE DELETE_CODE in ('1','3')  AND KEY_TYPE = #{kind,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 根据Display查询实体类 -->
+	<select id="getKeyCodeByDisplay" parameterType="java.lang.String" resultMap="BaseResultMap">
+		SELECT * FROM KEY_CODE_MASTER WHERE DELETE_CODE in ('1','3')  AND DISPLAY = #{display,jdbcType=VARCHAR}
+	</select>
+
+    <insert id="insert" parameterType="keyCodeMasterDO">
+        INSERT INTO KEY_CODE_MASTER
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="keyType != null and keyType != ''">KEY_TYPE, </if>
+            <if test="code != null and code != ''">CODE, </if>
+            <if test="decode != null and decode != ''">DECODE, </if>
+            <if test="display != null and display != ''">DISPLAY, </if>
+            <if test="defaultInd != null and defaultInd != ''">DEFAULT_IND, </if>
+            <if test="editableInd != null and editableInd != ''">EDITABLE_IND, </if>
+            <if test="description != null and description != ''">DESCRIPTION, </if>
+            <if test="priority != null">PRIORITY, </if>
+            <if test="createBy != null and createBy != ''">CREATE_BY, </if>
+            CREATE_DATE, 
+            <if test="updateBy != null and updateBy != ''">UPDATE_BY, </if>
+            <if test="lastModified != null">LAST_MODIFIED, </if>
+            <if test="deleteCode != null">DELETE_CODE, </if>
+            <if test="companyId != null">COMPANY_ID, </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="keyType != null and keyType != ''">#{keyType,jdbcType=VARCHAR}, </if>
+            <if test="code != null and code != ''">#{code,jdbcType=VARCHAR}, </if>
+            <if test="decode != null and decode != ''">#{decode,jdbcType=VARCHAR}, </if>
+            <if test="display != null and display != ''">#{display,jdbcType=VARCHAR}, </if>
+            <if test="defaultInd != null and defaultInd != ''">#{defaultInd,jdbcType=CHAR}, </if>
+            <if test="editableInd != null and editableInd != ''">#{editableInd,jdbcType=CHAR}, </if>
+            <if test="description != null and description != ''">#{description,jdbcType=VARCHAR}, </if>
+            <if test="priority != null">#{priority,jdbcType=INTEGER}, </if>
+            <if test="createBy != null and createBy != ''">#{createBy,jdbcType=VARCHAR}, </if>
+            NOW(), 
+            <if test="updateBy != null and updateBy != ''">#{updateBy,jdbcType=VARCHAR}, </if>
+            <if test="lastModified != null">#{lastModified,jdbcType=TIMESTAMP}, </if>
+            <if test="deleteCode != null">#{deleteCode,jdbcType=VARCHAR}, </if>
+            <if test="companyId != null">#{companyId,jdbcType=INTEGER}, </if>
+        </trim>
+        <selectKey resultType="java.lang.Integer" keyProperty="keyID" order="AFTER">
+            SELECT @@IDENTITY AS keyID
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="keyCodeMasterDO" >
+        UPDATE KEY_CODE_MASTER
+        <set>
+            <if test="keyType != null">KEY_TYPE = #{keyType,jdbcType=VARCHAR}, </if>
+            <if test="code != null">CODE = #{code,jdbcType=VARCHAR}, </if>
+            <if test="decode != null">DECODE = #{decode,jdbcType=VARCHAR}, </if>
+            <if test="display != null">DISPLAY = #{display,jdbcType=VARCHAR}, </if>
+            <if test="defaultInd != null">DEFAULT_IND = #{defaultInd,jdbcType=CHAR}, </if>
+            <if test="editableInd != null">EDITABLE_IND = #{editableInd,jdbcType=CHAR}, </if>
+            <if test="description != null">DESCRIPTION = #{description,jdbcType=VARCHAR}, </if>
+            <if test="priority != null">PRIORITY = #{priority,jdbcType=INTEGER}, </if>
+            <if test="createBy != null">CREATE_BY = #{createBy,jdbcType=VARCHAR}, </if>
+            <if test="createDate != null">CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}, </if>
+            <if test="updateBy != null">UPDATE_BY = #{updateBy,jdbcType=VARCHAR}, </if>
+            LAST_MODIFIED = NOW(), 
+            <if test="deleteCode != null">DELETE_CODE = #{deleteCode,jdbcType=VARCHAR}, </if>
+            <if test="companyId != null">COMPANY_ID = #{companyId,jdbcType=INTEGER}, </if>            
+        </set>
+        WHERE KEY_ID = #{keyID,jdbcType=INTEGER}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        DELETE FROM KEY_CODE_MASTER WHERE KEY_ID = #{keyID,jdbcType=INTEGER}
+    </delete>
+
+    <select id="getByID" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT * FROM KEY_CODE_MASTER WHERE KEY_ID = #{keyID,jdbcType=INTEGER}
+    </select>
+ 
+    <select id="getList" parameterType="keyCodeMasterDO" resultMap="BaseResultMap">
+        SELECT * FROM KEY_CODE_MASTER
+        <where>
+            <if test="keyID != null"> AND KEY_ID = #{keyID,jdbcType=INTEGER} </if>
+            <if test="keyType != null and keyType != ''"> AND KEY_TYPE = #{keyType,jdbcType=VARCHAR} </if>
+            <if test="code != null and code != ''"> AND CODE = #{code,jdbcType=VARCHAR} </if>
+            <if test="decode != null and decode != ''"> AND DECODE = #{decode,jdbcType=VARCHAR} </if>
+            <if test="display != null and display != ''"> AND DISPLAY = #{display,jdbcType=VARCHAR} </if>
+            <if test="defaultInd != null and defaultInd != ''"> AND DEFAULT_IND = #{defaultInd,jdbcType=CHAR} </if>
+            <if test="editableInd != null and editableInd != ''"> AND EDITABLE_IND = #{editableInd,jdbcType=CHAR} </if>
+            <if test="description != null and description != ''"> AND DESCRIPTION = #{description,jdbcType=VARCHAR} </if>
+            <if test="priority != null"> AND PRIORITY = #{priority,jdbcType=INTEGER} </if>
+            <if test="createBy != null and createBy != ''"> AND CREATE_BY = #{createBy,jdbcType=VARCHAR} </if>
+            <if test="createDate != null"> AND CREATE_DATE = #{createDate,jdbcType=TIMESTAMP} </if>
+            <if test="updateBy != null and updateBy != ''"> AND UPDATE_BY = #{updateBy,jdbcType=VARCHAR} </if>
+            <if test="lastModified != null"> AND LAST_MODIFIED = #{lastModified,jdbcType=TIMESTAMP} </if>
+            <!-- <if test="companyId != null"> AND COMPANY_ID = #{companyId,jdbcType=INTEGER} </if> -->
+            <if test=" true "> AND DELETE_CODE in ('1','3') </if>
+            <if test="deleteCode != null"> AND DELETE_CODE = #{deleteCode,jdbcType=INTEGER} </if>
+        </where>
+    </select>
+	<select id="getKeyCodeBystr"  resultMap="BaseResultMap">
+		SELECT * FROM KEY_CODE_MASTER
+		<where>
+			<!-- <if test="deleteCode != null"> AND DELETE_CODE = #{deleteCode,jdbcType=INTEGER} </if> -->
+			 <if test="keyType != null and keyType != ''"> AND KEY_TYPE = #{keyType,jdbcType=VARCHAR} </if>
+			 <if test="searchStr != null and searchStr != ''"> AND DISPLAY like CONCAT('%',#{searchStr,jdbcType=VARCHAR},'%')  </if>
+			 <!--  <if test="companyId != null"> AND (COMPANY_ID = #{companyId,jdbcType=INTEGER} ) </if> -->
+			  AND DELETE_CODE = 1
+		</where>
+	</select>
+	<select id="getKeyCodeListsearchStr" resultMap="BaseResultMap" >
+		SELECT * FROM KEY_CODE_MASTER WHERE DELETE_CODE in ('1','3') AND CONCAT(KEY_TYPE,`CODE`,DECODE) LIKE
+		CONCAT('%',#{searchStr},'%')
+	</select>
+	<!-- 为了满足Library中KeyTypeMapper -->
+	<resultMap id="codeResultMap" type="com.stopec.common.keycode.KeyTypeDO">
+		<id column="KEY_TYPE" property="keyType" jdbcType="NVARCHAR" />
+		<id column="CODE" property="code" jdbcType="NVARCHAR" />
+		<id column="DECODE" property="decode" jdbcType="NVARCHAR" />
+		<result column="DISPLAY" property="display" jdbcType="NVARCHAR" />
+		<result column="DEFAULT_IND" property="defaultInd" jdbcType="CHAR" />
+		<result column="EDITABLE_IND" property="editableInd" jdbcType="CHAR" />
+		<result column="DESCRIPTION" property="keyDesc" jdbcType="NVARCHAR" />
+	</resultMap>
+
+	<select id="getKeyType" parameterType="String" resultMap="codeResultMap">
+		SELECT
+		KEY_TYPE, CODE, DECODE, DISPLAY, DEFAULT_IND, EDITABLE_IND,
+		DESCRIPTION
+		FROM
+		KEY_CODE_MASTER  WHERE KEY_TYPE = #{keyType} AND DELETE_CODE =1  ORDER BY
+		PRIORITY
+	</select>
+
+	<update id="saveKeyType" parameterType="com.stopec.common.keycode.KeyTypeDO">
+		UPDATE KEY_CODE_MASTER
+		<set>
+			<if test="decode != null">
+				DECODE = #{decode,jdbcType=NVARCHAR},
+			</if>
+			<if test="display != null">
+				DISPLAY = #{display, jdbcType=VARCHAR},
+			</if>
+			<if test="defaultInd != null">
+				DEFAULT_IND = #{defaultInd,jdbcType=CHAR},
+			</if>
+			<if test="editableInd != null">
+				EDITABLE_IND = #{editableInd,jdbcType=CHAR},
+			</if>
+			<if test="keyDesc != null">
+				DESCRIPTION = #{keyDesc,jdbcType=NVARCHAR},
+			</if>
+		</set>
+		WHERE KEY_TYPE = #{keyType} AND CODE = #{code}
+	</update>
+
+	<insert id="insertKeyType" parameterType="com.stopec.common.keycode.KeyTypeDO">
+		INSERT INTO
+		KEY_CODE_MASTER(KEY_TYPE, CODE, DECODE, DISPLAY, DEFAULT_IND,
+		EDITABLE_IND, DESCRIPTION)
+		VALUES(#{keyType}, #{code}, #{decode},
+		#{display}, #{defaultInd}, #{editableInd},
+		#{keyDesc})
+	</insert>
+
+	<select id="getKeyTypeByExample" parameterType="com.stopec.common.keycode.KeyTypeDO"
+		resultMap="codeResultMap">
+		SELECT KEY_TYPE, CODE, DECODE, DISPLAY, DEFAULT_IND, EDITABLE_IND,
+		DESCRIPTION FROM KEY_CODE_MASTER
+		<where>
+			<if test="keyType != null">
+				KEY_TYPE LIKE '%${keyType}%'
+			</if>
+			<if test="code != null">
+				AND CODE = #{code}
+			</if>
+			<if test="decode != null">
+				AND DECODE = #{decode}
+			</if>
+			<if test="display != null">
+				AND DISPLAY = #{display}
+			</if>
+			<if test="defaultInd != null">
+				AND DEFAULT_IND = #{defaultInd}
+			</if>
+			<if test="editableInd != null">
+				AND EDITABLE_IND = #{editableInd}
+			</if>
+			<if test="keyDesc != null">
+				AND DESCRIPTION = #{keyDesc}
+			</if>
+		</where>
+	</select>
+	
+	<!-- 获取需要修改的系统参数 -->
+	<select id="getSysPramList"  resultMap="BaseResultMap">
+		SELECT * FROM KEY_CODE_MASTER
+		WHERE KEY_TYPE IN 
+         <foreach collection="list" item="item" open="(" separator="," close=")">    
+            #{item}  
+        </foreach> 
+	</select>
+
+	<!-- 根据KEYTYPE修改code值 -->
+	<update id="updateSysParam" parameterType="java.lang.String">
+		UPDATE KEY_CODE_MASTER SET
+			CODE = #{code,jdbcType=VARCHAR}
+		<where>
+			<if test=" keyType!=null and keyType!='' "> AND KEY_TYPE= #{keyType,jdbcType=VARCHAR}</if>
+			<!-- <if test=" companyId!=null  "> AND COMPANY_ID= #{companyId,jdbcType=INTEGER}</if> -->
+		</where>
+	</update>
+	<!--全局搜索 -->
+	   <select id="getsearchCodeMasterList" resultMap="BaseResultMap" >
+	        SELECT * FROM KEY_CODE_MASTER code
+	      <where>
+	      	<if test="searchStr != null and searchStr != ''"> AND CONCAT(IFNULL(code.DISPLAY,''),IFNULL(code.DESCRIPTION,''),if(code.EDITABLE_IND='Y','是','否'),IFNULL(code.DEFAULT_IND,''),IFNULL(code.DECODE,''),IFNULL(code.CODE,''),IFNULL(code.KEY_TYPE,'')) LIKE CONCAT('%',#{searchStr},'%')  </if>
+	        <if test=" true "> AND DELETE_CODE in ('1','3') </if>
+	        <!-- <if test=" companyId!=null  "> AND COMPANY_ID= #{companyId,jdbcType=INTEGER}</if> -->
+	      </where>  
+	        
+	        
+		</select>
+
+	
+	<!-- 查询app重量标准 -->
+	<select id="searchAppWeight" parameterType="java.lang.String" resultType="java.lang.String">
+	  SELECT K.CODE FROM KEY_CODE_MASTER K WHERE K.KEY_TYPE = #{appweight}
+	</select>
+   <!-- 查询下拉菜单 -->
+     <resultMap id="KeyCodeResultMap" type="com.carTravelsky.bean.system.Select2VO">
+        <result column="CODE" property="id" jdbcType="VARCHAR" />
+        <result column="DISPLAY" property="text" jdbcType="VARCHAR" />
+    </resultMap>
+    
+    <select id="getKeyCodeForDropdown" resultMap="KeyCodeResultMap">
+		SELECT * FROM KEY_CODE_MASTER   
+		<where>
+		  <if test="keyType != null and keyType != ''"> AND KEY_TYPE = #{keyType,jdbcType=VARCHAR} </if>
+		  <if test="searchStr != null and searchStr != ''"> AND DISPLAY like CONCAT('%',#{searchStr,jdbcType=VARCHAR},'%')  </if>
+          <if test="deleteCode != null"> AND DELETE_CODE = #{deleteCode,jdbcType=INTEGER} </if>
+         <!--  <if test="companyId != null"> AND (COMPANY_ID = #{companyId,jdbcType=INTEGER} ) </if> -->
+        </where>    
+	</select>
+	
+	<!-- 燃油标号下拉菜单 -->
+	<select id="getSelect2ListFueloil" resultMap="fueloilResultMap" parameterType="string">
+		SELECT * FROM KEY_CODE_MASTER  WHERE KEY_TYPE = 'FUELOIL' AND DELETE_CODE = 1
+		AND DISPLAY LIKE CONCAT('%',#{str,jdbcType=VARCHAR},'%')
+	</select>
+	<resultMap id="fueloilResultMap" type="com.carTravelsky.bean.system.Select2VO">
+        <result column="KEY_ID" property="id" jdbcType="INTEGER" />
+        <result column="DISPLAY" property="text" jdbcType="VARCHAR" />
+    </resultMap>
+    <!-- 保险种类下拉菜单 -->
+    <select id="getSelect2InsuranceType" resultMap="fueloilResultMap" parameterType="string">
+    	SELECT * FROM KEY_CODE_MASTER  WHERE KEY_TYPE = 'INSURANCETYPE' AND DELETE_CODE = 1
+		AND DISPLAY LIKE CONCAT('%',#{str,jdbcType=VARCHAR},'%')
+    </select>
+</mapper>

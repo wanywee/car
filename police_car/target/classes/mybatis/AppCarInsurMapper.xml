@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.carTravelsky.mapper.app.AppCarInsurMapper">
+	<!-- 检查当前记录是否存在 -->
+ 	<select id="searchInsurRecodrIsHave" resultType="java.lang.Integer">
+ 		SELECT CDIR.ID
+ 		FROM car_daily_insurance_record CDIR
+ 		<where>
+ 			DELETE_CODE = 1 
+ 			<if test="carId != null">AND CAR_ID = #{carId}</if>
+ 			<if test="username != null">AND CREATE_PEOPLE = #{username}</if>
+ 			<if test="insureDate != null">AND CREATE_TIME = #{insureDate}</if>
+ 		</where>
+ 	</select>
+ 	
+ 	<!-- 根据单位名称查询单位ID -->
+ 	<select id="getCompanyIDByName" resultType="java.lang.Integer">
+ 		SELECT
+			DISTINCT ID
+		FROM
+			CAR_BASE_CONTACTS
+		WHERE
+			ID = #{id,jdbcType=INTEGER}
+		AND COMPANY_TYPE = #{companyType,jdbcType=VARCHAR}
+ 	</select>
+ 	
+ 		<!-- 保险公司列表 -->
+	<select id="getInsurCompanyList" parameterType="java.lang.String" resultType="generalRS">
+		SELECT CBC.ID AS id,
+			   CBC.COMPANY_NAME AS type,
+			   CASE CBC.COMPANY_TYPE WHEN 'BXGS' THEN '保险公司' END AS description
+		FROM car_base_contacts CBC
+		WHERE CBC.COMPANY_TYPE = #{companyType}
+	</select>
+	
+	<!-- 保险种类列表 -->
+	<select id="getInsurTypeList" parameterType="java.lang.String" resultType="generalRS">
+		SELECT KCM.KEY_ID AS id,
+			   KCM.DISPLAY AS type,
+			   KCM.DESCRIPTION AS description
+		FROM key_code_master KCM
+		WHERE KCM.KEY_TYPE = #{insurancetype}
+	</select>
+	
+	<!-- 经手人 -->
+	<select id="getHandlersList" resultType="generalRS">
+		SELECT CBS.ID AS id,
+			   CBS.STAFF_NAME AS TYPE,
+			   CBS.STAFF_DUTY AS description
+		FROM car_base_driver CBD , car_base_staff CBS 
+		WHERE CBD.WORK_ID = CBS.ID
+	</select>
+</mapper>

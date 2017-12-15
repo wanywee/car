@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+      <typeAliases>
+        <typeAlias type="com.carTravelsky.bean.carDaily.CarDailyOutRecordHisDO" alias="carDailyOutRecordHisDO"/>
+        <typeAlias type="com.carTravelsky.bean.carDaily.CarBaseCompanyDO" alias="carBaseCompanyDO"/>
+        <typeAlias type="com.carTravelsky.bean.carDaily.CarBaseContactsDO" alias="carBaseContactsDO"/>
+        <typeAlias type="com.carTravelsky.bean.carDaily.CarBaseDepartmentalRecordDO" alias="carBaseDepartmentalRecordDO"/>
+        <typeAlias type="com.carTravelsky.bean.carDaily.CarBaseDeptmentDO" alias="carBaseDeptmentDO"/>
+        <typeAlias type="com.carTravelsky.bean.carDaily.CarBaseDriverDO" alias="carBaseDriverDO"/>
+        <typeAlias type="com.carTravelsky.bean.carDaily.CarBaseDriverLicenseDO" alias="carBaseDriverLicenseDO"/>
+        <typeAlias type="com.carTravelsky.bean.carDaily.CarBaseStaffDO" alias="carBaseStaffDO"/>
+        <typeAlias type="com.carTravelsky.bean.carDaily.CarBaseTrafficRecordsDO" alias="carBaseTrafficRecordsDO"/>
+        <typeAlias type="com.carTravelsky.bean.carDaily.CarBaseTrainingAfterRecordDO" alias="carBaseTrainingAfterRecordDO"/>
+        <typeAlias type="com.carTravelsky.bean.carDaily.CarBaseTrainingRecordDO" alias="carBaseTrainingRecordDO"/>
+        <typeAlias type="com.carTravelsky.bean.carDaily.CarBaseVehicleDO" alias="carBaseVehicleDO"/>
+        <typeAlias type="com.carTravelsky.bean.carDaily.CarDailyAccidentRecordDO" alias="carDailyAccidentRecordDO"/>
+        <typeAlias type="com.carTravelsky.bean.carDaily.CarDailyAddoilRecordDO" alias="carDailyAddoilRecordDO"/>
+        <typeAlias type="com.carTravelsky.bean.carDaily.CarDailyFeeManageRecordDO" alias="carDailyFeeManageRecordDO"/>
+        <typeAlias type="com.carTravelsky.bean.carDaily.CarDailyInsuranceRecordDO" alias="carDailyInsuranceRecordDO"/>
+        <typeAlias type="com.carTravelsky.bean.carDaily.CarDailyMaintainRecordDO" alias="carDailyMaintainRecordDO"/>
+        <typeAlias type="com.carTravelsky.bean.carDaily.CarDailyOutRecordDO" alias="carDailyOutRecordDO"/>
+        <typeAlias type="com.carTravelsky.bean.carDaily.CarDailyRepairRecordDO" alias="carDailyRepairRecordDO"/>
+        <typeAlias type="com.carTravelsky.bean.carDaily.CarDailyRepairTackRecordDO" alias="carDailyRepairTackRecordDO"/>
+        <typeAlias type="com.carTravelsky.bean.carDaily.CarDailyViolationRecordDO" alias="carDailyViolationRecordDO"/>
+        <typeAlias type="com.carTravelsky.bean.carDaily.CarDailyYearIptRecordDO" alias="carDailyYearIptRecordDO"/>
+        <typeAlias type="com.carTravelsky.bean.carDaily.CarFuelMeterDO" alias="carFuelMeterDO"/>
+        <typeAlias type="com.carTravelsky.bean.carDaily.CarRemindFormDO" alias="carRemindFormDO"/>
+        <typeAlias type="com.carTravelsky.bean.system.CarSysCarTypeDO" alias="carSysCarTypeDO"/>
+        <typeAlias type="com.carTravelsky.bean.system.CarSysMenuDO" alias="carSysMenuDO"/>
+        <typeAlias type="com.carTravelsky.bean.system.CarSysRoleDO" alias="carSysRoleDO"/>
+        <typeAlias type="com.carTravelsky.bean.system.CarSysRoleMenuDO" alias="carSysRoleMenuDO"/>
+        <typeAlias type="com.carTravelsky.bean.system.CarSysUserDO" alias="carSysUserDO"/>
+        <typeAlias type="com.carTravelsky.bean.system.CarSysUserRoleDO" alias="carSysUserRoleDO"/>
+        <typeAlias type="com.carTravelsky.bean.system.KeyCodeMasterDO" alias="keyCodeMasterDO"/>
+        <typeAlias type="com.carTravelsky.bean.system.SystemLogDO" alias="systemLogDO"/>
+       	<typeAlias type="com.carTravelsky.bean.carDaily.GatePositionDO" alias="gatePositionDO"/>
+	    <!-- 货监 -->  
+		<typeAlias type="com.carTravelsky.bean.app.response.GeneralRS" alias="generalRS"/>
+		<typeAlias type="com.carTravelsky.bean.app.response.CarAndStaffRS" alias="carAndStaffRS"/>
+		<typeAlias type="com.carTravelsky.bean.app.response.CarDetailListRS" alias="carDetailListRS"/>
+		<typeAlias type="com.carTravelsky.bean.app.response.StaffListRS" alias="staffListRS"/>
+    </typeAliases>
+      <typeHandlers>
+        <typeHandler javaType="Date" jdbcType="DATE" handler="org.apache.ibatis.type.DateTypeHandler"/>
+    </typeHandlers>
+    <plugins>
+        <plugin interceptor="com.stopec.common.orm.mybatis.plugin.paging.interceptor.PaginationInterceptor">
+        </plugin>
+    </plugins>
+</configuration>
