@@ -28,7 +28,26 @@
   <artifactId>police_car</artifactId>
   <version>1.1.1.10</version>
 
+    <properties>
+        <warPackageName>police_car</warPackageName>
+        <tomcat.deploy.server>192.168.118.203</tomcat.deploy.server>
+        <tomcat.deploy.serverUrl>http://192.168.118.203:8090/police_car-1.1.1.10/index</tomcat.deploy.serverUrl>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>car</id>
+            <properties>
+                <tomcat.deploy.server>192.168.118.203</tomcat.deploy.server>
+                <tomcat.deploy.serverUrl>http://192.168.118.203:8090/police_car-1.1.1.10/index</tomcat.deploy.serverUrl>
+            </properties>
+        </profile>
+    </profiles>
+
+
+
   <build>
+   <finalName>${warPackageName}</finalName>
     <plugins>
       <plugin>
         <groupId>org.mortbay.jetty</groupId>
@@ -50,6 +69,16 @@
 		    <artifactId>maven-war-plugin</artifactId>  
 		    <version>2.6</version>  
 	</plugin> 
+	      <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat8-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <server>${tomcat.deploy.server}</server>
+                    <url>${tomcat.deploy.serverUrl}</url>
+                    <path>/${warPackageName}</path>
+                </configuration>
+            </plugin>
     </plugins>
   </build>
 
